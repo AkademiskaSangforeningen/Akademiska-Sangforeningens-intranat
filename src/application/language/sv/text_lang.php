@@ -6,7 +6,7 @@
  *
 */
 
-$lang['login_header']					= "Akademiska sångföreningens intranät";
+$lang['login_header']					= "Akademiska Sångföreningens intranät";
 
 $lang['login_form_submit']				= "Logga in dig";
 
