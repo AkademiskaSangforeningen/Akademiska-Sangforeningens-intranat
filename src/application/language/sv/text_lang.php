@@ -16,3 +16,6 @@ $lang['field_password']					= "Lösenord";
 $lang['field_name']						= "Namn";
 
 $lang['error_wrong_credentials']		= "Fel användarnamn eller lösenord";
+
+
+$lang['signup_submit']					= "Anmäl dig";
