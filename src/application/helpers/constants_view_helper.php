@@ -10,3 +10,4 @@ define('VIEW_GENERIC_HEADER',			'/generic/header');
 define('VIEW_GENERIC_FOOTER',			'/generic/footer');
 
 define('VIEW_CONTENT_LOGIN_FORM',		'/content/login/form');
+define('VIEW_CONTENT_EVENTSIGNUP_FORM',		'/content/eventsignup/form');

@@ -6,5 +6,8 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url()?>css/libraries/normalize.css" />
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url()?>css/libraries/jquery-ui.custom.css" />
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url()?>css/main.css" />
+	
+	<?php //TODO: Title som input från parenten? ?>
+	<?php //<link rel="SHORTCUT ICON" href="img/favicon.png"> ?>
 </head>
 <body>

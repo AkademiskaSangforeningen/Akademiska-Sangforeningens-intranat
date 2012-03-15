@@ -22,5 +22,7 @@ define('LANG_KEY_FORM_SUBMIT',				'login_form_submit');
 define('LANG_KEY_FIELD_EMAIL',				'field_email');
 define('LANG_KEY_FIELD_PASSWORD',			'field_password');
 
+define('LANG_KEY_FIELD_NAME',				'field_name');
+
 //Error texts
 define('LANG_KEY_ERROR_WRONG_CREDENTIALS',	'error_wrong_credentials');
