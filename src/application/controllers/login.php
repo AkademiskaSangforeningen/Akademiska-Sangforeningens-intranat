@@ -9,14 +9,6 @@ class Login extends CI_Controller {
 
 	function __construct() {
 		parent::__construct();	
-		
-		//Load constants
-		$this->load->helper('constants_controller');
-		$this->load->helper('constants_model');
-		$this->load->helper('constants_view');
-		$this->load->helper('constants_generic');
-		$this->load->helper('constants_database');		
-		$this->load->helper('constants_language');
 
 		//Set headers to always load data dynamically
 		header('Content-type: text/html; charset=utf-8');		
