@@ -11,7 +11,7 @@
 			<br/>
 			
 	
-			<input type="submit" value="<?php echo $this->lang->line(LANG_KEY_FORM_SUBMIT); ?>" id="form_eventsignup_submit_button" class="ui-corner-all" />
+			<input type="submit" value="<?php echo lang("signup_submit"); ?>" id="form_eventsignup_submit_button" class="ui-corner-all" />
 	</form>
 </div>
 
@@ -31,7 +31,6 @@ if($query->num_rows() > 0)
 	echo $row->StartDate;
 	echo '<br>';
 }
-$guestList = "";
 
 
 // Get the list of Guests for the current event.
@@ -54,7 +53,13 @@ $guestList = "";
 			$guestList[$i] = $n; 
 		}
 ?>
-<br /><b>Anm&auml;lda: <?php echo count($guestList); ?></b>
+<br /><b>Anm&auml;lda: 
+
+<?php 
+if (isset($guestList)){
+	echo count($guestList); 
+} else echo "0";
+?></b>
 <?php 
 /*
 if (isset($showGuestType)){
@@ -107,13 +112,14 @@ echo '<br /><table style="table-layout: fixed; width: 400px"><tr><td style="widt
 echo '<table style="table-layout: fixed; width:200px">';
 
 	$n = 1;
-	
-	foreach ($guestList as $k => $v) {
-		echo '<tr><td class="cutoff"><font style="color:#999999; font-size:11px">' . $n . '</font><font style="font-size:14px">&nbsp;&nbsp;' . $v . '</font></td></tr>';
-		$n++;
-		if ($n == round(count($guestList) / 2 + 1) && count($guestList) > 20)
-			echo '</table></td><td style="width:200px"><table style="table-layout: fixed; width:200px">';
-		
+	if (isset($guestList)){
+		foreach ($guestList as $k => $v) {
+			echo '<tr><td class="cutoff"><font style="color:#999999; font-size:11px">' . $n . '</font><font style="font-size:14px">&nbsp;&nbsp;' . $v . '</font></td></tr>';
+			$n++;
+			if ($n == round(count($guestList) / 2 + 1) && count($guestList) > 20)
+				echo '</table></td><td style="width:200px"><table style="table-layout: fixed; width:200px">';
+			
+		}
 	}
 echo '</td></tr></table>';
 echo '</td></tr></table>';
