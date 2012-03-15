@@ -9,14 +9,6 @@ class Eventsignup extends CI_Controller {
 
 	function __construct() {
 		parent::__construct();	
-		
-		//Load constants
-		$this->load->helper('constants_controller');
-		$this->load->helper('constants_model');
-		$this->load->helper('constants_view');
-		$this->load->helper('constants_generic');
-		$this->load->helper('constants_database');		
-		$this->load->helper('constants_language');
 
 		//Set headers to always load data dynamically
 		header('Content-type: text/html; charset=utf-8');		
@@ -37,7 +29,7 @@ class Eventsignup extends CI_Controller {
 		
 		//Load default eventsignup view
 		$this->load->view($client . VIEW_GENERIC_HEADER);
-		$this->load->view($client . VIEW_CONTENT_EVENTSIGNUP_FORM);
+		$this->load->view($client . VIEW_CONTENT_EVENTSIGNUP_SIGNUPFORM);
 		$this->load->view($client . VIEW_GENERIC_FOOTER);
 	}
 	
