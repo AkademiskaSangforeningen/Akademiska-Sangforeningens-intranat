@@ -19,3 +19,6 @@ $lang['error_wrong_credentials']		= "Fel användarnamn eller lösenord";
 
 
 $lang['signup_submit']					= "Anmäl dig";
+
+//KK related stuff
+$lang['kk_header']					= "Kvartettkonto";

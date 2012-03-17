@@ -28,4 +28,9 @@ Class Person extends CI_Model {
 			return false;
 		}
 	}
+  
+  function findAll() {
+    $query = $this->db->get(DB_TABLE_PERSON);
+    return $query->result_array();
+  }
 }
