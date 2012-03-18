@@ -126,7 +126,6 @@ class Login extends CI_Controller {
     
     $data['username'] = $username;
     $data['passwordHash'] = $passwordHash;
-    $data['id'] = 
     
     $this->load->view($client . VIEW_GENERIC_HEADER);
     $this->load->view($client . '/content/tools/show_password', $data);
