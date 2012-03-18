@@ -87,3 +87,20 @@ border-radius: 5px;
 background:#f3c198 none; 
 color:#f36d00; 
 }
+
+table {
+  border: thin solid black;
+}
+
+tr {
+  border: thin solid black;
+}
+
+th {
+  border: thin solid black;
+}
+
+td {
+  border: thin solid black;
+  padding: 2px
+}
