@@ -1,6 +1,41 @@
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
+DROP TABLE IF EXISTS `personhasevent`;
+CREATE TABLE IF NOT EXISTS `personhasevent` (
+  `PersonId` char(36) COLLATE utf8_swedish_ci NOT NULL,
+  `EventId` char(36) COLLATE utf8_swedish_ci NOT NULL,
+  `Status` tinyint(4) NOT NULL,
+  `TransactionId` char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
+  `PaymentTypeId` char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
+  `UnRegistered` tinyint(4) DEFAULT NULL,
+  `Created` datetime NOT NULL,
+  `CreatedBy` char(36) COLLATE utf8_swedish_ci NOT NULL,
+  `Modified` datetime DEFAULT NULL,
+  `ModifiedBy` char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
+  PRIMARY KEY (`PersonId`,`EventId`,`Status`),
+  KEY `TransactionId` (`TransactionId`),
+  KEY `EventId` (`EventId`),
+  KEY `CreatedBy` (`CreatedBy`),
+  KEY `ModifiedBy` (`ModifiedBy`),
+  KEY `PersonId` (`PersonId`),
+  KEY `PaymentTypeId` (`PaymentTypeId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
+
+DROP TABLE IF EXISTS `eventhaspaymenttype`;
+CREATE TABLE IF NOT EXISTS `eventhaspaymenttype` (
+  `EventId` char(36) COLLATE utf8_swedish_ci NOT NULL,
+  `PaymentTypeId` char(36) COLLATE utf8_swedish_ci NOT NULL,
+  `Created` datetime NOT NULL,
+  `CreatedBy` char(36) COLLATE utf8_swedish_ci NOT NULL,
+  `Modified` int(11) DEFAULT NULL,
+  `ModifiedBy` char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
+  PRIMARY KEY (`EventId`,`PaymentTypeId`),
+  KEY `CreatedBy` (`CreatedBy`),
+  KEY `ModifiedBy` (`ModifiedBy`),
+  KEY `PaymentTypeId` (`PaymentTypeId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
+
 DROP TABLE IF EXISTS `event`;
 CREATE TABLE IF NOT EXISTS `event` (
   `Id` char(36) COLLATE utf8_swedish_ci NOT NULL,
@@ -26,18 +61,23 @@ CREATE TABLE IF NOT EXISTS `event` (
   KEY `ResponsibleId` (`ResponsibleId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
 
-DROP TABLE IF EXISTS `eventhaspaymenttype`;
-CREATE TABLE IF NOT EXISTS `eventhaspaymenttype` (
-  `EventId` char(36) COLLATE utf8_swedish_ci NOT NULL,
+DROP TABLE IF EXISTS `transaction`;
+CREATE TABLE IF NOT EXISTS `transaction` (
+  `Id` char(36) COLLATE utf8_swedish_ci NOT NULL,
+  `PersonId` char(36) COLLATE utf8_swedish_ci NOT NULL,
+  `TransactionDate` datetime NOT NULL,
+  `Amount` decimal(10,2) NOT NULL,
+  `Description` varchar(256) COLLATE utf8_swedish_ci NOT NULL,
   `PaymentTypeId` char(36) COLLATE utf8_swedish_ci NOT NULL,
   `Created` datetime NOT NULL,
   `CreatedBy` char(36) COLLATE utf8_swedish_ci NOT NULL,
-  `Modified` int(11) DEFAULT NULL,
+  `Modified` datetime DEFAULT NULL,
   `ModifiedBy` char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
-  PRIMARY KEY (`EventId`,`PaymentTypeId`),
+  PRIMARY KEY (`Id`),
+  KEY `PersonId` (`PersonId`),
+  KEY `PaymnentTypeId` (`PaymentTypeId`),
   KEY `CreatedBy` (`CreatedBy`),
-  KEY `ModifiedBy` (`ModifiedBy`),
-  KEY `PaymentTypeId` (`PaymentTypeId`)
+  KEY `ModifiedBy` (`ModifiedBy`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
 
 DROP TABLE IF EXISTS `paymenttype`;
@@ -82,45 +122,6 @@ CREATE TABLE IF NOT EXISTS `person` (
 INSERT INTO `person` (`Id`, `FirstName`, `LastName`, `Voice`, `Address`, `PostalCode`, `City`, `CountryId`, `Phone`, `Email`, `Allergies`, `Description`, `Status`, `Password`, `Created`, `CreatedBy`, `Modified`, `ModifiedBy`) VALUES
 ('89fb6438-6aae-11e1-a06a-e81132589e91', 'Klaus', 'Lapela', '2B', 'Forums köpcentrum', '12345', 'Helsingfors', 'fi', '+358-40-123456', 'intra@akademen.com', 'Finsk industriell cider', NULL, 0, '$2a$10$Uj8rZ1IkQTYucjNbWHd8IO/FloPJU.AqDMvnUFlnFl6lTkv5uSlK2', '2012-03-10 14:42:47', '$2a$10$Uj8rZ1IkQTYucjNbWHd8IO/FloPJU', NULL, NULL);
 
-DROP TABLE IF EXISTS `personhasevent`;
-CREATE TABLE IF NOT EXISTS `personhasevent` (
-  `PersonId` char(36) COLLATE utf8_swedish_ci NOT NULL,
-  `EventId` char(36) COLLATE utf8_swedish_ci NOT NULL,
-  `Status` tinyint(4) NOT NULL,
-  `TransactionId` char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
-  `PaymentTypeId` char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
-  `UnRegistered` tinyint(4) DEFAULT NULL,
-  `Created` datetime NOT NULL,
-  `CreatedBy` char(36) COLLATE utf8_swedish_ci NOT NULL,
-  `Modified` datetime DEFAULT NULL,
-  `ModifiedBy` char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
-  PRIMARY KEY (`PersonId`,`EventId`,`Status`),
-  KEY `TransactionId` (`TransactionId`),
-  KEY `EventId` (`EventId`),
-  KEY `CreatedBy` (`CreatedBy`),
-  KEY `ModifiedBy` (`ModifiedBy`),
-  KEY `PersonId` (`PersonId`),
-  KEY `PaymentTypeId` (`PaymentTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
-
-DROP TABLE IF EXISTS `transaction`;
-CREATE TABLE IF NOT EXISTS `transaction` (
-  `Id` char(36) COLLATE utf8_swedish_ci NOT NULL,
-  `PersonId` char(36) COLLATE utf8_swedish_ci NOT NULL,
-  `TransactionDate` datetime NOT NULL,
-  `Amount` decimal(10,2) NOT NULL,
-  `Description` varchar(256) COLLATE utf8_swedish_ci NOT NULL,
-  `PaymentTypeId` char(36) COLLATE utf8_swedish_ci NOT NULL,
-  `Created` datetime NOT NULL,
-  `CreatedBy` char(36) COLLATE utf8_swedish_ci NOT NULL,
-  `Modified` datetime DEFAULT NULL,
-  `ModifiedBy` char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
-  PRIMARY KEY (`Id`),
-  KEY `PersonId` (`PersonId`),
-  KEY `PaymnentTypeId` (`PaymentTypeId`),
-  KEY `CreatedBy` (`CreatedBy`),
-  KEY `ModifiedBy` (`ModifiedBy`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
 
 
 ALTER TABLE `event`
