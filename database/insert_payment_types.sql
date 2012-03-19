@@ -1,0 +1,1 @@
+INSERT INTO `paymentType` (`Id`, `Name`, `Created`, `CreatedBy`) VALUES (UUID(), 'KK', NOW(), '89fb6438-6aae-11e1-a06a-e81132589e91');

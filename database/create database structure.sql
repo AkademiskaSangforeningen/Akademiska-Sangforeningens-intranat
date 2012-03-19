@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `paymenttype` (
   `Id` char(36) COLLATE utf8_swedish_ci NOT NULL,
   `Name` varchar(64) COLLATE utf8_swedish_ci NOT NULL,
   `Created` datetime NOT NULL,
-  `CreatedBy` char(1) COLLATE utf8_swedish_ci NOT NULL,
+  `CreatedBy` char(36) COLLATE utf8_swedish_ci NOT NULL,
   `Modified` datetime DEFAULT NULL,
   `ModifiedBy` char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
   PRIMARY KEY (`Id`),
