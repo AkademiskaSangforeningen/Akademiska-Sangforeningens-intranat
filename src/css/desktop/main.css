@@ -1,47 +1,41 @@
 body {
 	background-image: url("../../images/backgroundtile.gif");
-	font-family: Helvetica, Verdana, sans-serif;
+	font-family: Helvetica, Verdana, sans-serif !important;
+	font-size: 0.8em;
+}
+
+fieldset {
+	float: left;
+	margin-right: 1em;
+	padding: 1em;
+}
+
+legend {
+	font-weight: bold;
+}
+
+.button {
+	display: none;
+}
+
+.ui-widget .ui-button {
+	font-size: 8pt;
 }
 
 #container {
-margin-top: 2em;  
-margin-left: auto; 
-margin-right: auto;
+	margin-top: 2em;  
+	margin-left: auto; 
+	margin-right: auto;
 
-padding: 2em;
+	padding: 2em;
 
-background-color:#FFFFFF; 
-color:#555555; 
-
-width:900px; 
-min-height:400px;
-
-border-top-left-radius: 9px;
-border-top-right-radius: 9px;
-border-bottom-left-radius: 9px;
-border-bottom-right-radius: 9px;
--moz-box-shadow:    2px 2px 8px 1px #555555;
--webkit-box-shadow: 2px 2px 8px 1px #555555;
-box-shadow:         2px 2px 8px 1px #555555;
-
+	background-color:#fff; 
+	width: 900px; 
+	min-height: 400px;
 }
 
-.subcontainer {
-background-color:WhiteSmoke; 
-color:#555555; 
-width:800px; 
-min-height:60px;
-margin-top: 20px;  
-margin-left: auto; 
-margin-right: auto;
-border-top-left-radius: 9px;
-border-top-right-radius: 9px;
-border-bottom-left-radius: 9px;
-border-bottom-right-radius: 9px;
-padding: 15px;
-}
-
-label {
+.tools {
+	margin-bottom: 1em;
 }
 
 label.error {
@@ -50,7 +44,7 @@ label.error {
 	font-weight: bold;
 }
 
-input {
+input, select {
 	margin: 0.5em 0 0.5em 0;
 	border: 1px solid gray;
 	width: 250px;
@@ -64,43 +58,20 @@ input.error {
 	border: 1px solid red;
 }
 
-.button
-{
-height: 23px; 
-background:#f36d00 none; 
-color:white; 
-font-family:Helvetica, sans-serif; 
-font-weight:bold; 
-font-size: 8pt;  
-border: 0px; 
-padding-left:5px;
-padding-right:5px;
-padding-top:5px;
-padding-bottom:5px;
-margin-bottom: 5px;
-text-decoration:none;
-vertical-align: middle;
-border-radius: 5px;
-}
-
-.button:hover {
-background:#f3c198 none; 
-color:#f36d00; 
-}
-
 table {
-  border: thin solid black;
+	border-collapse: collapse;
 }
 
 tr {
-  border: thin solid black;
 }
 
 th {
-  border: thin solid black;
+	text-align: left;
+	padding: 0.5em 1.5em 0.5em 0;
+	border-top: 1px solid gray;
+	border-bottom: 1px solid gray;
 }
 
 td {
-  border: thin solid black;
-  padding: 2px
+	padding: 0.5em 1.5em 0.5em 0;
 }

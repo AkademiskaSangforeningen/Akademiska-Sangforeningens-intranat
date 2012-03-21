@@ -6,11 +6,22 @@
  *
 */
 
-define('VIEW_GENERIC_HEADER',			'/generic/header');
-define('VIEW_GENERIC_FOOTER',			'/generic/footer');
+define('VIEW_GENERIC_HEADER',						'/generic/header');
+define('VIEW_GENERIC_HEADER_NAVITABS',				'/generic/header_navitabs');
 
-define('VIEW_CONTENT_LOGIN_FORM',		'/content/login/form');
+define('VIEW_GENERIC_FOOTER',						'/generic/footer');
+
+define('VIEW_CONTENT_LOGIN_FORM',					'/content/login/form');
 
 define('VIEW_CONTENT_EVENTSIGNUP_SIGNUPFORM',		'/content/eventsignup/signupform');
+
+define('VIEW_CONTENT_MYPAGE_DASHBOARD',				'/content/mypage/dashboard');
+
+define('VIEW_CONTENT_PERSONS_LISTALL',				'/content/persons/listall');
+define('VIEW_CONTENT_PERSONS_EDITSINGLE',			'/content/persons/editsingle');
+
 define('VIEW_CONTENT_EVENTSIGNUP_EDITEVENT',			'/content/eventsignup/editevent');
 define('VIEW_CONTENT_EVENTSIGNUP_LISTEVENTS',		'/content/eventsignup/listevents');
+
+define('VIEW_CONTENT_USERMANAGER_LISTUSERS',    '/content/usermanager/listusers');
+

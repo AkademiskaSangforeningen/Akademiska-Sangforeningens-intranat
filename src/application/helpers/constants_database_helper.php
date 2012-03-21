@@ -38,6 +38,7 @@ define('DB_PAYMENTTYPE_MODIFIEDBY',			'ModifiedBy');
 //Table Person
 define('DB_TABLE_PERSON',					'Person');
 define('DB_PERSON_ID',						'Id');
+define('DB_PERSON_ACCESSRIGHT',				'AccessRight');
 define('DB_PERSON_FIRSTNAME',				'FirstName');
 define('DB_PERSON_LASTNAME',				'LastName');
 define('DB_PERSON_VOICE',					'Voice');
