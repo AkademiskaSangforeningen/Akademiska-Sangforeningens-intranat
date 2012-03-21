@@ -53,4 +53,12 @@ Class Person extends CI_Model {
 		$query = $this->db->get();		
 		return $query->result();	
 	}
+
+  
+  function findAllBalances() {
+    $this->db->select("*, 0.0 as TotalBalance", FALSE);
+    
+    $query = $this->db->get(DB_TABLE_PERSON);
+    return $query->result_array();
+  }
 }

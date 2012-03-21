@@ -24,3 +24,6 @@ define('CONTROLLER_PERSONS_SAVESINGLE',	'persons/savesingle');
 
 //My page
 define('CONTROLLER_MY_PAGE',			'mypage');
+
+//User manager
+define('CONTROLLER_USERMANAGER', 'usermanager');

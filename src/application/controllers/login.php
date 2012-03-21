@@ -122,4 +122,17 @@ class Login extends CI_Controller {
 		// 10 is the workload factor (around 300ms on a Core i5 machine)
 		return crypt($stringToHash, '$2a$10$' . $salt);				
 	}
+  
+  function password($username) {
+    $client = CLIENT_DESKTOP;
+    
+    $passwordHash = $this->_generateHash($username);
+    
+    $data['username'] = $username;
+    $data['passwordHash'] = $passwordHash;
+    
+    $this->load->view($client . VIEW_GENERIC_HEADER);
+    $this->load->view($client . '/content/tools/show_password', $data);
+    $this->load->view($client . VIEW_GENERIC_FOOTER);
+	}
 }

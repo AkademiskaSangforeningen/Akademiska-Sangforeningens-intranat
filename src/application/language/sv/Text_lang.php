@@ -45,8 +45,13 @@ $lang[LANG_KEY_ENUM_COUNTRY_FINLAND]		= "Finland";
 $lang[LANG_KEY_ENUM_COUNTRY_SWEDEN]			= "Sverige";
 $lang[LANG_KEY_ENUM_COUNTRY_OTHER]			= "Annat land (ange landet i stad-fältet)";
 
-
 $lang[LANG_KEY_ERROR_WRONG_CREDENTIALS]		= "Fel användarnamn eller lösenord";
 
 
 $lang['signup_submit']						= "Anmäl dig";
+
+$lang['signup_submit']					= "Anmäl dig";
+
+//KK related stuff
+$lang['kk_header']					= "Kvartettkonto";
+
