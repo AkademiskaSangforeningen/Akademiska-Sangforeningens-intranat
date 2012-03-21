@@ -5,7 +5,7 @@
  * @author Simon Cederqvist
  *
  */
-class Eventsignup extends CI_Controller {
+class Usermanager extends CI_Controller {
   
   function __construct() {
     parent::__construct();	
@@ -28,9 +28,9 @@ class Eventsignup extends CI_Controller {
     //Load languages. As we don't yet know the user's language, we default to swedish
     $this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);
     
-    //Load default eventsignup view
+    //Load default listusers view
     $this->load->view($client . VIEW_GENERIC_HEADER);
-    $this->load->view($client . VIEW_CONTENT_MASSEDITOR);
+    $this->load->view($client . VIEW_CONTENT_USERMANAGER_LISTUSERS);
     $this->load->view($client . VIEW_GENERIC_FOOTER);
   }
   
@@ -41,4 +41,16 @@ class Eventsignup extends CI_Controller {
     $this->load->view($client . VIEW_GENERIC_FOOTER);    
   }
   
+  function get_all_users($order = "DESC")
+  {
+    if($order!="DESC") $order = "ASC"; // Just to be safe, when I still don't know how this framework works.
+    return $this->db->query("SELECT * FROM Person ORDER BY LastName,FirstName ?", array($order));
+  }
+  
+  function get_all_admins($order = "DESC")
+  {
+    if($order!="DESC") $order = "ASC"; // Just to be safe, when I still don't know how this framework works.
+    return $this->db->query("SELECT * FROM Person WHERE Status=".STATUS_ADMIN." ORDER BY LastName,FirstName ?", array($order));
+    
+  }
 }

@@ -14,3 +14,5 @@ define('VIEW_CONTENT_LOGIN_FORM',		'/content/login/form');
 define('VIEW_CONTENT_EVENTSIGNUP_SIGNUPFORM',		'/content/eventsignup/signupform');
 define('VIEW_CONTENT_EVENTSIGNUP_EDITEVENT',			'/content/eventsignup/editevent');
 define('VIEW_CONTENT_EVENTSIGNUP_LISTEVENTS',		'/content/eventsignup/listevents');
+
+define('VIEW_CONTENT_USERMANAGER_LISTUSERS',    '/content/usermanager/listusers');
