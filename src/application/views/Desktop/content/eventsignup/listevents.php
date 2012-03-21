@@ -20,7 +20,7 @@
 <?php
 // Event id for testing
 $EventId = "'64267e8e-6eae-11e1-91de-00241d8659f1'";
-$query = $this->db->query("SELECT * FROM event WHERE Id = " . $EventId);
+$query = $this->db->query("SELECT * FROM Event WHERE Id = " . $EventId);
 if($query->num_rows() > 0)
 {
 	$row = $query->row(); 
@@ -43,11 +43,11 @@ if($query->num_rows() > 0)
 		}
 		*/
 		$n = 0;
-		$query = $this->db->query("SELECT * FROM personhasevent WHERE (EventId = " . $EventId .  ")");
+		$query = $this->db->query("SELECT * FROM PersonHasEvent WHERE (EventId = " . $EventId .  ")");
 		foreach($query->result_array() as $row)
 		{
 			$i = $row['PersonId'];
-			$person_query = $this->db->query("SELECT * FROM person WHERE Id = '" . $i . "'");
+			$person_query = $this->db->query("SELECT * FROM Person WHERE Id = '" . $i . "'");
 			$person_row = $person_query->row(); 
 			$n = $person_row->FirstName . " " . $person_row->LastName;
 			$guestList[$i] = $n; 
