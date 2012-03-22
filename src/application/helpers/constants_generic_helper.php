@@ -14,3 +14,4 @@ define('CLIENT_MOBILE',						'Mobile');
 define('SESSION_LOGGEDIN',					'LoggedIn');
 define('SESSION_PERSONID',					'PersonId');
 define('SESSION_LANG',						'Lang');
+define('SESSION_ACCESSRIGHT',				'AccessRight');
