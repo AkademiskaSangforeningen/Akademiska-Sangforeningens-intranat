@@ -30,7 +30,7 @@ class Usermanager extends CI_Controller {
 
     //Generate data passed to the view.
     $this->load->model('Person');
-    $data["users"] = $this->Person->get_all_persons("DESC",-1);
+    $data["users"] = $this->Person->getPersonList();
     
     //Load default listusers view
     $this->load->view($client . VIEW_GENERIC_HEADER);
