@@ -27,30 +27,24 @@ class Usermanager extends CI_Controller {
     
     //Load languages. As we don't yet know the user's language, we default to swedish
     $this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);
+
+    //Generate data passed to the view.
+    $this->load->model('Person');
+    $data["users"] = $this->Person->getPersonList();
     
     //Load default listusers view
     $this->load->view($client . VIEW_GENERIC_HEADER);
-    $this->load->view($client . VIEW_CONTENT_USERMANAGER_LISTUSERS);
+    $this->load->view($client . VIEW_CONTENT_USERMANAGER_LISTUSERS, $data);
     $this->load->view($client . VIEW_GENERIC_FOOTER);
   }
   
-  
+  /**
+   * This thing should really make a lightbox confirmation first, then return to itself.
+   */
   function delete ($what) {    
     $this->load->view($client . VIEW_GENERIC_HEADER);
-    //    $this->load->view($client . VIEW_CONTENT_MASSEDITOR_DELETE);
+    //    $this->load->view($client . VIEW_CONTENT_USERMANAGER_DELETE);
     $this->load->view($client . VIEW_GENERIC_FOOTER);    
   }
   
-  function get_all_users($order = "DESC")
-  {
-    if($order!="DESC") $order = "ASC"; // Just to be safe, when I still don't know how this framework works.
-    return $this->db->query("SELECT * FROM Person ORDER BY LastName,FirstName ?", array($order));
-  }
-  
-  function get_all_admins($order = "DESC")
-  {
-    if($order!="DESC") $order = "ASC"; // Just to be safe, when I still don't know how this framework works.
-    return $this->db->query("SELECT * FROM Person WHERE Status=".STATUS_ADMIN." ORDER BY LastName,FirstName ?", array($order));
-    
-  }
 }

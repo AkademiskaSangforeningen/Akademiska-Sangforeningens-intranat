@@ -20,36 +20,36 @@ Class Person extends CI_Model {
 		$this->db->from(DB_TABLE_PERSON);
 		$this->db->where(DB_PERSON_EMAIL, 		$email);
 		$this->db->where(DB_PERSON_PASSWORD, 	$password);
-		
+
 		$query = $this->db->get();
-		
+
 		if ($query->num_rows() == 1) {
 			return $query->row();
 		} else {
 			return false;
 		}
 	}
-	
+
 	function getPerson($personId) {
 		$this->db->select('*');
 		$this->db->from(DB_TABLE_PERSON);
 		$this->db->where(DB_PERSON_ID,	$personId);
-		
+
 		$query = $this->db->get();
-		
+
 		if ($query->num_rows() == 1) {
 			return $query->row();
 		} else {
 			return false;
 		}		
 	}
-	
+
 	function getPersonList() {
 		$this->db->select('*');
 		$this->db->from(DB_TABLE_PERSON);
 		$this->db->order_by(DB_PERSON_LASTNAME, "asc"); 
 		$this->db->order_by(DB_PERSON_LASTNAME, "asc"); 
-		
+
 		$query = $this->db->get();		
 		return $query->result();	
 	}
