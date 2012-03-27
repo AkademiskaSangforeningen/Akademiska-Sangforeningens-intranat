@@ -7,8 +7,8 @@
 */
 
 //Client
-define('CLIENT_DESKTOP',					'Desktop');
-define('CLIENT_MOBILE',						'Mobile');
+define('CLIENT_DESKTOP',					'desktop');
+define('CLIENT_MOBILE',						'mobile');
 
 //Session
 define('SESSION_LOGGEDIN',					'LoggedIn');
