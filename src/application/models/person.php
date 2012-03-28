@@ -30,6 +30,12 @@ Class Person extends CI_Model {
 		}
 	}
 
+	/**
+	* Function used for loading a single person
+	*
+	* @param string $personId GUID of the user
+	* @return false if check fails, otherwise returns database result
+	*/	
 	function getPerson($personId) {
 		$this->db->select('*');
 		$this->db->from(DB_TABLE_PERSON);
@@ -44,6 +50,11 @@ Class Person extends CI_Model {
 		}		
 	}
 
+	/**
+	* Function used for loading all persons
+	*
+	* @return database result
+	*/		
 	function getPersonList() {
 		$this->db->select('*');
 		$this->db->from(DB_TABLE_PERSON);
@@ -54,11 +65,25 @@ Class Person extends CI_Model {
 		return $query->result();	
 	}
 
+	/**
+	* Function used for saving a single person
+	*
+	* @param string $personId GUID of the user, if NULL an INSERT is made, otherwise UPDATE
+	*/		
+	function savePerson($data, $personId = NULL) {	
+		if (!is_null($personId)) {
+			$this->db->where(DB_PERSON_ID, $personId);
+			$this->db->update(DB_TABLE_PERSON, $data); 					
+		} else {
+			$data[DB_PERSON_ID] = substr(com_create_guid(), 1, 36);
+			$this->db->insert(DB_TABLE_PERSON, $data);
+		}	
+	}
   
-  function findAllBalances() {
-    $this->db->select("*, 0.0 as TotalBalance", FALSE);
-    
-    $query = $this->db->get(DB_TABLE_PERSON);
-    return $query->result_array();
-  }
+	function findAllBalances() {
+		$this->db->select("*, 0.0 as TotalBalance", FALSE);
+		
+		$query = $this->db->get(DB_TABLE_PERSON);
+		return $query->result_array();
+	}
 }

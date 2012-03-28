@@ -25,9 +25,9 @@
 	<?php endforeach; ?>		
 	</tbody>
 </table>	
-		
 
 <script>
+	//Initialize not already initialized buttons
 	$(".button:not(.ui-button)")
 		.each(function() {
 			var icon = $(this).data("icon"),
@@ -36,8 +36,9 @@
 				.button({ icons: { primary: icon }, text: text })
 				.css("display", "inline-block");			
 		})
+		//Special handling for those buttons that open a dialog
 		.filter('[data-dialog="true"]')
-			.on('click', function (event) {			
+			.on('click.openDialog', function (event) {			
 				var title = $(this).text();
 
 				$.ajax({
@@ -53,13 +54,58 @@
 							height: 500,
 							width: 700,
 							modal: true,
-							buttons: {
-								Spara: function() {},
-								Ångra: function() {
-									$( this ).dialog( "close" );
+							buttons: [
+								{
+									text: "Spara",
+									click: function () {
+										$('#form_editsingle_person').trigger('submit');
+									},
+								},
+								{
+									text: "Ångra",
+									"data-priority": "secondary",
+									click: function () {
+										$( this ).dialog( "close" );
+									},
 								}
+							],
+							
+							open: function(event, ui) {
+								//Validate the form on submit
+								$('#form_editsingle_person')	
+									.validate({
+										submitHandler: function(form) {
+											$.ajax({
+												type: 'POST',
+												url: $(form).attr("action"),
+												data: $(form).serialize(),
+												success: function(data) { 
+													$dialog.html(data);
+												},
+												error:  function(jqXHR, textStatus, errorThrown) {
+													alert(errorThrown);
+												},
+												dataType: "html"
+											});
+											
+											return false;
+										}
+									})																									
+								//On open, set priority CSS-classes for buttons (if given)
+								$(this)
+									.closest('.ui-dialog')
+										.find('.ui-dialog-buttonpane button[data-priority]')
+											.each(function() {
+												$(this).addClass("ui-priority-" + $(this).attr("data-priority"));
+											});
+							},
+							
+							close: function() {
+								//Remove the dialog on close
+								$dialog.remove();
 							}
-						}).dialog('open');					  
+						})						
+						.dialog('open');					  
 				  },
 				  error:  function(jqXHR, textStatus, errorThrown) {
 					alert(errorThrown);

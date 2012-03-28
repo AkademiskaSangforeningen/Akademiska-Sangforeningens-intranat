@@ -19,6 +19,7 @@ define('VIEW_CONTENT_MYPAGE_DASHBOARD',				'/content/mypage/dashboard');
 
 define('VIEW_CONTENT_PERSONS_LISTALL',				'/content/persons/listall');
 define('VIEW_CONTENT_PERSONS_EDITSINGLE',			'/content/persons/editsingle');
+define('VIEW_CONTENT_PERSONS_SAVESINGLE_SUCCESS',	'/content/persons/editsingle_success');
 
 define('VIEW_CONTENT_EVENTSIGNUP_EDITEVENT',			'/content/eventsignup/editevent');
 define('VIEW_CONTENT_EVENTSIGNUP_LISTEVENTS',		'/content/eventsignup/listevents');

@@ -64,7 +64,7 @@ $autoload['libraries'] = array('database', 'session');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('form', 'url', 'language', 'constants_controller', 'constants_model', 'constants_view', 'constants_generic', 'constants_database', 'constants_language');
+$autoload['helper'] = array('form', 'url', 'language', 'constants_controller', 'constants_model', 'constants_view', 'constants_generic', 'constants_database', 'constants_language', 'constants_enum');
 
 /*
 | -------------------------------------------------------------------
