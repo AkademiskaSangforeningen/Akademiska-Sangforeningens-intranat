@@ -38,10 +38,16 @@ legend {
 	margin-bottom: 1em;
 }
 
+.requiredsymbol {
+	color: red;
+	font-weight: bold;
+}
+
 label.error {
 	color: red;
 	padding-left: 1em;
 	font-weight: bold;
+	display: block;
 }
 
 input, select {
