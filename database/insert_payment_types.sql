@@ -1,1 +1,1 @@
-INSERT INTO `paymentType` (`Id`, `Name`, `Created`, `CreatedBy`) VALUES ('235a2641-7203-11e1-abc6-88ae1d113b5e', 'KK', NOW(), '89fb6438-6aae-11e1-a06a-e81132589e91');
+INSERT INTO `PaymentType` (`Id`, `Name`, `Created`, `CreatedBy`) VALUES ('235a2641-7203-11e1-abc6-88ae1d113b5e', 'KK', NOW(), '89fb6438-6aae-11e1-a06a-e81132589e91');
