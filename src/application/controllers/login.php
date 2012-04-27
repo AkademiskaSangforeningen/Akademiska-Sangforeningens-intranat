@@ -97,7 +97,7 @@ class Login extends CI_Controller {
 			//Set the session variables and return true
 			$this->session->set_userdata(SESSION_LOGGEDIN, 		true);
 			$this->session->set_userdata(SESSION_PERSONID, 		$row->Id);			
-			$this->session->set_userdata(SESSION_ACCESSRIGHT,	$row->AccessRight);			
+			//$this->session->set_userdata(SESSION_ACCESSRIGHT,	$row->AccessRight);			
 			return true;
 		} else {
 			//Set and error message and return false
