@@ -27,9 +27,7 @@ class QuartetAccount extends CI_Controller {
    		$this->load->model(DB_TABLE_PERSON, 'person', TRUE);
 		$data['persons'] = $this->person->findAllBalances();
     
-		$this->load->view($client . VIEW_GENERIC_HEADER);
     	$this->load->view($client . "/content/kk/kk_admin_list", $data);
-		$this->load->view($client . VIEW_GENERIC_FOOTER);
 	}
 
 }
