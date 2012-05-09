@@ -107,7 +107,7 @@ class Persons extends CI_Controller {
 			//Only include the password if it has been given.
 			//For new users it's a required field.
 			if ($this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_PASSWORD) != "") {
-				$data[DB_PERSON_PASSWORD] = $this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_PASSWORD);
+				$data[DB_PERSON_PASSWORD] = generateHash($this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_PASSWORD), $this->config->item('encryption_key'));
 			}						
 			
 			//Load the person-model

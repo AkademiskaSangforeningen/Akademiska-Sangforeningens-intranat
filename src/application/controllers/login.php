@@ -89,14 +89,15 @@ class Login extends CI_Controller {
 		//Get the username
 		$username = $this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL);		
 		//Calculate the hash for the password
-		$password = $this->_generateHash($password);
+		$password = generateHash($password, $this->config->item('encryption_key'));
 	
 		//Call the model and check if the user can login with the given credentials
 		$row = $this->person->canUserLogin($username, $password);				
 		if ($row) {
 			//Set the session variables and return true
 			$this->session->set_userdata(SESSION_LOGGEDIN, 		true);
-			$this->session->set_userdata(SESSION_PERSONID, 		$row->Id);			
+			$this->session->set_userdata(SESSION_PERSONID, 		$row->Id);
+			$this->session->set_userdata(SESSION_NAME, 			$row->FirstName . " " . $row->LastName);
 			//$this->session->set_userdata(SESSION_ACCESSRIGHT,	$row->AccessRight);			
 			return true;
 		} else {
@@ -105,34 +106,17 @@ class Login extends CI_Controller {
 			return false;
 		}
 	}
-
-	/**
-	*	Private function for generating hashes for a string
-	*	The hash is a bcrypt hash with the salt based on the encryption_key also used for session cookies
-	* @param	string	$stringToHash The string to calculate a hash on
-	* @return 	string Return the calculated hash
-	*/	
-	function _generateHash($stringToHash) {
-		//First get the encryption key in a base64-encoding (to remove false characters) 
-		$encryptionKey = base64_encode($this->config->item('encryption_key'));
-		//Calculate a 22-char salt
-		$salt = substr(str_replace('+', '.', $encryptionKey), 0, 22);
-		// Return the hash
-		// 2a is the bcrypt algorithm selector, see http://php.net/crypt
-		// 10 is the workload factor (around 300ms on a Core i5 machine)
-		return crypt($stringToHash, '$2a$10$' . $salt);				
-	}
   
-  function password($username) {
-    $client = CLIENT_DESKTOP;
-    
-    $passwordHash = $this->_generateHash($username);
-    
-    $data['username'] = $username;
-    $data['passwordHash'] = $passwordHash;
-    
-    $this->load->view($client . VIEW_GENERIC_HEADER);
-    $this->load->view($client . '/content/tools/show_password', $data);
-    $this->load->view($client . VIEW_GENERIC_FOOTER);
+	function password($username) {
+		$client = CLIENT_DESKTOP;
+		
+		$passwordHash = $this->_generateHash($username);
+		
+		$data['username'] = $username;
+		$data['passwordHash'] = $passwordHash;
+		
+		$this->load->view($client . VIEW_GENERIC_HEADER);
+		$this->load->view($client . '/content/tools/show_password', $data);
+		$this->load->view($client . VIEW_GENERIC_FOOTER);
 	}
 }
