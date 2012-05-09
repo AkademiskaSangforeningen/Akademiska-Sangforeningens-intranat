@@ -17,14 +17,18 @@ class QuartetAccount extends CI_Controller {
 	}
 
 	function index() {
+		if ($this->session->userdata(SESSION_LOGGEDIN) == false) {
+			redirect(CONTROLLER_LOGIN_LOGOUT, 'refresh');
+		}
+		
 		$client = CLIENT_DESKTOP;
-    $this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);
+    	$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);
     
-    $this->load->model(DB_TABLE_PERSON, 'person', TRUE);
+   		$this->load->model(DB_TABLE_PERSON, 'person', TRUE);
 		$data['persons'] = $this->person->findAllBalances();
     
 		$this->load->view($client . VIEW_GENERIC_HEADER);
-    $this->load->view($client . "/content/kk/kk_admin_list", $data);
+    	$this->load->view($client . "/content/kk/kk_admin_list", $data);
 		$this->load->view($client . VIEW_GENERIC_FOOTER);
 	}
 
