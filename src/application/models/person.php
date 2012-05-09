@@ -94,6 +94,9 @@ Class Person extends CI_Model {
 		$this->db->from(DB_TABLE_PERSON);
 		$this->db->join(DB_TABLE_TRANSACTION, DB_TABLE_PERSON.'.'.DB_PERSON_ID.'='.DB_TRANSACTION_PERSONID, 'left outer');
 		$this->db->group_by(DB_PERSON_ID);
+		$this->db->order_by(DB_PERSON_LASTNAME, 'asc');
+		$this->db->order_by(DB_PERSON_FIRSTNAME, 'asc');
+		 
 
 		$query = $this->db->get();
 		return $query->result_array();
