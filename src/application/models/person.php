@@ -81,9 +81,17 @@ Class Person extends CI_Model {
 	}
   
 	function findAllBalances() {
-		$this->db->select("*, 0.0 as TotalBalance", FALSE);
+		$this->db->select("COALESCE(SUM(Amount), 0) AS TotalBalance", FALSE);
+		$this->db->select(DB_PERSON_LASTNAME);
+		$this->db->select(DB_PERSON_FIRSTNAME);
+		$this->db->select(DB_TABLE_PERSON.'.'.DB_PERSON_ID);
+
 		
-		$query = $this->db->get(DB_TABLE_PERSON);
+		$this->db->from(DB_TABLE_PERSON);
+		$this->db->join(DB_TABLE_TRANSACTION, DB_TABLE_PERSON.'.'.DB_PERSON_ID.'='.DB_TRANSACTION_PERSONID, 'left outer');
+		$this->db->group_by(DB_PERSON_ID);
+
+		$query = $this->db->get();
 		return $query->result_array();
 	}
 }
