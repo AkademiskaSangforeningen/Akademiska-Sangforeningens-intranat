@@ -1,7 +1,7 @@
 <label class="error">
 	<?php echo validation_errors(); ?>
 </label>
-<?php echo form_open(CONTROLLER_PERSONS_SAVESINGLE . (isset($personId) ? "/" . $personId : ""), array('id' => 'form_editsingle_person')); ?>
+<?php echo form_open(CONTROLLER_PERSONS_SAVESINGLE . (isset($personId) ? "/" . $personId : ""), array('id' => 'form_editobject')); ?>
 	<p>
 		<legend><span class="requiredsymbol">*</span> Obligatoriskt fält</legend> 
 	</p>
@@ -105,7 +105,7 @@
 
 <script>
 	//Validate the form on submit
-	$('#form_editsingle_person')
+	$('#form_editobject')
 		.validate({
 			submitHandler: function(form) {
 				$.ajax({
@@ -113,7 +113,7 @@
 					url: $(form).attr("action"),
 					data: $(form).serialize(),
 					success: function(data) {													
-						$('#dialog_editperson').html(data);
+						$('#dialog_editobject').html(data);
 					},
 					error:  function(jqXHR, textStatus, errorThrown) {
 						alert(errorThrown);

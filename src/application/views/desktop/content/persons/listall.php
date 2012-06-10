@@ -27,7 +27,7 @@
 </table>	
 
 <script>
-	$('<div id="dialog_editperson"></div>')
+	$('<div id="dialog_editobject"></div>')
 		.dialog({
 			autoOpen: false,
 			height: 500,
@@ -37,7 +37,7 @@
 				{
 					text: "Spara",
 					click: function () {
-						$('#form_editsingle_person').trigger('submit');
+						$('#form_editobject').trigger('submit');
 					},
 				},
 				{
@@ -79,7 +79,7 @@
 					cache: false,
 					//on success, set the data to the dialog and open it
 					success: function(data) {
-						$('#dialog_editperson')
+						$('#dialog_editobject')
 							.html(data)
 							.dialog("option", "title", title)								
 							.dialog('open');							
