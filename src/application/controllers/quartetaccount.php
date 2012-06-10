@@ -22,7 +22,7 @@ class QuartetAccount extends CI_Controller {
 		}
 		
 		$client = CLIENT_DESKTOP;
-    	$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);
+    	$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));
     
    		$this->load->model(DB_TABLE_PERSON, 'person', TRUE);
 		$data['persons'] = $this->person->findAllBalances();

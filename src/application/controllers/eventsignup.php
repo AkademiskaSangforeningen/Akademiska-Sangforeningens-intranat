@@ -25,7 +25,7 @@ class Eventsignup extends CI_Controller {
 		$client = CLIENT_DESKTOP;
 
 		//Load languages. As we don't yet know the user's language, we default to swedish
-		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);
+		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));
 		
 		//Load default eventsignup view
 		$this->load->view($client . VIEW_GENERIC_HEADER);

@@ -31,7 +31,7 @@ class MyPage extends CI_Controller {
 		$client = CLIENT_DESKTOP;
 
 		//Load languages. As we don't yet know the user's language, we default to swedish
-		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);	
+		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));	
 
 		$this->load->view($client . VIEW_GENERIC_HEADER);
 		$this->load->view($client . VIEW_GENERIC_HEADER_NAVITABS);

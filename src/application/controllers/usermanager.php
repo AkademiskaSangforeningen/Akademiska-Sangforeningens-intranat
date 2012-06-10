@@ -25,8 +25,8 @@ class Usermanager extends CI_Controller {
     //Here we could define a different client type based on user agent-headers
     $client = CLIENT_DESKTOP;
     
-    //Load languages. As we don't yet know the user's language, we default to swedish
-    $this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);
+    //Load languages
+    $this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));
 
     //Generate data passed to the view.
     $this->load->model('Person');
