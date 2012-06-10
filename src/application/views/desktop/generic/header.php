@@ -18,7 +18,7 @@
 				</div>
 				<?php if ($this->session->userdata(SESSION_LOGGEDIN) == true) { ?>				
 					<div style="float: right">
-						<a href="#" id="button_mysettings" class="button" data-icon="ui-icon-gear" data-dialog="true"><?php echo $this->session->userdata(SESSION_NAME); ?></a>
+						<a href="<?php echo base_url() . CONTROLLER_PERSONS_EDIT_MY_INFORMATION ?>" id="button_mysettings" class="button" data-icon="ui-icon-gear" data-dialog="true"><?php echo $this->session->userdata(SESSION_NAME); ?></a>
 						<a href="<?php echo base_url() . CONTROLLER_LOGIN_LOGOUT ?>" id="logout" class="button" data-icon="ui-icon-circlesmall-close">Logga ut</a>				
 					</div>
 				<?php } ?>				

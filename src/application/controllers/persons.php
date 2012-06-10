@@ -28,8 +28,8 @@ class Persons extends CI_Controller {
 		//Here we could define a different client type based on user agent-headers
 		$client = CLIENT_DESKTOP;
 
-		//Load languages. As we don't yet know the user's language, we default to swedish
-		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);
+		//Load languages
+		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));
 		
 		$this->load->model(DB_TABLE_PERSON, 'person', TRUE);
 
@@ -39,33 +39,52 @@ class Persons extends CI_Controller {
 	}
 
 	/**
+	*	Used for editing a person's own information
+	*/		
+	function editMyInformation() {
+		//Set the personId to the one in user's session
+		$personId = $this->session->userdata(SESSION_PERSONID);
+		//And call the default edit function with a pre-defined controller
+		$this->editSingle($personId, CONTROLLER_PERSONS_SAVE_MY_INFORMATION);
+	}
+	
+	/**
+	*	Used for saving a person's own information
+	*/		
+	function saveMyInformation() {
+		//Set the personId to the one in user's session
+		$personId = $this->session->userdata(SESSION_PERSONID);
+		//And call the default save function with a pre-defined controller
+		$this->saveSingle($personId, CONTROLLER_PERSONS_SAVE_MY_INFORMATION);
+	}	
+	
+	/**
 	*	Used for editing a single person
 	*/		
-	function editSingle($personId = NULL) {
+	function editSingle($personId = NULL, $controller = NULL) {
 		//Here we could define a different client type based on user agent-headers
 		$client = CLIENT_DESKTOP;
 
-		//Load languages. As we don't yet know the user's language, we default to swedish
-		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);		
+		//Load languages
+		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));				
 		
 		if (!is_null($personId)) {
 			$this->load->model(DB_TABLE_PERSON, 'person', TRUE);
 			$data['person'] = $this->person->getPerson($personId);
 			$data['personId'] = $personId;
-			$this->load->view($client . VIEW_CONTENT_PERSONS_EDITSINGLE, $data);
-		} else {
-			$this->load->view($client . VIEW_CONTENT_PERSONS_EDITSINGLE);
 		}
+		$data['controller'] = !is_null($controller) ? $controller : CONTROLLER_PERSONS_SAVESINGLE;
+		$this->load->view($client . VIEW_CONTENT_PERSONS_EDITSINGLE, $data);
 	}
 	
 	/**
 	*	Used for saving a single person
 	*/	
-	function saveSingle($personId = NULL) {
+	function saveSingle($personId = NULL, $controller = NULL) {
 		//Load the validation library
 		$this->load->library('form_validation');
-		//Load languages. As we don't yet know the user's language, we default to swedish
-		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);			
+		//Load languages
+		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));			
 		
 		//Validate the fields
 		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME,	lang(LANG_KEY_FIELD_FIRSTNAME),		'trim|max_length[50]|required|xss_clean');
@@ -88,7 +107,8 @@ class Persons extends CI_Controller {
 		if($this->form_validation->run() == FALSE) {
 			//Here we could define a different client type based on user agent-headers
 			$client = CLIENT_DESKTOP;
-			$data['personId'] = $personId;			
+			$data['personId'] = $personId;
+			$data['controller'] = !is_null($controller) ? $controller : CONTROLLER_PERSONS_SAVESINGLE;			
 			$this->load->view($client . VIEW_CONTENT_PERSONS_EDITSINGLE, $data);
 		} else {
 			$data = array(			
