@@ -11,20 +11,12 @@
 		</script>			
 		<script src="<?php echo base_url()?>js/desktop/plugins/jquery.validate.min.js"></script>
 		<script src="<?php echo base_url()?>js/desktop/plugins/localization/messages_<?php echo LANG_LANGUAGE_SV; ?>.js"></script>
+		<script src="<?php echo base_url()?>js/desktop/main.js"></script>
 		<script>
 			$(function() {
-				//Initialize buttons
-				$(".button:not(.ui-button)").each(function() {
-					var icon = $(this).data("icon");
-					$(this)
-						.button({ icons: { primary: icon } })
-						.css("display", "inline-block");			
-				});
-				//Initialize tabs
-				$('#header_navitabs').tabs().show();
-				
-				$("#button_mysettings").on("click", function () { alert("hell yeah"); return false; });
-				
+				AKADEMEN.initializeDialog("<?php echo lang(LANG_KEY_BUTTON_SAVE); ?>", "<?php echo lang(LANG_KEY_BUTTON_CANCEL); ?>");
+				AKADEMEN.initializeButtons();
+				AKADEMEN.initializeTabs();				
 			});			
 		
 			//Check and execute executeOnStart if found
