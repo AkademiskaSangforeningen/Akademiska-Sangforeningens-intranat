@@ -20,6 +20,9 @@ define('LANG_KEY_BUTTON_LOG_IN',			'button_log_in');
 define('LANG_KEY_BUTTON_LOGGING_IN',		'button_logging_in');
 define('LANG_KEY_BUTTON_LOG_OUT',			'button_log_out');
 define('LANG_KEY_BUTTON_CREATE_NEW_MEMBER',	'button_create_new_member');
+define('LANG_KEY_BUTTON_EDIT_MEMBER',		'button_edit_member');
+define('LANG_KEY_BUTTON_SAVE',				'button_save');
+define('LANG_KEY_BUTTON_CANCEL',			'button_cancel');
 
 //Fields
 define('LANG_KEY_FIELD_EMAIL',				'field_email');
