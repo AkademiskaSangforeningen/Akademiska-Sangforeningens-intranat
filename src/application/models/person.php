@@ -77,7 +77,7 @@ Class Person extends CI_Model {
 			$this->db->set(DB_PERSON_MODIFIEDBY, $this->session->userdata(SESSION_PERSONID));						
 			$this->db->update(DB_TABLE_PERSON, $data);			
 		} else {
-			$data[DB_PERSON_ID] = substr(com_create_guid(), 1, 36);
+			$data[DB_PERSON_ID] = substr(generateGuid(), 1, 36);
 			$this->db->set(DB_PERSON_CREATED, 'NOW()', FALSE);
 			$this->db->set(DB_PERSON_CREATEDBY, $this->session->userdata(SESSION_PERSONID));			
 			$this->db->insert(DB_TABLE_PERSON, $data);
