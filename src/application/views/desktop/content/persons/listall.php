@@ -12,6 +12,7 @@
 			<th><?php echo lang(LANG_KEY_FIELD_PHONE); ?></th>
 			<th><?php echo lang(LANG_KEY_FIELD_ADDRESS); ?></th>
 		</tr>
+	</thead>
 	<tbody>
 	<?php foreach($personList as $key => $person): ?>
 		<tr>
