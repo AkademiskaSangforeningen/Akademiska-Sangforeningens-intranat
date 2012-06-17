@@ -10,7 +10,7 @@ fieldset {
 	padding: 1em;
 }
 
-legend {
+legend, .bold {
 	font-weight: bold;
 }
 
@@ -78,6 +78,16 @@ th {
 	border-bottom: 1px solid gray;
 }
 
+tfoot td {
+	padding: 0.5em 1.5em 0.5em 0;
+	border-top: 1px solid gray;
+	border-bottom: 1px solid gray;
+}
+
 td {
 	padding: 0.5em 1.5em 0.5em 0;
+}
+
+.alignright {
+	text-align: right;
 }
