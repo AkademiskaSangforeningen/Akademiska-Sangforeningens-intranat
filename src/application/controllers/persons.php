@@ -31,7 +31,7 @@ class Persons extends CI_Controller {
 		//Load languages
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));
 		
-		$this->load->model(DB_TABLE_PERSON, 'person', TRUE);
+		$this->load->model(MODEL_PERSON, strtolower(MODEL_PERSON), TRUE);
 
 		$data['personList'] = $this->person->getPersonList();				
 		
@@ -69,7 +69,7 @@ class Persons extends CI_Controller {
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));				
 		
 		if (!is_null($personId)) {
-			$this->load->model(DB_TABLE_PERSON, 'person', TRUE);
+			$this->load->model(MODEL_PERSON, strtolower(MODEL_PERSON), TRUE);
 			$data['person'] = $this->person->getPerson($personId);
 			$data['personId'] = $personId;
 		}
@@ -131,7 +131,7 @@ class Persons extends CI_Controller {
 			}						
 			
 			//Load the person-model
-			$this->load->model(DB_TABLE_PERSON, 'person', TRUE);			
+			$this->load->model(MODEL_PERSON, strtolower(MODEL_PERSON), TRUE);
 			//save the person via the model
 			$this->person->savePerson($data, $personId);
 		
