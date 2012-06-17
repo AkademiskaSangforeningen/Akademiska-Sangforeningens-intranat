@@ -27,7 +27,7 @@ define('DB_EVENT_MODIFIED',					'Modified');
 define('DB_EVENT_MODIFIEDBY',				'ModifiedBy');
 
 //Table PaymentType
-define('TABLE_PAYMENTTYPE',					'PaymentType');
+define('DB_TABLE_PAYMENTTYPE',				'PaymentType');
 define('DB_PAYMENTTYPE_ID',					'Id');
 define('DB_PAYMENTTYPE_NAME',				'Name');
 define('DB_PAYMENTTYPE_CREATED',			'Created');

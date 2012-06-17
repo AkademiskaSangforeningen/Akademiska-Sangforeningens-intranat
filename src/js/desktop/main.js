@@ -118,6 +118,22 @@ var AKADEMEN = (function(){
 						return false;
 					}
 				});
+		},
+		
+		/**
+		*	Initialize date picker form input fields..
+		*/
+		initializeDatePicker: function() {						
+			$("input[data-datepicker]").each(function() {
+				$(this)
+					.datepicker({
+						changeMonth: true,
+						changeYear: true,
+						showWeek: true,
+						firstDay: 1,
+						dateFormat: $(this).attr("data-datepicker")
+					});
+			});
 		}
     };
 })();

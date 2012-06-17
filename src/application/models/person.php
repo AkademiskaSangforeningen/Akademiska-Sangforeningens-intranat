@@ -64,6 +64,31 @@ Class Person extends CI_Model {
 		$query = $this->db->get();		
 		return $query->result();	
 	}
+	
+	/**
+	* Function used for loading all persons as an array for dropdowns
+	*
+	* @return database result
+	*/		
+	function getPersonListAsArray($addEmptyOption = NULL) {
+		$this->db->select(DB_PERSON_ID);
+		$this->db->select(DB_PERSON_FIRSTNAME);
+		$this->db->select(DB_PERSON_LASTNAME);
+		$this->db->from(DB_TABLE_PERSON);
+		$this->db->order_by(DB_PERSON_LASTNAME, "asc"); 
+		$this->db->order_by(DB_PERSON_LASTNAME, "asc"); 
+
+		$data = array();	
+		if ($addEmptyOption) {
+			$data[''] = '-';
+		}
+		
+		$query = $this->db->get();
+		foreach($query->result_array() as $row){
+            $data[$row[DB_PERSON_ID]] = $row[DB_PERSON_FIRSTNAME] . " " . $row[DB_PERSON_LASTNAME];
+        }
+        return $data;
+	}	
 
 	/**
 	* Function used for saving a single person
@@ -82,23 +107,5 @@ Class Person extends CI_Model {
 			$this->db->set(DB_PERSON_CREATEDBY, $this->session->userdata(SESSION_PERSONID));			
 			$this->db->insert(DB_TABLE_PERSON, $data);
 		}	
-	}
-  
-	function findAllBalances() {
-		$this->db->select("COALESCE(SUM(Amount), 0) AS TotalBalance", FALSE);
-		$this->db->select(DB_PERSON_LASTNAME);
-		$this->db->select(DB_PERSON_FIRSTNAME);
-		$this->db->select(DB_TABLE_PERSON.'.'.DB_PERSON_ID);
-
-		
-		$this->db->from(DB_TABLE_PERSON);
-		$this->db->join(DB_TABLE_TRANSACTION, DB_TABLE_PERSON.'.'.DB_PERSON_ID.'='.DB_TRANSACTION_PERSONID, 'left outer');
-		$this->db->group_by(DB_PERSON_ID);
-		$this->db->order_by(DB_PERSON_LASTNAME, 'asc');
-		$this->db->order_by(DB_PERSON_FIRSTNAME, 'asc');
-		 
-
-		$query = $this->db->get();
-		return $query->result_array();
 	}
 }

@@ -46,3 +46,32 @@
 			return $uuid;
 		}
 	}
+
+	/**
+	*	Private function for validating dates using RegEx for the format dd.mm.yyyy.
+	*	If the RegEx returns true the date is also checked to be calendar-valid (e.g. 29.2.2011 is not valid)
+	* @return 	true or false
+	*/		
+	function isDateValid($date) {
+		if (preg_match ("/^(0[1-9]|[12][0-9]|3[01]|[1-9])\.(0[1-9]|1[012]|[1-9])\.(\d{4})$/", $date, $parts)) {
+			if(checkdate($parts[2],$parts[1],$parts[3])) {
+				return true;
+			} else {
+				return false;
+			}
+        } else {
+			return false;
+		}
+	}
+	
+	function formatDateGerman($date) {
+		return date('d.m.Y', strtotime($date));
+	}
+	
+	function formatDateODBC($date) {
+		return date('Y-m-d', strtotime($date));
+	}
+	
+	function formatCurrency($value) {
+		return '€' . number_format($value, 2, ",", "");
+	}

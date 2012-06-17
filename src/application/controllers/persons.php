@@ -61,7 +61,7 @@ class Persons extends CI_Controller {
 	/**
 	*	Used for editing a single person
 	*/		
-	function editSingle($personId = NULL, $controller = NULL) {
+	function editSingle($personId = NULL, $controller = NULL) {	
 		//Here we could define a different client type based on user agent-headers
 		$client = CLIENT_DESKTOP;
 

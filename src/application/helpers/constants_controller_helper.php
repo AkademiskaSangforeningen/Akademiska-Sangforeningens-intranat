@@ -30,4 +30,8 @@ define('CONTROLLER_MY_PAGE',						'mypage');
 //User manager
 define('CONTROLLER_USERMANAGER', 					'usermanager');
 
-define('CONTROLLER_QUARTETACCOUNT',					'quartetAccount');
+//Transactions
+define('CONTROLLER_TRANSACTIONS',					'transactions');
+define('CONTROLLER_TRANSACTIONS_LISTALL',			'transactions/listall');
+define('CONTROLLER_TRANSACTIONS_EDITSINGLE',		'transactions/editsingle');
+define('CONTROLLER_TRANSACTIONS_SAVESINGLE',		'transactions/savesingle');
