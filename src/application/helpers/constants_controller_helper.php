@@ -30,4 +30,4 @@ define('CONTROLLER_MY_PAGE',						'mypage');
 //User manager
 define('CONTROLLER_USERMANAGER', 					'usermanager');
 
-define('CONTROLLER_QUARTET', 						'quartetAccount');
+define('CONTROLLER_QUARTETACCOUNT',					'quartetAccount');
