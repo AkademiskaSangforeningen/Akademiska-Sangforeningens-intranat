@@ -8,7 +8,7 @@
 
 //Table Event
 define('DB_TABLE_EVENT',					'Event');
-define('DB_EVENT_ID,',						'Id');
+define('DB_EVENT_ID',						'Id');
 define('DB_EVENT_NAME',						'Name');
 define('DB_EVENT_STARTDATE',				'StartDate');
 define('DB_EVENT_ENDDATE',					'EndDate');
