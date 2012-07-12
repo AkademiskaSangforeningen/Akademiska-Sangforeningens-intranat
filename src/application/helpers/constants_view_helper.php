@@ -13,8 +13,6 @@ define('VIEW_GENERIC_FOOTER',							'/generic/footer');
 
 define('VIEW_CONTENT_LOGIN_FORM',						'/content/login/form');
 
-define('VIEW_CONTENT_EVENTSIGNUP_SIGNUPFORM',			'/content/eventsignup/signupform');
-
 define('VIEW_CONTENT_MYPAGE_DASHBOARD',					'/content/mypage/dashboard');
 
 define('VIEW_CONTENT_PERSONS_LISTALL',					'/content/persons/listall');
@@ -23,9 +21,12 @@ define('VIEW_CONTENT_PERSONS_SAVESINGLE_SUCCESS',		'/content/persons/editsingle_
 
 define('VIEW_CONTENT_EVENTSIGNUP_EDITEVENT',			'/content/eventsignup/editevent');
 define('VIEW_CONTENT_EVENTSIGNUP_LISTEVENTS',			'/content/eventsignup/listevents');
+define('VIEW_CONTENT_EVENTSIGNUP_SIGNUP',				'/content/eventsignup/signup');
+define('VIEW_CONTENT_EVENTSIGNUP_SIGNUPFORM',			'/content/eventsignup/signupform');
 
 define('VIEW_CONTENT_USERMANAGER_LISTUSERS',    		'/content/usermanager/listusers');
 
 define('VIEW_CONTENT_TRANSACTIONS_LISTALL',				'/content/transactions/listall');
 define('VIEW_CONTENT_TRANSACTIONS_EDITSINGLE',			'/content/transactions/editsingle');
 define('VIEW_CONTENT_TRANSACTIONS_SAVESINGLE_SUCCESS',	'/content/transactions/editsingle_success');
+

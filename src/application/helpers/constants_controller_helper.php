@@ -35,3 +35,9 @@ define('CONTROLLER_TRANSACTIONS',					'transactions');
 define('CONTROLLER_TRANSACTIONS_LISTALL',			'transactions/listall');
 define('CONTROLLER_TRANSACTIONS_EDITSINGLE',		'transactions/editsingle');
 define('CONTROLLER_TRANSACTIONS_SAVESINGLE',		'transactions/savesingle');
+
+//Transactions
+define('CONTROLLER_EVENTSIGNUP',					'eventsignup');
+define('CONTROLLER_EVENTSIGNUP_LISTALL',			'eventsignup/listall');
+define('CONTROLLER_EVENTSIGNUP_SIGNUP',				'eventsignup/signup');
+define('CONTROLLER_EVENTSIGNUP_SIGNUPFORM',			'eventsignup/signupform');
