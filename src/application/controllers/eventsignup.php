@@ -21,21 +21,43 @@ class Eventsignup extends CI_Controller {
 	*	Default function for controller	
 	*/
 	function index() {
+	
+		redirect(CONTROLLER_MY_PAGE, 'refresh');
+	}
+	
+	function listAll() {
+	
 		//Here we could define a different client type based on user agent-headers
 		$client = CLIENT_DESKTOP;
 
-		//Load languages. As we don't yet know the user's language, we default to swedish
+		//Load languages
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));
 		
-		//Load default eventsignup view
-		$this->load->view($client . VIEW_GENERIC_HEADER);
-		$this->load->view($client . VIEW_CONTENT_EVENTSIGNUP_SIGNUPFORM);
-		$this->load->view($client . VIEW_GENERIC_FOOTER);
+		$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
+		
+		// Arbitrary limit in use (50)
+		$data['futureEventList'] = $this->event->get_closest_future_events(50);				
+		
+		//Load default event listing view	
+		$this->load->view($client . VIEW_CONTENT_EVENTSIGNUP_LISTEVENTS, $data);
+
+		
+
 	}
 	
-	
-	function signup () {
-	
+	function signup($eventId) {
+		//Here we could define a different client type based on user agent-headers
+		$client = CLIENT_DESKTOP;
+
+		//Load languages
+		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));				
+		
+		$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
+		
+		$data['eventData'] = $this->event->getEvent($eventId);
+		$data['eventId'] = $eventId;		
+		//Load default eventsignup view	
+		$this->load->view($client . VIEW_CONTENT_EVENTSIGNUP_SIGNUPFORM, $data);
 	
 	}
 	

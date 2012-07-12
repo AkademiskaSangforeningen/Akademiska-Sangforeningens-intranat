@@ -1,6 +1,13 @@
-<div id="container" class="ui-corner-all">
-        
-        <h1><?php //echo $this->lang->line(LANG_KEY_EVENTSIGNUP_HEADER); ?></h1>
+<?php 
+/*
+* VERY MUCH UNDER CONSTRUCTION!
+* -Emil
+*/
+
+?>
+
+   
+        <h1>Signup<?php //echo $this->lang->line(LANG_KEY_EVENTSIGNUP_HEADER); ?></h1>
                 
                 <?php //echo form_open(CONTROLLER_EVENTSIGNUP_SIGNUP, array('id' => 'form_login')); ?>
                         
@@ -9,32 +16,36 @@
                         <label for="<?php echo DB_TABLE_PERSON; ?>_<?php echo DB_PERSON_FIRSTNAME; ?>"><?php echo $this->lang->line(LANG_KEY_FIELD_NAME); ?>:</label>
                         <input type="name" size="20" id="<?php echo DB_TABLE_PERSON; ?>_<?php echo DB_PERSON_FIRSTNAME; ?>" name="<?php echo DB_TABLE_PERSON; ?>_<?php echo DB_PERSON_FIRSTNAME; ?>" class="required ui-corner-all" />
                         <br/>
-                        
         
                         <input type="submit" value="<?php echo lang("signup_submit"); ?>" id="form_eventsignup_submit_button" class="ui-corner-all" />
+						
         </form>
-</div>
+
+
 
 <div id="container" class="ui-corner-all">
-
 <?php
-// Event id for testing
-$EventId = "'64267e8e-6eae-11e1-91de-00241d8659f1'";
-$query = $this->db->query("SELECT * FROM Event WHERE Id = " . $EventId);
+//Get the event id and event data
+//REPLACE WITH MODEL
+$eventId = "'" . $eventData->{'Id'} . "'";
+
+$query = $this->db->query("SELECT * FROM Event WHERE Id = " . $eventId);
 if($query->num_rows() > 0)
 {
-        $row = $query->row(); 
-        echo $row->Id;
-        echo '<br>';
-        echo $row->Name;
-        echo '<br>';
-        echo $row->StartDate;
-        echo '<br>';
+	$event_row = $query->row(); 
+	echo '<br>';
+	echo $event_row->Id;
+	echo '<br>';
+	echo $event_row->Name;
+	echo '<br>';
+	echo $event_row->StartDate;
+	echo '<br>';
 }
 
 
 // Get the list of Guests for the current event.
-                /*$guests = mysql_query("SELECT * FROM Personhasevent WHERE (EventId = " . $EventId .  ") ORDER BY EventId ASC");
+//REPLACE WITH MODEL
+                /*$guests = mysql_query("SELECT * FROM Personhasevent WHERE (EventId = " . $eventId .  ") ORDER BY EventId ASC");
 
                 while($row = mysql_fetch_array($guests)) {
                         $i = $row['Id'];
@@ -42,17 +53,60 @@ if($query->num_rows() > 0)
                         $guestList[$i] = $n; 
                 }
                 */
-                $n = 0;
-                $query = $this->db->query("SELECT * FROM PersonHasEvent WHERE (EventId = " . $EventId .  ")");
-                foreach($query->result_array() as $row)
-                {
-                        $i = $row['PersonId'];
-                        $person_query = $this->db->query("SELECT * FROM Person WHERE Id = '" . $i . "'");
-                        $person_row = $person_query->row(); 
-                        $n = $person_row->FirstName . " " . $person_row->LastName;
-                        $guestList[$i] = $n; 
-                }
-?>
+				$n = 0;
+				$query = $this->db->query("SELECT * FROM PersonHasEvent WHERE (EventId = " . $eventId .  ")");
+				foreach($query->result_array() as $row)
+				{
+					$i = $row['PersonId'];
+					$person_query = $this->db->query("SELECT * FROM Person WHERE Id = '" . $i . "'");
+					$person_row = $person_query->row(); 
+					$n = $person_row->FirstName . " " . $person_row->LastName;
+					$guestList[$i] = $n; 
+				}
+				
+				
+
+//Move to controller?
+//Load the model Person with database access
+$this->load->model(DB_TABLE_PERSON, 'person', TRUE);
+//Get username. 
+$username = $this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL);
+$this->db->select('*');
+$this->db->from(DB_TABLE_PERSON);
+$this->db->where(DB_PERSON_EMAIL,$username);
+$query = $this->db->get();
+$FullName = "";
+if ($query->num_rows() == 1) {
+	$person_row = $query->row(); 
+	$FullName = $person_row->FirstName . " " . $person_row->LastName;
+} else {
+	echo "USER NOT FOUND!";
+}
+ ?>
+
+<div id="container" class="ui-corner-all">
+	<table border="0" cellpadding="6">
+	<tr height="100%">
+	<td style="vertical-align:top; width:400px">
+	<h2 style="font-weight:normal; margin-top:0px">
+	<?php 
+	echo $event_row->Name . " (" . $event_row->StartDate . ")";
+	?>
+	</h2>
+	<?php 
+	if ($event_row->Price != 0)
+	echo "Pris " . $event_row->Price . " €.";
+	echo "Anmälning senast " . $event_row->RegistrationDueDate . ".<br /><br />";
+
+	echo $event_row->Description;
+	echo '<table border="0" cellpadding="6">';
+	?>
+	
+
+				
+
+
+
 <br /><b>Anm&auml;lda: 
 
 <?php 
@@ -125,7 +179,7 @@ echo '</td></tr></table>';
 echo '</td></tr></table>';
 
 
-echo '<br /><FORM ACTION="signup.php?eventId=' . $EventId . '" METHOD="post" name="remove_signup">';
+echo '<br /><FORM ACTION="signup.php?eventId=' . $eventId . '" METHOD="post" name="remove_signup">';
 echo '<INPUT type="text" name="remove_name" size="20">';
 echo '<input type="submit" value="Radera namn" class="button"/></form>';
 //echo '<br /><font style="color:#f36d00; font-size: 14px">' . $remove_message . '</font>';

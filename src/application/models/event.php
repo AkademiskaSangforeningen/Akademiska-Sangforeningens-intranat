@@ -6,7 +6,7 @@
  */
 
 // TODO: See if this actually works.
-class Eventmodel extends CI_Model {
+class Event extends CI_Model {
 
   var $Id = '';                    //char(36)
   var $Name = '';                  //varchar(256)
@@ -41,9 +41,36 @@ class Eventmodel extends CI_Model {
         // and would not be shown in the morning of the same day.
         $query = $this->db->query('SELECT * FROM Event WHERE StartDate>='.time().
                                   ' ORDER BY StartDate ASC'.
-                                  ($limit ? ' LIMIT '.$this->db->escape(limit) : ''));
+                                  ($limit ? ' LIMIT '.$this->db->escape($limit) : '')
+								  );
         return $query->result();
     }
+	
+	function getEvent($eventId) {
+		$this->db->select('*');
+		$this->db->from(DB_TABLE_EVENT);
+		$this->db->where(DB_EVENT_ID,	$eventId);
+		
+		$query = $this->db->get();
+
+		if ($query->num_rows() == 1) {
+			return $query->row();
+		} else {
+			return false;
+		}		
+	}
+	
+	// TODO: Join with get_closest_future_events and getEvent
+	function getAttendanceCount($eventId) {
+        $query = $this->db->query('COUNT PersonId FROM Personhasevent WHERE EventId = ' . $eventId);
+        return $query->result();		
+	}
+	
+	//TODO: Clean up to only include necessary rows
+	function getGuestList($eventId) {
+        $query = $this->db->query('SELECT a.*, b.* FROM Personhasevent a, Person b WHERE a.PersonId = b.Id AND EventId = ' . $eventId);
+        return $query->result();		
+	}
     
     
     function insert_event()
