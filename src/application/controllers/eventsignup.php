@@ -53,8 +53,10 @@ class Eventsignup extends CI_Controller {
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));				
 		
 		$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
+		$this->load->helper('form');
 		
 		$data['eventData'] = $this->event->getEvent($eventId);
+		$data['guestList'] = $this->event->getGuestList($eventId);
 		$data['eventId'] = $eventId;		
 		//Load default eventsignup view	
 		$this->load->view($client . VIEW_CONTENT_EVENTSIGNUP_SIGNUPFORM, $data);

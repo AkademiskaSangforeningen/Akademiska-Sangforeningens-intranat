@@ -68,7 +68,7 @@ class Event extends CI_Model {
 	
 	//TODO: Clean up to only include necessary rows
 	function getGuestList($eventId) {
-        $query = $this->db->query('SELECT a.*, b.* FROM Personhasevent a, Person b WHERE a.PersonId = b.Id AND EventId = ' . $eventId);
+        $query = $this->db->query('SELECT a.*, b.* FROM Personhasevent a, Person b WHERE a.PersonId = b.Id AND EventId = "' . $eventId . '"');
         return $query->result();		
 	}
     

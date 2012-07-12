@@ -8,6 +8,7 @@
 				<th><?php echo "Pris" ?></th>
 				<th><?php echo "Plats" ?></th>
 				<th><?php echo lang(LANG_KEY_FIELD_DESCRIPTION); ?></th>
+				<th>Debug</th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -32,6 +33,8 @@
 				<td class="alignright"><?php echo formatCurrency($event->{DB_EVENT_PRICE}) ?></td>
 				<td><?php echo $event->{DB_EVENT_LOCATION} ?></td>		
 				<td><?php echo $event->{DB_EVENT_DESCRIPTION} ?></td>		
+				<td><a href="<?php echo BASE_URL() . CONTROLLER_EVENTSIGNUP_SIGNUP . "/" . $event->{DB_EVENT_ID} ?>"><?php echo $event->{DB_EVENT_NAME} ?></a></td>	
+				<td>
 				
 			</tr>
 		<?php endforeach; ?>		
