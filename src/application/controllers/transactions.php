@@ -28,13 +28,15 @@ class Transactions extends CI_Controller {
 		//Here we could define a different client type based on user agent-headers
 		$client = CLIENT_DESKTOP;
 
+
 		//Load languages
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));
 		
 		$this->load->model(MODEL_TRANSACTION, strtolower(MODEL_TRANSACTION), TRUE);
 
-		$data['transactionList'] = $this->transaction->getTransactionList();				
-		$data['transactionSum'] = $this->transaction->getTransactionSum();
+    $personId = $this->session->userdata(SESSION_PERSONID);
+		$data['transactionList'] = $this->transaction->getTransactionList($personId);				
+		$data['transactionSum'] = $this->transaction->getTransactionSum($personId);
 		
 		$this->load->view($client . VIEW_CONTENT_TRANSACTIONS_LISTALL, $data);
 	}
