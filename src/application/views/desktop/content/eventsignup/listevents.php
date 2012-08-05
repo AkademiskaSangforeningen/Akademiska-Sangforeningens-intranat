@@ -17,7 +17,7 @@
 		<tbody>
 		<?php foreach($futureEventList as $key => $event): ?>
 			<tr>
-				<td><a href="<?php echo BASE_URL() . CONTROLLER_EVENTSIGNUP_SIGNUP . "/" . $event->{DB_EVENT_ID} ?>" class="button" data-icon="ui-icon-document" data-text="true" data-dialog="true"><?php echo $event->{DB_EVENT_NAME} ?></a></td>	
+				<td><a href="<?php echo CONTROLLER_EVENTSIGNUP_SIGNUP . "/" . $event->{DB_EVENT_ID} ?>" class="button" data-icon="ui-icon-document" data-text="true" data-dialog="true"><?php echo $event->{DB_EVENT_NAME} ?></a></td>	
 				<td>
 				<?php 
 				echo formatDateGerman($event->{DB_EVENT_STARTDATE}); 
@@ -33,7 +33,7 @@
 				<td class="alignright"><?php echo formatCurrency($event->{DB_EVENT_PRICE}) ?></td>
 				<td><?php echo $event->{DB_EVENT_LOCATION} ?></td>		
 				<td><?php echo $event->{DB_EVENT_DESCRIPTION} ?></td>		
-				<td><a href="<?php echo BASE_URL() . CONTROLLER_EVENTSIGNUP_SIGNUP . "/" . $event->{DB_EVENT_ID} ?>"><?php echo $event->{DB_EVENT_NAME} ?></a></td>	
+				<td><a href="<?php echo  CONTROLLER_EVENTSIGNUP_SIGNUP . "/" . $event->{DB_EVENT_ID} ?>"><?php echo $event->{DB_EVENT_NAME} ?></a></td>	
 				<td>
 				
 			</tr>
