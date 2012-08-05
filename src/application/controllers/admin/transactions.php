@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class TransactionsAdmin extends CI_Controller {
+class Transactions extends CI_Controller {
 
 	function __construct() {
 		parent::__construct();	
@@ -21,9 +21,9 @@ class TransactionsAdmin extends CI_Controller {
 		$this->load->model(MODEL_TRANSACTION, strtolower(MODEL_TRANSACTION), TRUE);
 
 		$data['transactionList'] = $this->transaction->getTransactionList();				
-		$data['transactionSum'] = $this->transaction->getTransactionSum();
 		
 		$client = CLIENT_DESKTOP;
+
 		$this->load->view($client . VIEW_CONTENT_TRANSACTIONS_ADMIN_LISTALL, $data);
 	}
 		
@@ -58,7 +58,7 @@ class TransactionsAdmin extends CI_Controller {
 		if($this->form_validation->run() == FALSE) {
 			$data['transactionId'] = $transactionId;
 			$this->load->model(MODEL_PERSON, strtolower(MODEL_PERSON), TRUE);
-			$data['personList'] = $this->person->getPersonListAsArray(true);						
+			$data['personList'] = $this->person->getPersonListAsArray(true);
 			$this->load->view($client . VIEW_CONTENT_TRANSACTIONS_ADMIN_EDITSINGLE, $data);
 		} else {
 			$data = array(			
@@ -70,7 +70,6 @@ class TransactionsAdmin extends CI_Controller {
 			
 			$this->load->model(MODEL_TRANSACTION, strtolower(MODEL_TRANSACTION), TRUE);			
 			$this->transaction->saveTransaction($data, $transactionId);
-
 			$this->load->view($client . VIEW_CONTENT_TRANSACTIONS_ADMIN_SAVESINGLE_SUCCESS);
 		}
 	}

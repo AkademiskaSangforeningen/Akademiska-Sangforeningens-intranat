@@ -1,7 +1,7 @@
 <label class="error">
 	<?php echo validation_errors(); ?>
 </label>
-<?php echo form_open(CONTROLLER_TRANSACTIONS_SAVESINGLE . (isset($transactionId) ? "/" . $transactionId : ""), array('id' => 'form_editobject')); ?>
+<?php echo form_open(CONTROLLER_TRANSACTIONS_ADMIN_SAVESINGLE . (isset($transactionId) ? "/" . $transactionId : ""), array('id' => 'form_editobject')); ?>
 	<p>
 		<legend><span class="requiredsymbol">*</span> Obligatoriskt fält</legend> 
 	</p>

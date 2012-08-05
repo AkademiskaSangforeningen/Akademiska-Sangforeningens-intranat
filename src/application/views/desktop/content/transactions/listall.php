@@ -1,6 +1,3 @@
-
-<?php echo $adminControls?>
-
 <table>
 	<thead>
 		<tr>

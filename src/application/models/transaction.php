@@ -26,12 +26,7 @@ Class Transaction extends CI_Model {
 			return false;
 		}		
 	}
-
-	/**
-	* Function used for loading all persons
-	*
-	* @return database result
-	*/		
+	
 	function getTransactionList($personId = NULL) {
 		$this->db->select(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_ID);
 		$this->db->select(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_TRANSACTIONDATE);
@@ -43,24 +38,24 @@ Class Transaction extends CI_Model {
 		$this->db->from(DB_TABLE_TRANSACTION);
 		$this->db->join(DB_TABLE_PERSON, DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_PERSONID . '=' . DB_TABLE_PERSON . '.' . DB_PERSON_ID, 'inner');		
 		$this->db->join(DB_TABLE_PAYMENTTYPE, DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_PAYMENTTYPEID . '=' . DB_TABLE_PAYMENTTYPE . '.' . DB_PAYMENTTYPE_ID, 'left');		
-		$this->db->where(DB_TABLE_PERSON . '.' . DB_PERSON_ID, $personId);
+		
+		if($personId)
+			$this->db->where(DB_TABLE_PERSON . '.' . DB_PERSON_ID, $personId);
+		
 		$this->db->order_by(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_TRANSACTIONDATE, "asc"); 
 
 		$query = $this->db->get();
 		return $query->result();	
 	}
-	
-	/**
-	* Function used for loading all persons
-	*
-	* @return database result
-	*/		
+
 	function getTransactionSum($personId = NULL) {
 		$this->db->select_sum(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_AMOUNT, DB_TRANSACTION_AMOUNT);
 		$this->db->from(DB_TABLE_TRANSACTION);
 		$this->db->join(DB_TABLE_PERSON, DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_PERSONID . '=' . DB_TABLE_PERSON . '.' . DB_PERSON_ID, 'inner');		
 		$this->db->join(DB_TABLE_PAYMENTTYPE, DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_PAYMENTTYPEID . '=' . DB_TABLE_PAYMENTTYPE . '.' . DB_PAYMENTTYPE_ID, 'left');			
-		$this->db->where(DB_TABLE_PERSON . '.' . DB_PERSON_ID, $personId);
+		
+		if($personId)
+			$this->db->where(DB_TABLE_PERSON . '.' . DB_PERSON_ID, $personId);
 
 		$query = $this->db->get();
 		if ($query->num_rows() == 1) {

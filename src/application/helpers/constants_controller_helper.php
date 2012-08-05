@@ -34,10 +34,10 @@ define('CONTROLLER_USERMANAGER', 					'usermanager');
 define('CONTROLLER_TRANSACTIONS', 'transactions');
 define('CONTROLLER_TRANSACTIONS_LISTALL', 'transactions/listall');
 
-define('CONTROLLER_TRANSACTIONS_ADMIN', 'transactions_admin');
-define('CONTROLLER_TRANSACTIONS_ADMIN_LISTALL', 'transactions_admin/listall');
-define('CONTROLLER_TRANSACTIONS_ADMIN_EDITSINGLE', 'transactions_admin/editsingle');
-define('CONTROLLER_TRANSACTIONS_ADMIN_SAVESINGLE', 'transactions_admin/savesingle');
+define('CONTROLLER_TRANSACTIONS_ADMIN', 'admin/transactions');
+define('CONTROLLER_TRANSACTIONS_ADMIN_LISTALL', CONTROLLER_TRANSACTIONS_ADMIN . '/listall');
+define('CONTROLLER_TRANSACTIONS_ADMIN_EDITSINGLE', CONTROLLER_TRANSACTIONS_ADMIN . '/editsingle');
+define('CONTROLLER_TRANSACTIONS_ADMIN_SAVESINGLE', CONTROLLER_TRANSACTIONS_ADMIN . '/savesingle');
 
 //Events
 define('CONTROLLER_EVENTSIGNUP',					'eventsignup');
