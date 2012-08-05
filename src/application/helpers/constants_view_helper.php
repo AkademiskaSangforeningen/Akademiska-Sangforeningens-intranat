@@ -26,7 +26,8 @@ define('VIEW_CONTENT_EVENTSIGNUP_SIGNUPFORM',			'/content/eventsignup/signupform
 
 define('VIEW_CONTENT_USERMANAGER_LISTUSERS',    		'/content/usermanager/listusers');
 
-define('VIEW_CONTENT_TRANSACTIONS_LISTALL',				'/content/transactions/listall');
-define('VIEW_CONTENT_TRANSACTIONS_EDITSINGLE',			'/content/transactions/editsingle');
-define('VIEW_CONTENT_TRANSACTIONS_SAVESINGLE_SUCCESS',	'/content/transactions/editsingle_success');
+define('VIEW_CONTENT_TRANSACTIONS_LISTALL',	'/content/transactions/listall');
+define('VIEW_CONTENT_TRANSACTIONS_ADMIN_LISTALL',  '/content/transactions/admin/listall');
+define('VIEW_CONTENT_TRANSACTIONS_ADMIN_EDITSINGLE', '/content/transactions/admin/editsingle');
+define('VIEW_CONTENT_TRANSACTIONS_ADMIN_SAVESINGLE_SUCCESS', '/content/transactions/admin/editsingle_success');
 

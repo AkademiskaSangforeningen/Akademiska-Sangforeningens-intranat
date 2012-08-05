@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
- * Views
+ * Controllers
  *
  * @author André Brunnsberg
  *
@@ -31,12 +31,15 @@ define('CONTROLLER_MY_PAGE',						'mypage');
 define('CONTROLLER_USERMANAGER', 					'usermanager');
 
 //Transactions
-define('CONTROLLER_TRANSACTIONS',					'transactions');
-define('CONTROLLER_TRANSACTIONS_LISTALL',			'transactions/listall');
-define('CONTROLLER_TRANSACTIONS_EDITSINGLE',		'transactions/editsingle');
-define('CONTROLLER_TRANSACTIONS_SAVESINGLE',		'transactions/savesingle');
+define('CONTROLLER_TRANSACTIONS', 'transactions');
+define('CONTROLLER_TRANSACTIONS_LISTALL', 'transactions/listall');
 
-//Transactions
+define('CONTROLLER_TRANSACTIONS_ADMIN', 'transactions_admin');
+define('CONTROLLER_TRANSACTIONS_ADMIN_LISTALL', 'transactions_admin/listall');
+define('CONTROLLER_TRANSACTIONS_ADMIN_EDITSINGLE', 'transactions_admin/editsingle');
+define('CONTROLLER_TRANSACTIONS_ADMIN_SAVESINGLE', 'transactions_admin/savesingle');
+
+//Events
 define('CONTROLLER_EVENTSIGNUP',					'eventsignup');
 define('CONTROLLER_EVENTSIGNUP_LISTALL',			'eventsignup/listall');
 define('CONTROLLER_EVENTSIGNUP_SIGNUP',				'eventsignup/signup');
