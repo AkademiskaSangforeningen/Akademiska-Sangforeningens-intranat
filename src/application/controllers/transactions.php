@@ -20,10 +20,18 @@ class Transactions extends CI_Controller {
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));
 		
 		$this->load->model(MODEL_TRANSACTION, strtolower(MODEL_TRANSACTION), TRUE);
+		$this->load->model(MODEL_PERSON, strtolower(MODEL_PERSON), TRUE);
 
     $personId = $this->session->userdata(SESSION_PERSONID);
-		$data['transactionList'] = $this->transaction->getTransactionList($personId);				
+		$person = $this->person->getPerson($personId);
+
+		$data['transactionList'] = $this->transaction->getTransactionList($personId);
 		$data['transactionSum'] = $this->transaction->getTransactionSum($personId);
+		
+		$data['adminControls'] = '';
+		if($this->userrights->canAdministrate('transactions', $person->UserRights)) {
+			$data['adminControls'] = $this->load->view($client . VIEW_CONTENT_TRANSACTIONS_ADMIN_CONTROLS);
+		}
 		
 		$this->load->view($client . VIEW_CONTENT_TRANSACTIONS_LISTALL, $data);
 	}

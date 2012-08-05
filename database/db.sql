@@ -108,6 +108,7 @@ CREATE TABLE IF NOT EXISTS `Person` (
   `Allergies` varchar(256) COLLATE utf8_swedish_ci DEFAULT NULL,
   `Description` text COLLATE utf8_swedish_ci,
   `Status` tinyint(4) NOT NULL,
+  `UserRights` integer unsigned NOT NULL DEFAULT 0,
   `Password` char(60) COLLATE utf8_swedish_ci NOT NULL,
   `Created` datetime NOT NULL,
   `CreatedBy` char(36) COLLATE utf8_swedish_ci NOT NULL,

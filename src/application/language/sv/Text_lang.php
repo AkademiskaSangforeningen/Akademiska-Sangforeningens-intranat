@@ -61,4 +61,6 @@ $lang['signup_submit']							= "Anmäl dig";
 
 //KK related stuff
 $lang['kk_header']								= "Kvartettkonto";
+$lang['button_transaction_admin_controls'] = "Administrera KK";
+
 
