@@ -50,6 +50,7 @@ define('LANG_KEY_FIELD_MODIFIEDBY',					'field_modifiedBy');
 define('LANG_KEY_FIELD_DATE',						'field_date');
 define('LANG_KEY_FIELD_PERSON',						'field_person');
 define('LANG_KEY_FIELD_AMOUNT',						'field_amount');
+define('LANG_KEY_FIELD_PAYMENTTYPE', 'field_paymentType');
 
 define('LANG_KEY_ENUM_VOICE_1_TENOR',				'enum_voice_1st_tenor');
 define('LANG_KEY_ENUM_VOICE_2_TENOR',				'enum_voice_2nd_tenor');

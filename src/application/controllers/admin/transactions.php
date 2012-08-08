@@ -39,6 +39,9 @@ class Transactions extends CI_Controller {
 		$this->load->model(MODEL_PERSON, strtolower(MODEL_PERSON), TRUE);
 		$data['personList'] = $this->person->getPersonListAsArray(true);
 		
+		$this->load->model(MODEL_PAYMENTTYPE, strtolower(MODEL_PAYMENTTYPE), TRUE);
+		$data['paymentTypeList'] = $this->paymenttype->getPaymentTypeListAsArray();	
+
 		$client = CLIENT_DESKTOP;
 		$this->load->view($client . VIEW_CONTENT_TRANSACTIONS_ADMIN_EDITSINGLE, $data);
 	}
@@ -65,9 +68,10 @@ class Transactions extends CI_Controller {
 				DB_TRANSACTION_TRANSACTIONDATE 	=> formatDateODBC($this->input->post(DB_TABLE_TRANSACTION . '_' . DB_TRANSACTION_TRANSACTIONDATE)),
 				DB_TRANSACTION_AMOUNT 			=> $this->input->post(DB_TABLE_TRANSACTION . '_' . DB_TRANSACTION_AMOUNT),
 				DB_TRANSACTION_PERSONID 		=> $this->input->post(DB_TABLE_TRANSACTION . '_' . DB_TRANSACTION_PERSONID),
-				DB_TRANSACTION_DESCRIPTION 		=> $this->input->post(DB_TABLE_TRANSACTION . '_' . DB_TRANSACTION_DESCRIPTION)		
+				DB_TRANSACTION_DESCRIPTION 		=> $this->input->post(DB_TABLE_TRANSACTION . '_' . DB_TRANSACTION_DESCRIPTION),
+				DB_TRANSACTION_PAYMENTTYPEID 		=> $this->input->post(DB_TABLE_TRANSACTION . '_' . DB_TRANSACTION_PAYMENTTYPEID)
 			);
-			
+
 			$this->load->model(MODEL_TRANSACTION, strtolower(MODEL_TRANSACTION), TRUE);			
 			$this->transaction->saveTransaction($data, $transactionId);
 			$this->load->view($client . VIEW_CONTENT_TRANSACTIONS_ADMIN_SAVESINGLE_SUCCESS);

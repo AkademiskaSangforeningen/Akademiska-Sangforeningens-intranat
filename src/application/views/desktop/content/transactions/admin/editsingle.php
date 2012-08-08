@@ -24,6 +24,14 @@
 		<?php echo form_dropdown(DB_TABLE_TRANSACTION . "_" . DB_TRANSACTION_PERSONID, $personList, set_value(DB_TABLE_TRANSACTION . "_" . DB_TRANSACTION_PERSONID, isset($transaction->{DB_TRANSACTION_PERSONID}) ? $transaction->{DB_TRANSACTION_PERSONID} : "" ), 'id="' . DB_TABLE_TRANSACTION . '_' . DB_TRANSACTION_PERSONID . '" class="required ui-corner-all"'); ?>		
 		<br/>
 		
+		<label for="<?php echo DB_TABLE_TRANSACTION . "_" . DB_TRANSACTION_PAYMENTTYPEID; ?>">
+			<?php echo lang(LANG_KEY_FIELD_PAYMENTTYPE); ?>
+		</label>
+		<span class="requiredsymbol">*</span>
+		<br/>
+		<?php echo form_dropdown(DB_TABLE_TRANSACTION . "_" . DB_TRANSACTION_PAYMENTTYPEID, $paymentTypeList, set_value(DB_TABLE_TRANSACTION . "_" . DB_TRANSACTION_PAYMENTTYPEID, isset($transaction->{DB_TRANSACTION_PAYMENTTYPEID}) ? $transaction->{DB_TRANSACTION_PAYMENTTYPEID} : "" ), 'id="' . DB_TABLE_TRANSACTION . '_' . DB_TRANSACTION_PAYMENTTYPEID . '" class="required ui-corner-all"'); ?>		
+		<br/>
+
 		<label for="<?php echo DB_TABLE_TRANSACTION . "_" .  DB_TRANSACTION_AMOUNT; ?>">
 			<?php echo lang(LANG_KEY_FIELD_AMOUNT); ?>
 		</label>

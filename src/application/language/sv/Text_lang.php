@@ -41,6 +41,7 @@ $lang[LANG_KEY_FIELD_MODIFIED] 					= "Modifierad";
 $lang[LANG_KEY_FIELD_MODIFIEDBY] 				= "Modifierad av";
 $lang[LANG_KEY_FIELD_DATE]	 					= "Datum";
 $lang[LANG_KEY_FIELD_PERSON] 					= "Person";
+$lang[LANG_KEY_FIELD_PAYMENTTYPE]     = "Betalningstyp";
 $lang[LANG_KEY_FIELD_AMOUNT] 					= "Mängd";
 
 $lang[LANG_KEY_ENUM_VOICE_1_TENOR]				= "1:a tenor";

@@ -24,10 +24,10 @@ Class PaymentType extends CI_Model {
 			$data[''] = '-';
 		}
 		
-		$query = $this->db->get();		
+		$query = $this->db->get();
 		foreach($query->result_array() as $row){
-            $data[$row[DB_PERSON_ID]] = $row[DB_PERSON_FIRSTNAME] . " " . $row[DB_PERSON_LASTNAME];
-        }
-        return $data;
+            $data[$row[DB_PAYMENTTYPE_ID]] = $row[DB_PAYMENTTYPE_NAME];
+    }
+    return $data;
 	}
 }
