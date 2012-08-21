@@ -1,5 +1,5 @@
 <div class="tools">
-<a href="<?php echo CONTROLLER_PERSONS_EDITSINGLE ?>" class="button" data-icon="ui-icon-person" data-dialog="true"><?php echo lang(LANG_KEY_BUTTON_CREATE_NEW_MEMBER); ?></a>
+<a href="<?php echo CONTROLLER_PERSONS_EDITSINGLE ?>" class="button" data-icon="ui-icon-person" data-formdialog="true"><?php echo lang(LANG_KEY_BUTTON_CREATE_NEW_MEMBER); ?></a>
 </div>
 
 <table>
@@ -16,7 +16,7 @@
 	<tbody>
 	<?php foreach($personList as $key => $person): ?>
 		<tr>
-			<td><a href="<?php echo CONTROLLER_PERSONS_EDITSINGLE . "/" . $person->{DB_PERSON_ID} ?>" class="button" data-icon="ui-icon-pencil" data-text="false" data-dialog="true"><?php echo lang(LANG_KEY_BUTTON_EDIT_MEMBER); ?></a></td>
+			<td><a href="<?php echo CONTROLLER_PERSONS_EDITSINGLE . "/" . $person->{DB_PERSON_ID} ?>" class="button" data-icon="ui-icon-pencil" data-text="false" data-formdialog="true"><?php echo lang(LANG_KEY_BUTTON_EDIT_MEMBER); ?></a></td>
 			<td><?php echo $person->{DB_PERSON_LASTNAME} . ", " . $person->{DB_PERSON_FIRSTNAME}; ?></td>
 			<td><?php echo $person->{DB_PERSON_VOICE} ?></td>
 			<td><a href="mailto:<?php echo $person->{DB_PERSON_EMAIL} ?>"><?php echo $person->{DB_PERSON_EMAIL} ?></a></td>

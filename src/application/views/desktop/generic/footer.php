@@ -14,7 +14,7 @@
 		<script src="<?php echo base_url()?>js/desktop/main.js"></script>
 		<script>
 			$(function() {
-				AKADEMEN.initializeDialog("<?php echo lang(LANG_KEY_BUTTON_SAVE); ?>", "<?php echo lang(LANG_KEY_BUTTON_CANCEL); ?>");
+				AKADEMEN.initializeFormDialog("<?php echo lang(LANG_KEY_BUTTON_SAVE); ?>", "<?php echo lang(LANG_KEY_BUTTON_CANCEL); ?>");
 				AKADEMEN.initializeButtons();
 				AKADEMEN.initializeTabs();				
 			});			

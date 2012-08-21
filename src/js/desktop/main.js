@@ -6,7 +6,7 @@ var AKADEMEN = (function(){
 		/**
 		*	Initialize dialog for forms
 		*/		
-		initializeDialog: function(langSave, langCancel) {
+		initializeFormDialog: function(langSave, langCancel) {
 			$('<div id="dialog_editobject"></div>')
 				.dialog({
 					autoOpen: false,
@@ -39,7 +39,7 @@ var AKADEMEN = (function(){
 						
 						}
 				});
-		},		
+		},
 	
 		/**
 		*	Initialize buttons
@@ -59,7 +59,7 @@ var AKADEMEN = (function(){
 						.css("display", "inline-block");			
 				})
 				//Special handling for those buttons that open a dialog
-				.filter('[data-dialog="true"]')
+				.filter('[data-formdialog="true"]')
 					.on('click.openDialog', function (event) {			
 						var title = $(this).text();
 						$.ajax({
