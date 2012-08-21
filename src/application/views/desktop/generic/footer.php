@@ -1,10 +1,10 @@
 		</div>
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 		<script>
 			//Fallback to local jQuery-copy if CDN is down
 			window.jQuery || document.write('\x3Cscript src="<?php echo base_url()?>js/desktop/libraries/jquery.min.js">\x3C/script>');		
 		</script>
-		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
 		<script>
 			//Fallback to local jQuery UI-copy if CDN is down
 			window.jQuery.ui || document.write('\x3Cscript src="<?php echo base_url()?>js/desktop/libraries/jquery-ui.min.js">\x3C/script>');		
