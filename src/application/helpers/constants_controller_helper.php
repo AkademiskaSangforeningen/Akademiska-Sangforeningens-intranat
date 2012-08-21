@@ -20,6 +20,7 @@ define('CONTROLLER_LOGIN_LOGOUT',					'login/logout');
 define('CONTROLLER_PERSONS',						'persons');
 define('CONTROLLER_PERSONS_LISTALL',				'persons/listall');
 define('CONTROLLER_PERSONS_EDITSINGLE',				'persons/editsingle');
+define('CONTROLLER_PERSONS_DELETESINGLE',			'persons/deletesingle');
 define('CONTROLLER_PERSONS_SAVESINGLE',				'persons/savesingle');
 define('CONTROLLER_PERSONS_EDIT_MY_INFORMATION',	'persons/editmyinformation');
 define('CONTROLLER_PERSONS_SAVE_MY_INFORMATION',	'persons/savemyinformation');

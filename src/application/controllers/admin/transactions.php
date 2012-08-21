@@ -74,7 +74,7 @@ class Transactions extends CI_Controller {
 
 			$this->load->model(MODEL_TRANSACTION, strtolower(MODEL_TRANSACTION), TRUE);			
 			$this->transaction->saveTransaction($data, $transactionId);
-			$this->load->view($client . VIEW_CONTENT_TRANSACTIONS_ADMIN_SAVESINGLE_SUCCESS);
+			$this->load->view($client . VIEW_GENERIC_DIALOG_CLOSE_AND_RELOAD_PARENT);
 		}
 	}
 	

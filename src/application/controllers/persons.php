@@ -38,6 +38,23 @@ class Persons extends CI_Controller {
 		$this->load->view($client . VIEW_CONTENT_PERSONS_LISTALL, $data);
 	}
 
+/**
+	*	Used for editing a single person
+	*/		
+	function deleteSingle($personId = NULL) {	
+		//Here we could define a different client type based on user agent-headers
+		$client = CLIENT_DESKTOP;
+		
+		if (!is_null($personId)) {
+			$this->load->model(MODEL_PERSON, strtolower(MODEL_PERSON), TRUE);
+			$this->person->deletePerson($personId);
+		}
+		
+		$client = CLIENT_DESKTOP;
+		$this->load->view($client . VIEW_GENERIC_DIALOG_CLOSE_AND_RELOAD_PARENT);
+	}	
+	
+	
 	/**
 	*	Used for editing a person's own information
 	*/		
@@ -137,7 +154,7 @@ class Persons extends CI_Controller {
 		
 			//User inserted or updated
 			$client = CLIENT_DESKTOP;
-			$this->load->view($client . VIEW_CONTENT_PERSONS_SAVESINGLE_SUCCESS);
+			$this->load->view($client . VIEW_GENERIC_DIALOG_CLOSE_AND_RELOAD_PARENT);
 		}
 	}
 	

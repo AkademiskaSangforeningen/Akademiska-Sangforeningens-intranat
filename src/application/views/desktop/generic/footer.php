@@ -15,6 +15,7 @@
 		<script>
 			$(function() {
 				AKADEMEN.initializeFormDialog("<?php echo lang(LANG_KEY_BUTTON_SAVE); ?>", "<?php echo lang(LANG_KEY_BUTTON_CANCEL); ?>");
+				AKADEMEN.initializeConfirmDialog("<?php echo lang(LANG_KEY_BUTTON_CONFIRM); ?>", "<?php echo lang(LANG_KEY_BUTTON_OK); ?>", "<?php echo lang(LANG_KEY_BUTTON_CANCEL); ?>");
 				AKADEMEN.initializeButtons();
 				AKADEMEN.initializeTabs();				
 			});			

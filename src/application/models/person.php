@@ -108,4 +108,14 @@ Class Person extends CI_Model {
 			$this->db->insert(DB_TABLE_PERSON, $data);
 		}	
 	}
+	
+	/**
+	* Function used for deleting a single person
+	*
+	* @param string $personId GUID of the user
+	*/		
+	function deletePerson($personId) {	
+		$this->db->where(DB_PERSON_ID, $personId);
+		$this->db->delete(DB_TABLE_PERSON);
+	}	
 }

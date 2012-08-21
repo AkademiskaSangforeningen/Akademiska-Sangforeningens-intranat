@@ -5,7 +5,8 @@
 <table>
 	<thead>
 		<tr>
-			<th></th>
+			<th><span class="ui-icon ui-icon-pencil" title="<?php echo lang(LANG_KEY_BUTTON_EDIT_MEMBER); ?>"></span></th>
+			<th><span class="ui-icon ui-icon-trash" title="<?php echo lang(LANG_KEY_BUTTON_DELETE_MEMBER); ?>"></span></th>
 			<th><?php echo lang(LANG_KEY_FIELD_NAME); ?></th>
 			<th><?php echo lang(LANG_KEY_FIELD_VOICE); ?></th>
 			<th><?php echo lang(LANG_KEY_FIELD_EMAIL); ?></th>
@@ -17,6 +18,7 @@
 	<?php foreach($personList as $key => $person): ?>
 		<tr>
 			<td><a href="<?php echo CONTROLLER_PERSONS_EDITSINGLE . "/" . $person->{DB_PERSON_ID} ?>" class="button" data-icon="ui-icon-pencil" data-text="false" data-formdialog="true"><?php echo lang(LANG_KEY_BUTTON_EDIT_MEMBER); ?></a></td>
+			<td><a href="<?php echo CONTROLLER_PERSONS_DELETESINGLE . "/" . $person->{DB_PERSON_ID} ?>" class="button" data-icon="ui-icon-trash" data-text="false" data-confirmdialog="true"><?php echo lang(LANG_KEY_BUTTON_DELETE_MEMBER); ?></a></td>
 			<td><?php echo $person->{DB_PERSON_LASTNAME} . ", " . $person->{DB_PERSON_FIRSTNAME}; ?></td>
 			<td><?php echo $person->{DB_PERSON_VOICE} ?></td>
 			<td><a href="mailto:<?php echo $person->{DB_PERSON_EMAIL} ?>"><?php echo $person->{DB_PERSON_EMAIL} ?></a></td>

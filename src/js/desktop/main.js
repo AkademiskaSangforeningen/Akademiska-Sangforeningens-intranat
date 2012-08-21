@@ -7,7 +7,7 @@ var AKADEMEN = (function(){
 		*	Initialize dialog for forms
 		*/		
 		initializeFormDialog: function(langSave, langCancel) {
-			$('<div id="dialog_editobject"></div>')
+			$('<div id="dialog_form"></div>')
 				.dialog({
 					autoOpen: false,
 					height: 580,
@@ -40,6 +40,41 @@ var AKADEMEN = (function(){
 						}
 				});
 		},
+		
+		/**
+		*	Initialize dialog for confirmation
+		*/		
+		initializeConfirmDialog: function(langConfirm, langOK, langCancel) {
+			$('<div id="dialog_confirm"></div>')
+				.html("<p>" + langConfirm + "</p>")
+				.dialog({
+					autoOpen: false,
+					modal: true,
+					resizable: false,
+					buttons: [
+						{
+							text: langOK,
+							"data-priority": "secondary"
+						},
+						{
+							text: langCancel,							
+							click: function () {
+								$( this ).dialog( "close" );
+							},
+						}
+					],
+					open: function() {
+						//On open, set priority CSS-classes for buttons (if given)
+						$(this)
+							.closest('.ui-dialog')
+								.find('.ui-dialog-buttonpane button[data-priority]')
+									.each(function() {
+										$(this).addClass("ui-priority-" + $(this).attr("data-priority"));
+									});			
+						
+						}
+				});
+		},		
 	
 		/**
 		*	Initialize buttons
@@ -58,9 +93,9 @@ var AKADEMEN = (function(){
 						.button({ icons: { primary: icon }, text: text })
 						.css("display", "inline-block");			
 				})
-				//Special handling for those buttons that open a dialog
+				//Special handling for those buttons that open a form dialog
 				.filter('[data-formdialog="true"]')
-					.on('click.openDialog', function (event) {			
+					.on('click.openFormDialog', function (event) {			
 						var title = $(this).text();
 						$.ajax({
 							url: $(this).attr("href"),				  
@@ -68,7 +103,7 @@ var AKADEMEN = (function(){
 							cache: false,
 							//on success, set the data to the dialog and open it
 							success: function(data) {
-								$('#dialog_editobject')
+								$('#dialog_form')
 									.html(data)
 									.dialog("option", "title", title)								
 									.dialog('open');							
@@ -77,6 +112,38 @@ var AKADEMEN = (function(){
 								alert(errorThrown);
 							}
 						});											
+						return false;			
+					})
+					.end()
+				//Special handling for those buttons that open a confirmation dialog
+				.filter('[data-confirmdialog="true"]')
+					.on('click.openConfirmDialog', function (event) {													
+						var $this = $(this),
+							title = $this.text();	
+							
+						$('#dialog_confirm')
+							.dialog("option", "title", title)								
+							.dialog('open')						
+							.closest('.ui-dialog')
+								.find('button:first')
+									.off('click')							
+									.on('click.confirmConfirmDialog', function (event) {
+										$.ajax({
+											url: $this.attr("href"),				  
+											dataType: "html",
+											cache: false,
+											//on success, set the data to the dialog and open it
+											success: function(data) {
+												$('#dialog_confirm')
+													.html(data);
+											},
+											error: function(jqXHR, textStatus, errorThrown) {
+												alert(errorThrown);
+											}
+										});	
+										
+										return false;
+									});						
 						return false;			
 					});					
 		},
@@ -107,7 +174,7 @@ var AKADEMEN = (function(){
 							url: $(form).attr("action"),
 							data: $(form).serialize(),
 							success: function(data) {													
-								$('#dialog_editobject').html(data);
+								$('#dialog_form').html(data);
 							},
 							error:  function(jqXHR, textStatus, errorThrown) {
 								alert(errorThrown);
