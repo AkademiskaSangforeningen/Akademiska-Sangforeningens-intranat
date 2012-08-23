@@ -38,8 +38,8 @@ class Persons extends CI_Controller {
 		$this->load->view($client . VIEW_CONTENT_PERSONS_LISTALL, $data);
 	}
 
-/**
-	*	Used for editing a single person
+	/**
+	*	Used for deleting a single event
 	*/		
 	function deleteSingle($personId = NULL) {	
 		//Here we could define a different client type based on user agent-headers
@@ -50,10 +50,8 @@ class Persons extends CI_Controller {
 			$this->person->deletePerson($personId);
 		}
 		
-		$client = CLIENT_DESKTOP;
 		$this->load->view($client . VIEW_GENERIC_DIALOG_CLOSE_AND_RELOAD_PARENT);
-	}	
-	
+	}		
 	
 	/**
 	*	Used for editing a person's own information

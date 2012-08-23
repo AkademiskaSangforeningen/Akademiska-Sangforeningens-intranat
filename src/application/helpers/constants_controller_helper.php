@@ -41,7 +41,9 @@ define('CONTROLLER_TRANSACTIONS_ADMIN_EDITSINGLE', CONTROLLER_TRANSACTIONS_ADMIN
 define('CONTROLLER_TRANSACTIONS_ADMIN_SAVESINGLE', CONTROLLER_TRANSACTIONS_ADMIN . '/savesingle');
 
 //Events
-define('CONTROLLER_EVENTSIGNUP',					'eventsignup');
-define('CONTROLLER_EVENTSIGNUP_LISTALL',			'eventsignup/listall');
-define('CONTROLLER_EVENTSIGNUP_SIGNUP',				'eventsignup/signup');
-define('CONTROLLER_EVENTSIGNUP_SIGNUPFORM',			'eventsignup/signupform');
+define('CONTROLLER_EVENTS',						'events');
+define('CONTROLLER_EVENTS_LISTALL',				'events/listall');
+define('CONTROLLER_EVENTS_EDITSINGLE',			'events/editsingle');
+define('CONTROLLER_EVENTS_DELETESINGLE',		'events/deletesingle');
+define('CONTROLLER_EVENTS_SAVESINGLE',			'events/savesingle');
+define('CONTROLLER_EVENTS_LIST_ENROLLED',		'events/listenrolled');

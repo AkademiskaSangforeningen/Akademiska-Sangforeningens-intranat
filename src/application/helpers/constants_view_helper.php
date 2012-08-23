@@ -17,17 +17,15 @@ define('VIEW_CONTENT_LOGIN_FORM',						'/content/login/form');
 
 define('VIEW_CONTENT_MYPAGE_DASHBOARD',					'/content/mypage/dashboard');
 
-define('VIEW_CONTENT_PERSONS_LISTALL',					'/content/persons/listall');
-define('VIEW_CONTENT_PERSONS_EDITSINGLE',				'/content/persons/editsingle');
+define('VIEW_CONTENT_PERSONS_LISTALL',					'/content/persons/listpersons');
+define('VIEW_CONTENT_PERSONS_EDITSINGLE',				'/content/persons/editperson');
 
-define('VIEW_CONTENT_EVENTSIGNUP_EDITEVENT',			'/content/eventsignup/editevent');
-define('VIEW_CONTENT_EVENTSIGNUP_LISTEVENTS',			'/content/eventsignup/listevents');
-define('VIEW_CONTENT_EVENTSIGNUP_SIGNUP',				'/content/eventsignup/signup');
-define('VIEW_CONTENT_EVENTSIGNUP_SIGNUPFORM',			'/content/eventsignup/signupform');
+define('VIEW_CONTENT_EVENTS_LISTALL',					'/content/events/listevents');
+define('VIEW_CONTENT_EVENTS_EDITSINGLE',				'/content/events/editevent');
 
 define('VIEW_CONTENT_USERMANAGER_LISTUSERS',    		'/content/usermanager/listusers');
 
-define('VIEW_CONTENT_TRANSACTIONS_LISTALL',						'/content/transactions/listall');
-define('VIEW_CONTENT_TRANSACTIONS_ADMIN_CONTROLS', 				'/content/transactions/admin/admin_controls');
-define('VIEW_CONTENT_TRANSACTIONS_ADMIN_LISTALL',  				'/content/transactions/admin/listall');
-define('VIEW_CONTENT_TRANSACTIONS_ADMIN_EDITSINGLE', 			'/content/transactions/admin/editsingle');
+define('VIEW_CONTENT_TRANSACTIONS_LISTALL',				'/content/transactions/listall');
+define('VIEW_CONTENT_TRANSACTIONS_ADMIN_CONTROLS', 		'/content/transactions/admin/admin_controls');
+define('VIEW_CONTENT_TRANSACTIONS_ADMIN_LISTALL',  		'/content/transactions/admin/listall');
+define('VIEW_CONTENT_TRANSACTIONS_ADMIN_EDITSINGLE', 	'/content/transactions/admin/editsingle');

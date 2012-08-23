@@ -28,6 +28,9 @@ define('LANG_KEY_BUTTON_OK',						'button_ok');
 define('LANG_KEY_BUTTON_CANCEL',					'button_cancel');
 define('LANG_KEY_BUTTON_CREATE_NEW_TRANSACTION',	'button_create_new_transaction');
 define('LANG_KEY_BUTTON_EDIT_TRANSACTION',			'button_edit_transaction');
+define('LANG_KEY_BUTTON_CREATE_NEW_EVENT',			'button_create_new_event');
+define('LANG_KEY_BUTTON_EDIT_EVENT',				'button_edit_event');
+define('LANG_KEY_BUTTON_DELETE_EVENT',				'button_delete_event');
 
 //Fields
 define('LANG_KEY_FIELD_EMAIL',						'field_email');
@@ -51,10 +54,19 @@ define('LANG_KEY_FIELD_CREATEDBY',					'field_createdBy');
 define('LANG_KEY_FIELD_MODIFIED',					'field_modified');
 define('LANG_KEY_FIELD_MODIFIEDBY',					'field_modifiedBy');
 define('LANG_KEY_FIELD_DATE',						'field_date');
+define('LANG_KEY_FIELD_STARTDATE',					'field_startDate');
+define('LANG_KEY_FIELD_FINISHDATE',					'field_finishDate');
 define('LANG_KEY_FIELD_PERSON',						'field_person');
 define('LANG_KEY_FIELD_AMOUNT',						'field_amount');
-define('LANG_KEY_FIELD_PAYMENTTYPE', 'field_paymentType');
+define('LANG_KEY_FIELD_PAYMENTTYPE', 				'field_paymentType');
+define('LANG_KEY_FIELD_EVENT',						'field_event');
+define('LANG_KEY_FIELD_PRICE',						'field_price');
+define('LANG_KEY_FIELD_LOCATION',					'field_location');
+define('LANG_KEY_FIELD_ENROLLED',					'field_enrolled');			
+define('LANG_KEY_FIELD_PAYMENT_DUEDATE',			'field_payment_duedate');
+define('LANG_KEY_FIELD_ENROLLMENT_DUEDATE',			'field_enrollment_duedate');
 
+//Enumerations
 define('LANG_KEY_ENUM_VOICE_1_TENOR',				'enum_voice_1st_tenor');
 define('LANG_KEY_ENUM_VOICE_2_TENOR',				'enum_voice_2nd_tenor');
 define('LANG_KEY_ENUM_VOICE_1_BASS',				'enum_voice_1st_bass');
@@ -64,6 +76,8 @@ define('LANG_KEY_ENUM_COUNTRY_FINLAND',				'enum_country_finland');
 define('LANG_KEY_ENUM_COUNTRY_SWEDEN',				'enum_country_sweden');
 define('LANG_KEY_ENUM_COUNTRY_OTHER',				'enum_country_other');
 
-
 //Error texts
 define('LANG_KEY_ERROR_WRONG_CREDENTIALS',			'error_wrong_credentials');
+
+//Misc
+define('LANG_KEY_MISC_REQUIRED_FIELD',				'misc_required_field');

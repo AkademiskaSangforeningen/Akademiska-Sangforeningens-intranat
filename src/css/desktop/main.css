@@ -5,12 +5,25 @@ body {
 }
 
 fieldset {
-	float: left;
+	clear: both;
 	margin-right: 1em;
+	margin-bottom: 1em;
 	padding: 1em;
+	width: 95%;
 }
 
-legend, .bold {
+fieldset >div {
+	float: left;
+	margin: 0.3em;
+	width: 270px;
+}
+
+legend {
+	font-weight: bold;
+	padding: 0 0.5em 0 0.5em;
+}
+
+.bold {
 	font-weight: bold;
 }
 
@@ -50,10 +63,22 @@ label.error {
 	display: block;
 }
 
+input {
+	padding: 4px;
+}
+
+select {
+	padding: 3px;
+}
+
 input, select {
 	margin: 0.5em 0 0.5em 0;
 	border: 1px solid gray;
-	width: 250px;
+	width: 250px;	
+}
+
+select.short {
+	width: auto;
 }
 
 input:hover {
@@ -62,6 +87,10 @@ input:hover {
 
 input.error {
 	border: 1px solid red;
+}
+
+input.short {
+	width: 85px;
 }
 
 table {

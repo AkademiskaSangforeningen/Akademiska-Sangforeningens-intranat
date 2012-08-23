@@ -20,6 +20,9 @@ $lang[LANG_KEY_BUTTON_OK]						= "Ok";
 $lang[LANG_KEY_BUTTON_CANCEL]					= "Ångra";
 $lang[LANG_KEY_BUTTON_CREATE_NEW_TRANSACTION]	= "Skapa ny transaktion";
 $lang[LANG_KEY_BUTTON_EDIT_TRANSACTION]			= "Redigera transaktion";
+$lang[LANG_KEY_BUTTON_CREATE_NEW_EVENT]			= "Skapa nytt evenemang";
+$lang[LANG_KEY_BUTTON_EDIT_EVENT]				= "Redigera evenemang";
+$lang[LANG_KEY_BUTTON_DELETE_EVENT]				= "Radera evenemang";
 
 $lang[LANG_KEY_FIELD_EMAIL]						= "E-postadress";
 $lang[LANG_KEY_FIELD_PASSWORD]					= "Lösenord";
@@ -43,9 +46,18 @@ $lang[LANG_KEY_FIELD_CREATEDBY] 				= "Skapad av";
 $lang[LANG_KEY_FIELD_MODIFIED] 					= "Modifierad";
 $lang[LANG_KEY_FIELD_MODIFIEDBY] 				= "Modifierad av";
 $lang[LANG_KEY_FIELD_DATE]	 					= "Datum";
+$lang[LANG_KEY_FIELD_STARTDATE]					= "Startdatum";
+$lang[LANG_KEY_FIELD_FINISHDATE]				= "Slutdatum";
 $lang[LANG_KEY_FIELD_PERSON] 					= "Person";
-$lang[LANG_KEY_FIELD_PAYMENTTYPE]     = "Betalningstyp";
+$lang[LANG_KEY_FIELD_PAYMENTTYPE]     			= "Betalningstyp";
 $lang[LANG_KEY_FIELD_AMOUNT] 					= "Mängd";
+$lang[LANG_KEY_FIELD_EVENT]						= "Evenemang";
+$lang[LANG_KEY_FIELD_DATE]						= "Datum";
+$lang[LANG_KEY_FIELD_PRICE]						= "Pris";
+$lang[LANG_KEY_FIELD_LOCATION]					= "Plats";
+$lang[LANG_KEY_FIELD_ENROLLED]					= "Anmälda";
+$lang[LANG_KEY_FIELD_PAYMENT_DUEDATE]			= "Betalningsdeadline";
+$lang[LANG_KEY_FIELD_ENROLLMENT_DUEDATE]		= "Anmälningsdeadline";
 
 $lang[LANG_KEY_ENUM_VOICE_1_TENOR]				= "1:a tenor";
 $lang[LANG_KEY_ENUM_VOICE_2_TENOR]				= "2:a tenor";
@@ -58,6 +70,7 @@ $lang[LANG_KEY_ENUM_COUNTRY_OTHER]				= "Annat land (ange landet i stad-fältet)
 
 $lang[LANG_KEY_ERROR_WRONG_CREDENTIALS]			= "Fel användarnamn eller lösenord";
 
+$lang[LANG_KEY_MISC_REQUIRED_FIELD]				= "Obligatoriskt fält";
 
 $lang['signup_submit']							= "Anmäl dig";
 
