@@ -5,6 +5,7 @@
 		<title><?php echo lang(LANG_KEY_LOGIN_HEADER); ?></title>	
 		<link rel="stylesheet" type="text/css" href="<?php echo base_url()?>css/desktop/libraries/normalize.css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo base_url()?>css/desktop/libraries/jquery-ui.custom.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo base_url()?>css/desktop/libraries/jquery.multiselect.css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo base_url()?>css/desktop/main.css" />
 		
 		<?php //TODO: Title som input från parenten? ?>

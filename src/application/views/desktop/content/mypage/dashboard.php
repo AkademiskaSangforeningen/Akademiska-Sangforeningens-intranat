@@ -1,5 +1,5 @@
 	<div id="tab_dashboard">
-		Här visas din personliga information
+		Här visas din personliga information<br/>
 	</div>
 </div>
 

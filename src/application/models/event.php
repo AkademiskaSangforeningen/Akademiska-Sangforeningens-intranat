@@ -60,6 +60,35 @@ class Event extends CI_Model {
 		}		
 	}
 	
+	/**
+	* Function used for saving a single evemt
+	*
+	* @param string $eventId GUID of the event, if NULL an INSERT is made, otherwise UPDATE
+	*/		
+	function saveEvent($data, $eventId = NULL) {	
+		if (!is_null($eventId)) {
+			$this->db->where(DB_EVENT_ID, $eventId);
+			$this->db->set(DB_EVENT_MODIFIED, 'NOW()', FALSE);
+			$this->db->set(DB_EVENT_MODIFIEDBY, $this->session->userdata(SESSION_PERSONID));						
+			$this->db->update(DB_TABLE_EVENT, $data);			
+		} else {
+			$data[DB_EVENT_ID] = substr(generateGuid(), 1, 36);
+			$this->db->set(DB_EVENT_CREATED, 'NOW()', FALSE);
+			$this->db->set(DB_EVENT_CREATEDBY, $this->session->userdata(SESSION_PERSONID));			
+			$this->db->insert(DB_TABLE_EVENT, $data);
+		}	
+	}	
+	
+	/**
+	* Function used for deleting a single event
+	*
+	* @param string $personId GUID of the user
+	*/		
+	function deleteEvent($eventId) {	
+		$this->db->where(DB_EVENT_ID, $eventId);
+		$this->db->delete(DB_TABLE_EVENT);
+	}	
+	
 	// TODO: Join with get_closest_future_events and getEvent
 	function getAttendanceCount($eventId) {
         $query = $this->db->query('COUNT PersonId FROM Personhasevent WHERE EventId = ' . $eventId);

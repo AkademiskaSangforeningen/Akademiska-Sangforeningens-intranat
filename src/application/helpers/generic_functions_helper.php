@@ -64,13 +64,60 @@
 		}
 	}
 	
-	function formatDateGerman($date) {
-		return date('d.m.Y', strtotime($date));
+	function extractHoursFromDate($date) {
+		if (is_null($date) || $date == "") {
+			return null;
+		}
+		$timeStamp = strtotime($date);
+		$parsedDate = getdate($timeStamp);
+		
+		if (($parsedDate["hours"] != 0 || $parsedDate["minutes"] != 0)) {
+			return $parsedDate["hours"];
+		} else {
+			return null;
+		}
 	}
 	
-	function formatDateODBC($date) {
-		return date('Y-m-d', strtotime($date));
+	function extractMinutesFromDate($date) {
+		if (is_null($date) || $date == "") {
+			return null;
+		}
+		$timeStamp = strtotime($date);
+		$parsedDate = getdate($timeStamp);
+		if (($parsedDate["hours"] != 0 || $parsedDate["minutes"] != 0)) {
+			return $parsedDate["minutes"];
+		} else {
+			return null;
+		}
+	}	
+	
+	function formatDateGerman($date, $includeTime = true) {
+		if (is_null($date) || $date == "") {
+			return "";
+		}
+
+		$timeStamp = strtotime($date);
+		$parsedDate = getdate($timeStamp);
+		if ($includeTime && ($parsedDate["hours"] != 0 || $parsedDate["minutes"] != 0)) {
+			return date('d.m.Y H:i', $timeStamp);
+		} else {
+			return date('d.m.Y', $timeStamp);
+		}			
 	}
+	
+	function formatDateODBC($date, $hours = 0, $minutes = 0) {
+		if (is_null($date) || $date == "") {
+			return null;
+		}		
+		if (is_null($hours) || $hours == "") {
+			$hours = 0;
+		}
+		if (is_null($minutes) || $minutes == "") {
+			$minutes = 0;
+		}
+		
+		return date('Y-m-d H:i', strtotime($date . " " . $hours . ":" . $minutes));
+	}	
 	
 	function formatCurrency($value) {
 		return '€' . number_format($value, 2, ",", "");

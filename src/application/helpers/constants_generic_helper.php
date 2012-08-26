@@ -16,3 +16,6 @@ define('SESSION_PERSONID',					'PersonId');
 define('SESSION_LANG',						'Lang');
 define('SESSION_NAME',						'Name');
 define('SESSION_ACCESSRIGHT',				'AccessRight');
+
+define('PREFIX_HH',							'_hh');
+define('PREFIX_MM',							'_mm');

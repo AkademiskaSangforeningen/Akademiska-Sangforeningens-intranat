@@ -188,18 +188,15 @@ var AKADEMEN = (function(){
 		},
 		
 		/**
-		*	Initialize date picker form input fields..
+		*	Initialize date picker default values.
 		*/
-		initializeDatePicker: function() {						
-			$("input[data-datepicker]").each(function() {
-				$(this)
-					.datepicker({
+		initializeDatepicker: function() {			
+			$.datepicker.setDefaults({
 						changeMonth: true,
 						changeYear: true,
 						showWeek: true,
 						firstDay: 1,
-						dateFormat: $(this).attr("data-datepicker")
-					});
+						dateFormat: 'dd.mm.yy'			
 			});
 		}
     };

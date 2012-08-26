@@ -23,8 +23,8 @@
 	<tbody>
 	<?php foreach($eventList as $key => $event): ?>
 		<tr>
-			<td><a href="<?php echo CONTROLLER_EVENTS_EDITSINGLE . "/" . $person->{DB_EVENT_ID}; ?>" class="button" data-icon="ui-icon-pencil" data-text="false" data-formdialog="true"><?php echo lang(LANG_KEY_BUTTON_EDIT_EVENT); ?></a></td>
-			<td><a href="<?php echo CONTROLLER_EVENTS_DELETESINGLE . "/" . $person->{DB_EVENT_ID}; ?>" class="button" data-icon="ui-icon-trash" data-text="false" data-confirmdialog="true"><?php echo lang(LANG_KEY_BUTTON_DELETE_EVENT); ?></a></td>		
+			<td><a href="<?php echo CONTROLLER_EVENTS_EDITSINGLE . "/" . $event->{DB_EVENT_ID}; ?>" class="button" data-icon="ui-icon-pencil" data-text="false" data-formdialog="true"><?php echo lang(LANG_KEY_BUTTON_EDIT_EVENT); ?></a></td>
+			<td><a href="<?php echo CONTROLLER_EVENTS_DELETESINGLE . "/" . $event->{DB_EVENT_ID}; ?>" class="button" data-icon="ui-icon-trash" data-text="false" data-confirmdialog="true"><?php echo lang(LANG_KEY_BUTTON_DELETE_EVENT); ?></a></td>		
 			<td><?php echo $event->{DB_EVENT_NAME}; ?></td>	
 			<td>
 			<?php 
