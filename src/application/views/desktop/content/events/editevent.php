@@ -124,7 +124,27 @@
 				<option value="2" <?php echo set_select(DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTTYPE . '[]', 2) ?><?php echo ((isset($event->{DB_EVENT_PAYMENTTYPE}) ? $event->{DB_EVENT_PAYMENTTYPE} : 0 ) & 2) == 2 ? ' selected="selected"' : ''; ?>>Cash</option>
 				<option value="4" <?php echo set_select(DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTTYPE . '[]', 4) ?><?php echo ((isset($event->{DB_EVENT_PAYMENTTYPE}) ? $event->{DB_EVENT_PAYMENTTYPE} : 0 ) & 4) == 4 ? ' selected="selected"' : ''; ?>>Konto</option>
 			</select>			
-		</div>					
+		</div>							
+		
+		<div style="clear: both; width: 100%">
+			<label for="">Kostnad</label>
+			<br/>
+			<div style="width: 100%; clear: both; display: none" class="multirow-price">
+				<div style="float: left">Summa <input name="EventHasPrice_Amount[]" type="text" value="" class="short" disabled="true" /></div>
+				<div style="float: left"> Beskrivning <input name="EventHasPrice_Description[]" type="text" value="" class="short" disabled="true" /></div>				
+				<div style="float: left">
+					<select name="EventHasPrice_Type[]" style="width: auto" disabled="true" >
+						<option value="1">Valmöjlighet</option>
+						<option value="2">Extra möjlighet</option>
+					</select>
+				</div>
+			</div>
+			<div style="clear: both">
+				<a id="multirow-price-button-add" class="button" href="#" data-icon="ui-icon-plus">Lägg till kostnad</a>
+			</div>						
+		</div>
+
+			
 		
 		<div style="clear: both">
 			<label for="<?php echo DB_TABLE_EVENT . "_" .  DB_EVENT_DESCRIPTION; ?>">
@@ -140,6 +160,20 @@
 </form>
 
 <script>
+	AKADEMEN.initializeButtons('#dialog_form');
+	$('#multirow-price-button-add').on('click', function () {
+		$('.multirow-price:first').each(function() {
+			$(this)
+				.clone()
+					.show()
+						.find(':input')
+							.removeAttr("disabled")
+							.end()
+						.insertBefore($('#multirow-price-button-add').parent());
+		});
+		return false;		
+	});
+
 	$('#<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_STARTDATE ?>').datepicker();
 	$('#<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_ENDDATE ?>').datepicker();
 	$('#<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_REGISTRATIONDUEDATE ?>').datepicker();
