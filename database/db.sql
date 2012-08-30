@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS `Event` (
   `CreatedBy` char(36) COLLATE utf8_swedish_ci NOT NULL,
   `Modified` datetime DEFAULT NULL,
   `ModifiedBy` char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
+  `PaymentType` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`Id`),
   KEY `ModifiedBy` (`ModifiedBy`),
   KEY `CreatedBy` (`CreatedBy`),

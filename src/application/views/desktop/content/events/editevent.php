@@ -115,16 +115,16 @@
 		</div>				
 		
 		<div>
-			<label for="<?php echo DB_TABLE_EVENT . "_" .  DB_EVENT_PAYMENTTYPE; ?>">
+			<label for="<?php echo DB_TABLE_EVENT . "_" .  DB_EVENT_PAYMENTTYPE; ?>[]">
 				<?php echo lang(LANG_KEY_FIELD_PAYMENTTYPE); ?>
 			</label>
 			<br/>
-			<select multiple="multiple" name="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTTYPE ?>" id="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTTYPE ?>">	
-				<option value="KK">KK</option>
-				<option value="Cash">Cash</option>
-				<option value="Kontobetalning">Konto</option>
+			<select multiple="multiple" name="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTTYPE ?>[]" id="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTTYPE ?>">	
+				<option value="1" <?php echo set_select(DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTTYPE . '[]', 1) ?><?php echo ((isset($event->{DB_EVENT_PAYMENTTYPE}) ? $event->{DB_EVENT_PAYMENTTYPE} : 0 ) & 1) == 1 ? ' selected="selected"' : ''; ?>>KK</option>
+				<option value="2" <?php echo set_select(DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTTYPE . '[]', 2) ?><?php echo ((isset($event->{DB_EVENT_PAYMENTTYPE}) ? $event->{DB_EVENT_PAYMENTTYPE} : 0 ) & 2) == 2 ? ' selected="selected"' : ''; ?>>Cash</option>
+				<option value="4" <?php echo set_select(DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTTYPE . '[]', 4) ?><?php echo ((isset($event->{DB_EVENT_PAYMENTTYPE}) ? $event->{DB_EVENT_PAYMENTTYPE} : 0 ) & 4) == 4 ? ' selected="selected"' : ''; ?>>Konto</option>
 			</select>			
-		</div>
+		</div>					
 		
 		<div style="clear: both">
 			<label for="<?php echo DB_TABLE_EVENT . "_" .  DB_EVENT_DESCRIPTION; ?>">

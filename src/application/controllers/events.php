@@ -102,6 +102,7 @@ class Events extends CI_Controller {
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTDUEDATE . PREFIX_HH,		lang(LANG_KEY_FIELD_PAYMENT_DUEDATE), 		'trim|max_length[2]|is_natural');
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTDUEDATE . PREFIX_MM,		lang(LANG_KEY_FIELD_PAYMENT_DUEDATE), 		'trim|max_length[2]|is_natural');				
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_DESCRIPTION, 						lang(LANG_KEY_FIELD_DESCRIPTION),			'trim|xss_clean');
+		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTTYPE . '[]', 				lang(LANG_KEY_FIELD_PAYMENTTYPE),			'trim|xss_clean|is_natural');
 
 		//If errors found, redraw the login form to the user
 		if($this->form_validation->run() == FALSE) {
@@ -109,7 +110,7 @@ class Events extends CI_Controller {
 			$client = CLIENT_DESKTOP;
 			$data['eventId'] = $eventId;
 			$this->load->view($client . VIEW_CONTENT_EVENTS_EDITSINGLE, $data);
-		} else {		
+		} else {					
 			$data = array(		
 				DB_EVENT_NAME 					=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_NAME),
 				DB_EVENT_LOCATION 				=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_LOCATION),
@@ -126,8 +127,9 @@ class Events extends CI_Controller {
 														$this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTDUEDATE . PREFIX_HH),
 														$this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTDUEDATE . PREFIX_MM)),
 				DB_EVENT_DESCRIPTION 			=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_DESCRIPTION),
-				DB_EVENT_RESPONSIBLEID			=> $this->session->userdata(SESSION_PERSONID)
-			);			
+				DB_EVENT_RESPONSIBLEID			=> $this->session->userdata(SESSION_PERSONID),
+				DB_EVENT_PAYMENTTYPE			=> array_sum($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTTYPE))
+			);									
 			
 			//Load the person-model
 			$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
