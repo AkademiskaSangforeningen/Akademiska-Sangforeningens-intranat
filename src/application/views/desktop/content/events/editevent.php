@@ -138,6 +138,9 @@
 						<option value="2">Extra möjlighet</option>
 					</select>
 				</div>
+				<div style="float: left">
+					<a href="" class="button" data-icon="ui-icon-trash" data-text="false">Radera</a>
+				</div>
 			</div>
 			<div style="clear: both">
 				<a id="multirow-price-button-add" class="button" href="#" data-icon="ui-icon-plus">Lägg till kostnad</a>
@@ -165,7 +168,13 @@
 		$('.multirow-price:first').each(function() {
 			$(this)
 				.clone()
-					.show()
+					.show()										
+						.find('a')
+							.on('click', function () {
+								$(this).closest('.multirow-price').remove();
+								return false;
+							})
+							.end()
 						.find(':input')
 							.removeAttr("disabled")
 							.end()
