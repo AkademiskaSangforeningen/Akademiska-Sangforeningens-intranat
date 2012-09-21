@@ -27,6 +27,20 @@ define('DB_EVENT_MODIFIED',					'Modified');
 define('DB_EVENT_MODIFIEDBY',				'ModifiedBy');
 define('DB_EVENT_PAYMENTTYPE',				'PaymentType');
 
+//Table EventItem
+define('DB_TABLE_EVENTITEM',				'EventItem');
+define('DB_EVENTITEM_ID',					'Id');
+define('DB_EVENTITEM_EVENTID',				'EventId');
+define('DB_EVENTITEM_TYPE',					'Type');
+define('DB_EVENTITEM_CAPTION',				'Caption');
+define('DB_EVENTITEM_DESCRIPTION',			'Description');
+define('DB_EVENTITEM_AMOUNT',				'Amount');
+define('DB_EVENTITEM_MAXPCS',				'MaxPcs');
+define('DB_EVENTITEM_CREATED',				'Created');
+define('DB_EVENTITEM_CREATEDBY',			'CreatedBy');
+define('DB_EVENTITEM_MODIFIED',				'Modified');
+define('DB_EVENTITEM_MODIFIEDBY',			'ModifiedBy');
+
 //Table PaymentType
 define('DB_TABLE_PAYMENTTYPE',				'PaymentType');
 define('DB_PAYMENTTYPE_ID',					'Id');

@@ -122,3 +122,13 @@
 	function formatCurrency($value) {
 		return '€' . number_format($value, 2, ",", "");
 	}
+	
+	function parseAmount($value) {
+		if (empty($value)) {
+			return NULL;
+		} else {
+			$value = str_replace(' ', '', $value);
+			$value = str_replace(',', '.', $value);
+			return $value;
+		}
+	}	

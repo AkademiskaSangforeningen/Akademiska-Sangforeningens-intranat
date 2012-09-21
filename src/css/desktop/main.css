@@ -56,9 +56,9 @@ legend {
 
 label.error {
 	color: red;
-	padding-left: 1em;
 	font-weight: bold;
 	display: block;	
+	font-size: 0.8em;
 }
 
 input {
@@ -94,6 +94,10 @@ input.error {
 
 input.short {
 	width: 85px;
+}
+
+input.middle {
+	width: 150px;
 }
 
 textarea {
@@ -133,3 +137,33 @@ td {
 .alignright {
 	text-align: right;
 }
+
+.multirow-header {
+	float: left;
+}
+
+.multirow-field {
+	float: left;
+	clear: both;
+	margin-right: 1em;
+}
+
+.multirow-field>a {
+	margin-top: 0.8em;
+}
+
+.multirow-field>label.error {
+	clear: both;
+	margin-right: 1em;
+}
+
+.multirow>div {
+	float: left;
+	clear: both;
+}
+
+.multirow>div:first-child .multirow-field {
+	visibility: hidden;
+	margin-top: -30px;
+}
+	
