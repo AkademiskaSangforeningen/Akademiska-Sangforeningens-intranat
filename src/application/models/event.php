@@ -8,24 +8,6 @@
 // TODO: See if this actually works.
 class Event extends CI_Model {
 
-  var $Id = '';                    //char(36)
-  var $Name = '';                  //varchar(256)
-  var $StartDate = NULL;           //datetime
-  var $EndDate = NULL;             //datetime
-  var $RegistrationDueDate = NULL; //datetime
-  var $PaymentDueDate = NULL;      //datetime
-  var $Description = '';           //text
-  var $Price = 0;                  //decimal(10,2)
-  var $Location = '';              //varchar(256)
-  var $IsAtClub = 0;               //tinyint(4)
-  var $Type = 0;                   //tinyint(4)
-  var $IsExternal = 0;             //tinyint(4)
-  var $ResponsibleId = '';         //char(36)
-  var $Created = NULL;             //datetime
-  var $CreatedBy = '';             //char(36)
-  var $Modified = NULL;            //datetime
-  var $ModifiedBy = '';            //char(36)
-  
     function __construct()
     {
         // Call the Model constructor
@@ -61,7 +43,7 @@ class Event extends CI_Model {
 	}
 	
 	/**
-	* Function used for saving a single evemt
+	* Function used for saving a single event
 	*
 	* @param string $eventId GUID of the event, if NULL an INSERT is made, otherwise UPDATE
 	*/		
@@ -72,11 +54,13 @@ class Event extends CI_Model {
 			$this->db->set(DB_EVENT_MODIFIEDBY, $this->session->userdata(SESSION_PERSONID));						
 			$this->db->update(DB_TABLE_EVENT, $data);			
 		} else {
-			$data[DB_EVENT_ID] = substr(generateGuid(), 1, 36);
+			$eventId = substr(generateGuid(), 1, 36);
+			$data[DB_EVENT_ID] = $eventId;
 			$this->db->set(DB_EVENT_CREATED, 'NOW()', FALSE);
 			$this->db->set(DB_EVENT_CREATEDBY, $this->session->userdata(SESSION_PERSONID));			
 			$this->db->insert(DB_TABLE_EVENT, $data);
-		}	
+		}
+		return $eventId;
 	}	
 	
 	/**
@@ -99,53 +83,7 @@ class Event extends CI_Model {
 	function getGuestList($eventId) {
         $query = $this->db->query('SELECT a.*, b.* FROM Personhasevent a, Person b WHERE a.PersonId = b.Id AND EventId = "' . $eventId . '"');
         return $query->result();		
-	}
-    
-    
-    function insert_event()
-    {
-      $this->Name   = $this->input->post('Name');
-      $this->StartDate = $this->input->post('StartDate');
-      $this->EndDate = $this->input->post('EndDate');
-      $this->RegistrationDueDate = $this->input->post('RegistrationDueDate');
-      $this->PaymentDueDate = $this->input->post('PaymentDueDate');
-      $this->Description = $this->input->post('Description');
-      $this->Price = $this->input->post('Price');
-      $this->Location = $this->input->post('Location');
-      $this->IsAtClub = $this->input->post('IsAtClub');
-      $this->Type = $this->input->post('IsExternal');
-      $this->IsExternal = $this->input->post('');
-      $this->ResponsibleId = $this->input->post('ResponsibleId');
-      $this->Created = time();
-      $this->CreatedBy = '';  // HOW DO WE GET THIS
-      $this->Modified = time();
-      $this->ModifiedBy = ''; // HOW DO WE GET THIS
-      
-      $this->db->insert('Event', $this);
-    }
-
-    function update_event()
-    {
-      $this->Name   = $this->input->post('Name');
-      $this->StartDate = $this->input->post('StartDate');
-      $this->EndDate = $this->input->post('EndDate');
-      $this->RegistrationDueDate = $this->input->post('RegistrationDueDate');
-      $this->PaymentDueDate = $this->input->post('PaymentDueDate');
-      $this->Description = $this->input->post('Description');
-      $this->Price = $this->input->post('Price');
-      $this->Location = $this->input->post('Location');
-      $this->IsAtClub = $this->input->post('IsAtClub');
-      $this->Type = $this->input->post('IsExternal');
-      $this->IsExternal = $this->input->post('');
-      $this->ResponsibleId = $this->input->post('ResponsibleId');
-      $this->Created = time(); // We allow modification of creation date for simplicity.
-      $this->CreatedBy = $this->input->post('CreatedBy'); // Differs from insert. Possible to modify this as well.
-      $this->Modified = time(); 
-      $this->ModifiedBy = ''; // HOW DO WE GET THIS
-      
-      $this->db->update('Event', $this, array('Id' => $this->input->post('Id')));
-    }
-
+	}    
 }
 
 ?>

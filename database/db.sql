@@ -36,6 +36,25 @@ CREATE TABLE IF NOT EXISTS `EventHasPaymentType` (
   KEY `PaymentTypeId` (`PaymentTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
 
+DROP TABLE IF EXISTS `EventItem`;
+CREATE TABLE IF NOT EXISTS `EventItem` (
+  `Id` char(36) COLLATE utf8_swedish_ci NOT NULL,
+  `EventId` char(36) COLLATE utf8_swedish_ci NOT NULL,
+  `Type` tinyint(4) NOT NULL,
+  `Caption` varchar(256) COLLATE utf8_swedish_ci NOT NULL,
+  `Description` text COLLATE utf8_swedish_ci,
+  `Amount` decimal(10,2) NULL,
+  `MaxPcs` tinyint(4) NULL,
+  `Created` datetime NOT NULL,
+  `CreatedBy` char(36) COLLATE utf8_swedish_ci NOT NULL,
+  `Modified` datetime DEFAULT NULL,
+  `ModifiedBy` char(36) COLLATE utf8_swedish_ci DEFAULT NULL,  
+  PRIMARY KEY (`Id`),
+  KEY `EventId` (`EventId`),
+  KEY `ModifiedBy` (`ModifiedBy`),
+  KEY `CreatedBy` (`CreatedBy`)  
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
+
 DROP TABLE IF EXISTS `Event`;
 CREATE TABLE IF NOT EXISTS `Event` (
   `Id` char(36) COLLATE utf8_swedish_ci NOT NULL,
@@ -131,6 +150,11 @@ ALTER TABLE `Event`
   ADD CONSTRAINT `Event_ibfk_2` FOREIGN KEY (`CreatedBy`) REFERENCES `Person` (`Id`),
   ADD CONSTRAINT `Event_ibfk_3` FOREIGN KEY (`ModifiedBy`) REFERENCES `Person` (`Id`);
 
+ALTER TABLE `EventItem`
+  ADD CONSTRAINT `EventItem_ibfk_1` FOREIGN KEY (`EventId`) REFERENCES `Event` (`Id`),
+  ADD CONSTRAINT `EventItem_ibfk_2` FOREIGN KEY (`CreatedBy`) REFERENCES `Person` (`Id`),
+  ADD CONSTRAINT `EventItem_ibfk_3` FOREIGN KEY (`ModifiedBy`) REFERENCES `Person` (`Id`);  
+  
 ALTER TABLE `EventHasPaymentType`
   ADD CONSTRAINT `EventHasPaymentType_ibfk_1` FOREIGN KEY (`EventId`) REFERENCES `Event` (`Id`),
   ADD CONSTRAINT `EventHasPaymentType_ibfk_2` FOREIGN KEY (`PaymentTypeId`) REFERENCES `PaymentType` (`Id`),

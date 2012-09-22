@@ -6,12 +6,12 @@ var AKADEMEN = (function(){
 		/**
 		*	Initialize dialog for forms
 		*/		
-		initializeFormDialog: function(langSave, langCancel) {
-			$('<div id="dialog_form"></div>')
+		initializeFormDialog: function(langSave, langCancel) {		
+			$('<div id="dialog_form"></div>')						
 				.dialog({
 					autoOpen: false,
-					height: 580,
-					width: 700,
+					height: 650,
+					width: 920,
 					modal: true,
 					buttons: [
 						{

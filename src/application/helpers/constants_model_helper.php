@@ -8,5 +8,6 @@
 
 define('MODEL_PERSON',		'Person');
 define('MODEL_EVENT',		'Event');
+define('MODEL_EVENTITEM',	'EventItem');
 define('MODEL_PAYMENTTYPE',	'PaymentType');
 define('MODEL_TRANSACTION',	'Transaction');
