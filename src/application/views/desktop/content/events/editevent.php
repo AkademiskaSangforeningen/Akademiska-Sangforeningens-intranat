@@ -34,14 +34,12 @@
 			<input maxlength="10" type="text" name="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_STARTDATE ?>" id="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_STARTDATE ?>" value="<?php echo set_value(DB_TABLE_EVENT . "_" . DB_EVENT_STARTDATE, isset($event->{DB_EVENT_STARTDATE}) ? formatDateGerman($event->{DB_EVENT_STARTDATE}, false) : "" ); ?>" class="required ui-corner-all short" placeholder="dd.mm.åååå" />	
 			
 			<select class="ui-corner-all short" name="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_STARTDATE . PREFIX_HH; ?>" id="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_STARTDATE . PREFIX_HH; ?>">
-				<option value="">-</option>
 				<?php for($i = 0; $i < 24; $i++) { ?>
 					<option value="<?php echo $i; ?>" <?php if ($i === set_value(DB_TABLE_EVENT . "_" . DB_EVENT_STARTDATE . PREFIX_HH, isset($event->{DB_EVENT_STARTDATE}) ? extractHoursFromDate($event->{DB_EVENT_STARTDATE}, false) : "" )) { echo "selected=\"selected\""; } ?>><?php echo ($i < 10) ? 0 . $i : $i; ?></option>
 				<?php } ?>
 			</select>
 			:
 			<select class="ui-corner-all short" name="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_STARTDATE . PREFIX_MM; ?>" id="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_STARTDATE . PREFIX_MM; ?>">
-				<option value="">-</option>
 				<?php for($i = 0; $i < 60; $i++) { ?>
 					<option value="<?php echo $i; ?>" <?php if ($i === set_value(DB_TABLE_EVENT . "_" . DB_EVENT_STARTDATE . PREFIX_MM, isset($event->{DB_EVENT_STARTDATE}) ? extractMinutesFromDate($event->{DB_EVENT_STARTDATE}, false) : "" )) { echo "selected=\"selected\""; } ?>><?php echo ($i < 10) ? 0 . $i : $i; ?></option>
 				<?php } ?>
@@ -56,14 +54,12 @@
 			<input maxlength="10" type="text" name="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_ENDDATE ?>" id="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_ENDDATE ?>" value="<?php echo set_value(DB_TABLE_EVENT . "_" . DB_EVENT_ENDDATE, isset($event->{DB_EVENT_ENDDATE}) ? formatDateGerman($event->{DB_EVENT_ENDDATE}, false) : "" ); ?>" class="ui-corner-all short" placeholder="dd.mm.åååå" />	
 			
 			<select class="ui-corner-all short" name="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_ENDDATE . PREFIX_HH; ?>" id="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_ENDDATE . PREFIX_HH; ?>">
-				<option value="">-</option>
 				<?php for($i = 0; $i < 24; $i++) { ?>
 					<option value="<?php echo $i; ?>" <?php if ($i === set_value(DB_TABLE_EVENT . "_" . DB_EVENT_ENDDATE . PREFIX_HH, isset($event->{DB_EVENT_ENDDATE}) ? extractHoursFromDate($event->{DB_EVENT_ENDDATE}, false) : "" )) { echo "selected=\"selected\""; } ?>><?php echo ($i < 10) ? 0 . $i : $i; ?></option>
 				<?php } ?>
 			</select>
 			:
 			<select class="ui-corner-all short" name="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_ENDDATE . PREFIX_MM; ?>" id="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_ENDDATE . PREFIX_MM; ?>">
-				<option value="">-</option>
 				<?php for($i = 0; $i < 60; $i++) { ?>
 					<option value="<?php echo $i; ?>" <?php if ($i === set_value(DB_TABLE_EVENT . "_" . DB_EVENT_ENDDATE . PREFIX_MM, isset($event->{DB_EVENT_ENDDATE}) ? extractMinutesFromDate($event->{DB_EVENT_ENDDATE}, false) : "" )) { echo "selected=\"selected\""; } ?>><?php echo ($i < 10) ? 0 . $i : $i; ?></option>
 				<?php } ?>
@@ -78,14 +74,12 @@
 			<input maxlength="10" type="text" name="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_REGISTRATIONDUEDATE ?>" id="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_REGISTRATIONDUEDATE ?>" value="<?php echo set_value(DB_TABLE_EVENT . "_" . DB_EVENT_REGISTRATIONDUEDATE, isset($event->{DB_EVENT_REGISTRATIONDUEDATE}) ? formatDateGerman($event->{DB_EVENT_REGISTRATIONDUEDATE}, false) : "" ); ?>" class="ui-corner-all short" placeholder="dd.mm.åååå" />	
 			
 			<select class="ui-corner-all short" name="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_REGISTRATIONDUEDATE . PREFIX_HH; ?>" id="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_REGISTRATIONDUEDATE . PREFIX_HH; ?>">
-				<option value="">-</option>
 				<?php for($i = 0; $i < 24; $i++) { ?>
 					<option value="<?php echo $i; ?>" <?php if ($i === set_value(DB_TABLE_EVENT . "_" . DB_EVENT_REGISTRATIONDUEDATE . PREFIX_HH, isset($event->{DB_EVENT_REGISTRATIONDUEDATE}) ? extractHoursFromDate($event->{DB_EVENT_REGISTRATIONDUEDATE}, false) : "" )) { echo "selected=\"selected\""; } ?>><?php echo ($i < 10) ? 0 . $i : $i; ?></option>
 				<?php } ?>
 			</select>
 			:
 			<select class="ui-corner-all short" name="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_REGISTRATIONDUEDATE . PREFIX_MM; ?>" id="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_REGISTRATIONDUEDATE . PREFIX_MM; ?>">
-				<option value="">-</option>
 				<?php for($i = 0; $i < 60; $i++) { ?>
 					<option value="<?php echo $i; ?>" <?php if ($i === set_value(DB_TABLE_EVENT . "_" . DB_EVENT_REGISTRATIONDUEDATE . PREFIX_MM, isset($event->{DB_EVENT_REGISTRATIONDUEDATE}) ? extractMinutesFromDate($event->{DB_EVENT_REGISTRATIONDUEDATE}, false) : "" )) { echo "selected=\"selected\""; } ?>><?php echo ($i < 10) ? 0 . $i : $i; ?></option>
 				<?php } ?>
@@ -100,14 +94,12 @@
 			<input maxlength="10" type="text" name="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTDUEDATE ?>" id="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTDUEDATE ?>" value="<?php echo set_value(DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTDUEDATE, isset($event->{DB_EVENT_PAYMENTDUEDATE}) ? formatDateGerman($event->{DB_EVENT_PAYMENTDUEDATE}, false) : "" ); ?>" class="ui-corner-all short" placeholder="dd.mm.åååå" />	
 			
 			<select class="ui-corner-all short" name="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTDUEDATE . PREFIX_HH; ?>" id="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTDUEDATE . PREFIX_HH; ?>">
-				<option value="">-</option>
 				<?php for($i = 0; $i < 24; $i++) { ?>
 					<option value="<?php echo $i; ?>" <?php if ($i === set_value(DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTDUEDATE . PREFIX_HH, isset($event->{DB_EVENT_PAYMENTDUEDATE}) ? extractHoursFromDate($event->{DB_EVENT_PAYMENTDUEDATE}, false) : "" )) { echo "selected=\"selected\""; } ?>><?php echo ($i < 10) ? 0 . $i : $i; ?></option>
 				<?php } ?>
 			</select>
 			:
 			<select class="ui-corner-all short" name="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTDUEDATE . PREFIX_MM; ?>" id="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTDUEDATE . PREFIX_MM; ?>">
-				<option value="">-</option>
 				<?php for($i = 0; $i < 60; $i++) { ?>
 					<option value="<?php echo $i; ?>" <?php if ($i === set_value(DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTDUEDATE . PREFIX_MM, isset($event->{DB_EVENT_PAYMENTDUEDATE}) ? extractMinutesFromDate($event->{DB_EVENT_PAYMENTDUEDATE}, false) : "" )) { echo "selected=\"selected\""; } ?>><?php echo ($i < 10) ? 0 . $i : $i; ?></option>
 				<?php } ?>
