@@ -106,6 +106,16 @@
 			</select>			
 		</div>				
 		
+    
+    <div>
+			<label for="<?php echo DB_TABLE_EVENT . "_" .  DB_EVENT_PRICE; ?>">
+				<?php echo lang(LANG_KEY_FIELD_PRICE); ?>
+			</label>
+			<br/>
+			<input maxlength="255" type="text" name="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PRICE ?>" id="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PRICE ?>" value="<?php echo set_value(DB_TABLE_EVENT . "_" . DB_EVENT_PRICE, isset($event->{DB_EVENT_PRICE}) ? $event->{DB_EVENT_PRICE} : "" ); ?>" class="required ui-corner-all"/>	
+		</div>
+    
+    
 		<div>
 			<label for="<?php echo DB_TABLE_EVENT . "_" .  DB_EVENT_PAYMENTTYPE; ?>[]">
 				<?php echo lang(LANG_KEY_FIELD_PAYMENTTYPE); ?>
