@@ -14,7 +14,7 @@ define('CONTROLLER_DASHBOARD',						'dashboard');
 //Login
 define('CONTROLLER_LOGIN',							'login');
 define('CONTROLLER_LOGIN_AUTHENTICATE',				'login/authenticate');
-define('CONTROLLER_LOGIN_LOGOUT',					'login/logout');
+define('CONTROLLER_LOGIN_LOGOUT',					'/login/logout'); //Prepend '/' so that logout works from anywhere
 
 //Persons
 define('CONTROLLER_PERSONS',						'persons');
