@@ -175,11 +175,16 @@ class Events extends CI_Controller {
   
   function showEvent($eventId) {
     $this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
-    $data['event'] = $this->event->getEvent($eventId);
+    $event = $this->event->getEvent($eventId);
     
-//    $this->load->view(CLIENT_DESKTOP . VIEW_GENERIC_HEADER);
-    $this->load->view(CLIENT_DESKTOP . '/content/events/showevent', $data);
-    $this->load->view(CLIENT_DESKTOP . VIEW_GENERIC_FOOTER);
+    if($event){
+      $data['event'] = $event;
+      $this->load->view(CLIENT_DESKTOP . VIEW_GENERIC_HEADER);
+      $this->load->view(CLIENT_DESKTOP . '/content/events/showevent', $data);
+      $this->load->view(CLIENT_DESKTOP . VIEW_GENERIC_FOOTER);
+    } else {
+      show_error("Could not find event for id: '" . $eventId . "'");
+    }
   }
 
 	function _checkDateValid($date) {
