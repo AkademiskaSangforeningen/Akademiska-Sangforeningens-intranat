@@ -42,14 +42,13 @@ class Events extends CI_Controller {
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));				
 		
 		$data = array();
+    $data['eventItems'] = array();
 		if (!is_null($eventId)) {
 			$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
 			$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), TRUE);
 			$data['event'] 		= $this->event->getEvent($eventId);
 			$data['eventId'] 	= $eventId;
 			$data['eventItems'] = $this->eventitem->getEventItems($eventId);
-
-			
 		}
 		
 		//Load edit items, add them to $data-object
