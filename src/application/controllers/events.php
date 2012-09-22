@@ -16,28 +16,18 @@ class Events extends CI_Controller {
 		header("Pragma: no-cache");
 		header("Expires: 0");
 	}
-	
-	/**
-	*	Default function for controller	
-	*/
+  
 	function index() {
-	
 		redirect(CONTROLLER_MY_PAGE, 'refresh');
 	}
 	
 	function listAll() {	
-		//Here we could define a different client type based on user agent-headers
 		$client = CLIENT_DESKTOP;
-
-		//Load languages
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));
-		
 		$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
 		
 		// Arbitrary limit in use (50)
 		$data['eventList'] = $this->event->get_closest_future_events(50);				
-		
-		//Load default event listing view	
 		$this->load->view($client . VIEW_CONTENT_EVENTS_LISTALL, $data);		
 
 	}
@@ -46,10 +36,7 @@ class Events extends CI_Controller {
 	*	Used for editing a single event
 	*/		
 	function editSingle($eventId = NULL) {	
-		//Here we could define a different client type based on user agent-headers
 		$client = CLIENT_DESKTOP;
-
-		//Load languages
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));				
 		
 		$data = array();
@@ -66,7 +53,6 @@ class Events extends CI_Controller {
 	*	Used for deleting a single event
 	*/		
 	function deleteSingle($eventId = NULL) {	
-		//Here we could define a different client type based on user agent-headers
 		$client = CLIENT_DESKTOP;
 		
 		if (!is_null($eventId)) {
@@ -104,9 +90,7 @@ class Events extends CI_Controller {
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_DESCRIPTION, 						lang(LANG_KEY_FIELD_DESCRIPTION),			'trim|xss_clean');
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTTYPE . '[]', 				lang(LANG_KEY_FIELD_PAYMENTTYPE),			'trim|xss_clean|is_natural');
 
-		//If errors found, redraw the login form to the user
 		if($this->form_validation->run() == FALSE) {
-			//Here we could define a different client type based on user agent-headers
 			$client = CLIENT_DESKTOP;
 			$data['eventId'] = $eventId;
 			$this->load->view($client . VIEW_CONTENT_EVENTS_EDITSINGLE, $data);
@@ -131,16 +115,22 @@ class Events extends CI_Controller {
 				DB_EVENT_PAYMENTTYPE			=> array_sum($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTTYPE))
 			);									
 			
-			//Load the person-model
 			$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
-			//save the person via the model
 			$this->event->saveEvent($data, $eventId);
-		
-			//User inserted or updated
+      
 			$client = CLIENT_DESKTOP;
 			$this->load->view($client . VIEW_GENERIC_DIALOG_CLOSE_AND_RELOAD_PARENT);
 		}
 	}
+  
+  function showEvent($eventId) {
+    $this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
+    $data['event'] = $this->event->getEvent($eventId);
+    
+//    $this->load->view(CLIENT_DESKTOP . VIEW_GENERIC_HEADER);
+    $this->load->view(CLIENT_DESKTOP . '/content/events/showevent', $data);
+    $this->load->view(CLIENT_DESKTOP . VIEW_GENERIC_FOOTER);
+  }
 
 	function _checkDateValid($date) {
 		if ($date != "" && !isDateValid($date)) {

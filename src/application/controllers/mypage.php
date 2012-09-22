@@ -38,6 +38,11 @@ class MyPage extends CI_Controller {
 	
 		$data['isTransactionAdmin'] = $this->userrights->canAdministrate('transactions', $person->UserRights);
 		
+    //Load upcoming events. 
+    //TODO: Show if user is already registered to an event
+    $this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
+    $data['events'] = $this->event->get_closest_future_events();
+    
 		$this->load->view($client . VIEW_GENERIC_HEADER);
 		$this->load->view($client . VIEW_GENERIC_HEADER_NAVITABS, $data);
 		$this->load->view($client . VIEW_CONTENT_MYPAGE_DASHBOARD);
