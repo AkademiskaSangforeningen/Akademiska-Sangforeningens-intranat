@@ -1,23 +1,26 @@
-<div id="tab_dashboard">
-		Här visas din personliga information<br/>
-    
-    <div id=active_events>
-    <h1>Kommande evenemang</h1>
-    <table>
-    <?php foreach($events as $key => $event): ?>
-      <tr>
-        <td><?php echo $event->StartDate ?></td>
-        <td><?php echo $event->Name ?></td>
-        <td><a href=<?php echo '"events/showevent/' . $event->Id . '"' ?> target="_blank">Anmäl!</a></td>
-      </tr>
-    <?php endforeach; ?>
-    </table>
-    </div>
-	</div>
+	<div id="tab_dashboard">
+		<div class="ui-widget-content ui-corner-all" style="width: 48%; float: left; margin-right: 20px; margin-bottom: 20px">								
+			<div class="ui-widget-header" style="padding: 5px">Kommande evenemang</div>
+			<div style="padding: 5px" id="myupcomingevents-body">
+				
+			</div>			
+		</div>
+
+		<div class="ui-widget-content ui-corner-all" style="width: 48%; float: left">								
+			<div class="ui-widget-header" style="padding: 5px">Evenemang du anmält dig till</div>
+			<div style="padding: 5px" id="mypreviousevents-body">
+				bla bla
+			</div>			
+		</div>
+		
+		<div style="clear: both"></div>
+	
 </div>
 
 <script>
 	var executeOnStart = function ($) {	
-		
+		$('#myupcomingevents-body').load("<?php echo CONTROLLER_MY_PAGE_LIST_UPCOMING_EVENTS ?>", function() {
+			AKADEMEN.initializeButtons();
+		});
 	};
 </script>

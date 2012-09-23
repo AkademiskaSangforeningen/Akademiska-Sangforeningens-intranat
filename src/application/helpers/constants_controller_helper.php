@@ -27,6 +27,7 @@ define('CONTROLLER_PERSONS_SAVE_MY_INFORMATION',	'persons/savemyinformation');
 
 //My page
 define('CONTROLLER_MY_PAGE',						'mypage');
+define('CONTROLLER_MY_PAGE_LIST_UPCOMING_EVENTS',	'mypage/listupcomingevents');
 
 //User manager
 define('CONTROLLER_USERMANAGER', 					'usermanager');

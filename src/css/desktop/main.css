@@ -107,6 +107,7 @@ textarea {
 
 table {
 	border-collapse: collapse;
+	width: 100%;
 }
 
 tr {
@@ -166,4 +167,8 @@ td {
 	visibility: hidden;
 	margin-top: -30px;
 }
-	
+
+/* Overwrite jQuery UI theme to add more space in ui-tab-panel */
+.ui-tabs-panel {
+	padding: 1em 0.5em !important;
+}

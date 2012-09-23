@@ -166,11 +166,10 @@
 						<div class="multirow-header">Max antal</div>
 						<div class="multirow-field">
 							<select name="<?php echo DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_MAXPCS ?>" disabled="disabled" style="width: auto">
-								<option value="1">1</option>
-								<option value="2">2</option>
-								<option value="3">3</option>
-								<option value="4">4</option>
-								<option value="5">5</option>
+								<option value="0">-</option>
+								<?php for($i = 1; $i < 11; $i++) { ?>
+									<option value="<?php echo $i ?>"><?php echo $i ?></option>							
+								<?php } ?>
 							</select>
 						</div>
 					</div>					
@@ -184,7 +183,8 @@
 				</div>
 <?php
 	$multirowCounter = 1;
-	foreach($eventItems as $key => $eventItem):
+	if (isset($eventItems)) {		
+		foreach($eventItems as $key => $eventItem):
 ?>	
 					<div>
 						<div style="float: left">
@@ -228,8 +228,9 @@
 						</div>
 					</div>					
 <?php
-$multirowCounter++;
-endforeach; 
+		$multirowCounter++;
+		endforeach; 
+	}
 ?>
 			</div>			
 			<div style="clear: both">

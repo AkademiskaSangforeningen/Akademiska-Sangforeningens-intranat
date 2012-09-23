@@ -73,6 +73,28 @@ class Event extends CI_Model {
 		$this->db->delete(DB_TABLE_EVENT);
 	}	
 	
+	function getUpcomingEventsForPerson($personId) {
+		$this->db->select(DB_EVENT_ID);
+		$this->db->select(DB_EVENT_NAME);
+		$this->db->select(DB_EVENT_LOCATION);
+		$this->db->select(DB_EVENT_STARTDATE);
+		$this->db->select(DB_EVENT_ENDDATE);
+		$this->db->select('(SELECT COUNT(*) FROM PersonHasEvent AS A WHERE A.EventId = Event.Id) AS Enrolled', FALSE);
+		$this->db->select(DB_PERSONHASEVENT_STATUS);
+		$this->db->from(DB_TABLE_EVENT);
+		$this->db->join(DB_TABLE_PERSONHASEVENT, DB_TABLE_EVENT . '.' . DB_EVENT_ID . ' = ' . DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_EVENTID, 'LEFT OUTER');
+		$this->db->where(DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_PERSONID, $personId);
+		$this->db->or_where(DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_PERSONID . ' IS NULL');
+		$this->db->order_by(DB_EVENT_STARTDATE);
+		$this->db->order_by(DB_EVENT_ENDDATE);
+		$this->db->order_by(DB_EVENT_NAME);			
+	
+		$query = $this->db->get();	
+		return $query->result();
+	}
+	
+	
+	
 	// TODO: Join with get_closest_future_events and getEvent
 	function getAttendanceCount($eventId) {
         $query = $this->db->query('COUNT PersonId FROM Personhasevent WHERE EventId = ' . $eventId);
