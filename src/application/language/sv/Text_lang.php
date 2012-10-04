@@ -58,6 +58,8 @@ $lang[LANG_KEY_FIELD_LOCATION]					= "Plats";
 $lang[LANG_KEY_FIELD_ENROLLED]					= "Anmälda";
 $lang[LANG_KEY_FIELD_PAYMENT_DUEDATE]			= "Betalningsdeadline";
 $lang[LANG_KEY_FIELD_ENROLLMENT_DUEDATE]		= "Anmälningsdeadline";
+$lang[LANG_KEY_FIELD_PARTICIPANT]				= "Deltagare";
+$lang[LANG_KEY_FIELD_AVEC]						= "Avec";
 
 $lang[LANG_KEY_ENUM_VOICE_1_TENOR]				= "1:a tenor";
 $lang[LANG_KEY_ENUM_VOICE_2_TENOR]				= "2:a tenor";
@@ -67,6 +69,8 @@ $lang[LANG_KEY_ENUM_VOICE_CONDUCTOR]			= "Dirigent";
 $lang[LANG_KEY_ENUM_COUNTRY_FINLAND]			= "Finland";
 $lang[LANG_KEY_ENUM_COUNTRY_SWEDEN]				= "Sverige";
 $lang[LANG_KEY_ENUM_COUNTRY_OTHER]				= "Annat land (ange landet i stad-fältet)";
+$lang[LANG_KEY_ENUM_ENABLED_NO]					= "Nej";
+$lang[LANG_KEY_ENUM_ENABLED_YES]				= "Ja";
 
 $lang[LANG_KEY_ERROR_WRONG_CREDENTIALS]			= "Fel användarnamn eller lösenord";
 

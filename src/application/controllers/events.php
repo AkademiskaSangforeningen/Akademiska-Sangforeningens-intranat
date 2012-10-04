@@ -51,8 +51,28 @@ class Events extends CI_Controller {
 			$data['eventId'] 	= $eventId;
 			$data['eventItems'] = $this->eventitem->getEventItems($eventId);			
 		}				
-		$this->load->view($client . VIEW_CONTENT_EVENTS_EDITSINGLE, $data);
+		$this->load->view($client . VIEW_CONTENT_EVENTS_EDITSINGLE, $data);		
+	}	
+	
+	
+	function editRegisterDirectly($eventId) {
+		$client = CLIENT_DESKTOP;
+		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));				
 		
+		//Load edit items, add them to $data-object
+		$data = array();
+		$data['eventItems'] = array();
+		if (!is_null($eventId)) {
+			$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
+			$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), TRUE);
+			$data['event'] 		= $this->event->getEvent($eventId);
+			$data['eventId'] 	= $eventId;
+			$data['eventItems'] = $this->eventitem->getEventItems($eventId);			
+		}
+		
+		$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
+		$this->load->view($client . VIEW_CONTENT_EVENTS_EDITREGISTERDIRECTLY, $data);			
+		$this->load->view($client . VIEW_GENERIC_FOOTER);
 	}	
 	
 	/**
@@ -101,9 +121,11 @@ class Events extends CI_Controller {
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTDUEDATE . PREFIX_MM,		lang(LANG_KEY_FIELD_PAYMENT_DUEDATE), 		'trim|max_length[2]|is_natural');				
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_DESCRIPTION, 						lang(LANG_KEY_FIELD_DESCRIPTION),			'trim|xss_clean');
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTTYPE . '[]', 				lang(LANG_KEY_FIELD_PAYMENTTYPE),			'trim|xss_clean|is_natural');
+		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_PARTICIPANT . '[]', 				lang(LANG_KEY_FIELD_PARTICIPANT),			'trim|xss_clean|is_natural');
+		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED, 						lang(LANG_KEY_FIELD_PARTICIPANT),			'trim|xss_clean|numeric');
 
 		foreach ($itemRows as $rowNumber) {
-			$this->form_validation->set_rules("EventItem_Caption" . $rowNumber, lang(LANG_KEY_FIELD_DESCRIPTION),			'trim|xss_clean');		
+			$this->form_validation->set_rules(DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_CAPTION . $rowNumber, lang(LANG_KEY_FIELD_DESCRIPTION),			'trim|xss_clean');		
 		}
 		
 		//If errors found, redraw the login form to the user
@@ -115,14 +137,14 @@ class Events extends CI_Controller {
 			$data = array(		
 				DB_EVENT_NAME 					=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_NAME),
 				DB_EVENT_LOCATION 				=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_LOCATION),
-				DB_EVENT_PRICE => $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PRICE),
-        DB_EVENT_STARTDATE 				=> formatDateODBC($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_STARTDATE), 
-														$this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_STARTDATE . PREFIX_HH), 
-														$this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_STARTDATE . PREFIX_MM)),
-				
-        DB_EVENT_ENDDATE 				=> formatDateODBC($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_ENDDATE), 
-														$this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_ENDDATE . PREFIX_HH), 
-														$this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_ENDDATE . PREFIX_MM)),
+				DB_EVENT_PRICE 					=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PRICE),
+				DB_EVENT_STARTDATE 				=> formatDateODBC($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_STARTDATE), 
+																$this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_STARTDATE . PREFIX_HH), 
+																$this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_STARTDATE . PREFIX_MM)),
+						
+				DB_EVENT_ENDDATE 				=> formatDateODBC($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_ENDDATE), 
+																$this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_ENDDATE . PREFIX_HH), 
+															$this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_ENDDATE . PREFIX_MM)),
 				DB_EVENT_REGISTRATIONDUEDATE 	=> formatDateODBC($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_REGISTRATIONDUEDATE),
 														$this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_REGISTRATIONDUEDATE . PREFIX_HH),
 														$this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_REGISTRATIONDUEDATE . PREFIX_MM)),				
@@ -131,7 +153,9 @@ class Events extends CI_Controller {
 														$this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTDUEDATE . PREFIX_MM)),
 				DB_EVENT_DESCRIPTION 			=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_DESCRIPTION),
 				DB_EVENT_RESPONSIBLEID			=> $this->session->userdata(SESSION_PERSONID),
-				DB_EVENT_PAYMENTTYPE			=> array_sum($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTTYPE))
+				DB_EVENT_PAYMENTTYPE			=> array_sum($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTTYPE)),
+				DB_EVENT_PARTICIPANT			=> array_sum($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PARTICIPANT)),
+				DB_EVENT_AVECALLOWED			=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED)
 			);									
 
 			// Start a database transaction

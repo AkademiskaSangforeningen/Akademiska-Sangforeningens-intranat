@@ -3,6 +3,19 @@
 </div>
 
 <table>
+	<colgroup>
+		<col style="width: 25px" />
+		<col style="width: 25px" />
+		<col />
+		<col />
+		<col />
+		<col />
+		<col style="text-align: right" />
+		<col />
+		<col />
+		<col />				
+	</colgroup>
+
 	<thead>
 		<tr>
 			<th><span class="ui-icon ui-icon-pencil" title="<?php echo lang(LANG_KEY_BUTTON_EDIT_MEMBER); ?>"></span></th>

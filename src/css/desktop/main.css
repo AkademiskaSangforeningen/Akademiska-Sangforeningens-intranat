@@ -65,13 +65,17 @@ input {
 	padding: 4px;
 }
 
-input[type="checkbox"]  {
+input[type="checkbox"], input[type="radio"]  {
 	width: auto;
 	margin: 3px;
 }
 
 select {
 	padding: 3px;
+}
+
+button {
+	margin: 0.5em 0 0.5em 0;
 }
 
 input, select {

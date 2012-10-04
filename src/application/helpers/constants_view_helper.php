@@ -7,6 +7,7 @@
 */
 
 define('VIEW_GENERIC_HEADER',							'/generic/header');
+define('VIEW_GENERIC_HEADER_NOTEXT',					'/generic/header_notext');
 define('VIEW_GENERIC_HEADER_NAVITABS',					'/generic/header_navitabs');
 
 define('VIEW_GENERIC_FOOTER',							'/generic/footer');
@@ -23,6 +24,7 @@ define('VIEW_CONTENT_PERSONS_EDITSINGLE',				'/content/persons/editperson');
 define('VIEW_CONTENT_EVENTS_LISTALL',					'/content/events/listevents');
 define('VIEW_CONTENT_EVENTS_EDITSINGLE',				'/content/events/editevent');
 define('VIEW_CONTENT_EVENTS_MY_UPCOMING',				'/content/events/myupcoming');
+define('VIEW_CONTENT_EVENTS_EDITREGISTERDIRECTLY',		'/content/events/editregisterdirectly');
 
 define('VIEW_CONTENT_USERMANAGER_LISTUSERS',    		'/content/usermanager/listusers');
 

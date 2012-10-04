@@ -104,17 +104,7 @@
 					<option value="<?php echo $i; ?>" <?php if ($i === set_value(DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTDUEDATE . PREFIX_MM, isset($event->{DB_EVENT_PAYMENTDUEDATE}) ? extractMinutesFromDate($event->{DB_EVENT_PAYMENTDUEDATE}, false) : "" )) { echo "selected=\"selected\""; } ?>><?php echo ($i < 10) ? 0 . $i : $i; ?></option>
 				<?php } ?>
 			</select>			
-		</div>				
-		
-    
-    <div>
-			<label for="<?php echo DB_TABLE_EVENT . "_" .  DB_EVENT_PRICE; ?>">
-				<?php echo lang(LANG_KEY_FIELD_PRICE); ?>
-			</label>
-			<br/>
-			<input maxlength="255" type="text" name="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PRICE ?>" id="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PRICE ?>" value="<?php echo set_value(DB_TABLE_EVENT . "_" . DB_EVENT_PRICE, isset($event->{DB_EVENT_PRICE}) ? $event->{DB_EVENT_PRICE} : "" ); ?>" class="required ui-corner-all"/>	
 		</div>
-    
     
 		<div>
 			<label for="<?php echo DB_TABLE_EVENT . "_" .  DB_EVENT_PAYMENTTYPE; ?>[]">
@@ -126,7 +116,28 @@
 				<option value="2" <?php echo set_select(DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTTYPE . '[]', 2) ?><?php echo ((isset($event->{DB_EVENT_PAYMENTTYPE}) ? $event->{DB_EVENT_PAYMENTTYPE} : 0 ) & 2) == 2 ? ' selected="selected"' : ''; ?>>Cash</option>
 				<option value="4" <?php echo set_select(DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTTYPE . '[]', 4) ?><?php echo ((isset($event->{DB_EVENT_PAYMENTTYPE}) ? $event->{DB_EVENT_PAYMENTTYPE} : 0 ) & 4) == 4 ? ' selected="selected"' : ''; ?>>Konto</option>
 			</select>			
+		</div>	
+
+		<div>
+			<label for="<?php echo DB_TABLE_EVENT . "_" .  DB_EVENT_PARTICIPANT; ?>[]">
+				<?php echo lang(LANG_KEY_FIELD_PARTICIPANT); ?>
+			</label>
+			<br/>
+			<select multiple="multiple" name="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PARTICIPANT ?>[]" id="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PARTICIPANT ?>">	
+				<option value="1" <?php echo set_select(DB_TABLE_EVENT . "_" . DB_EVENT_PARTICIPANT . '[]', 1) ?><?php echo ((isset($event->{DB_EVENT_PARTICIPANT}) ? $event->{DB_EVENT_PARTICIPANT} : 0 ) & 1) == 1 ? ' selected="selected"' : ''; ?>>Aktiva korister</option>
+				<option value="2" <?php echo set_select(DB_TABLE_EVENT . "_" . DB_EVENT_PARTICIPANT . '[]', 2) ?><?php echo ((isset($event->{DB_EVENT_PARTICIPANT}) ? $event->{DB_EVENT_PARTICIPANT} : 0 ) & 2) == 2 ? ' selected="selected"' : ''; ?>>Gamla akademare</option>
+				<option value="4" <?php echo set_select(DB_TABLE_EVENT . "_" . DB_EVENT_PARTICIPANT . '[]', 4) ?><?php echo ((isset($event->{DB_EVENT_PARTICIPANT}) ? $event->{DB_EVENT_PARTICIPANT} : 0 ) & 4) == 4 ? ' selected="selected"' : ''; ?>>Övriga inbjudna</option>
+			</select>			
 		</div>							
+
+		<div>
+			<label for="<?php echo DB_TABLE_EVENT . "_" .  DB_EVENT_AVECALLOWED; ?>">
+				<?php echo lang(LANG_KEY_FIELD_AVEC); ?>
+			</label>
+			<br/>
+			<?php echo form_dropdown(DB_TABLE_EVENT . "_" . DB_EVENT_AVECALLOWED, getEnum(ENUM_ENABLED), set_value(DB_TABLE_EVENT . "_" . DB_EVENT_AVECALLOWED, isset($event->{DB_EVENT_AVECALLOWED}) ? $event->{DB_EVENT_AVECALLOWED} : "" ), 'id="' . DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED . '" class="ui-corner-all"'); ?>		
+		</div>			
+		
 	</fieldset>
 	<fieldset class="ui-corner-all">
 		<legend>Radinformation</legend>
@@ -286,6 +297,7 @@
 	$('#<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_REGISTRATIONDUEDATE ?>').datepicker();
 	$('#<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTDUEDATE ?>').datepicker();
 	$('#<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTTYPE ?>').multiselect({ header: false, selectedList: 10, noneSelectedText: "Välj betalningssätt", height: "auto" });
+	$('#<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PARTICIPANT ?>').multiselect({ header: false, selectedList: 10, noneSelectedText: "Välj deltagare", height: "auto" });
 	$('#<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_DESCRIPTION ?>').tinymce({
 			// Location of TinyMCE script			
 			script_url : '<?php echo base_url()?>js/desktop/plugins/tiny_mce/tiny_mce.js',

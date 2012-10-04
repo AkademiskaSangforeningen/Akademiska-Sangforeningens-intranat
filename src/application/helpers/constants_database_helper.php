@@ -26,6 +26,8 @@ define('DB_EVENT_CREATEDBY',				'CreatedBy');
 define('DB_EVENT_MODIFIED',					'Modified');
 define('DB_EVENT_MODIFIEDBY',				'ModifiedBy');
 define('DB_EVENT_PAYMENTTYPE',				'PaymentType');
+define('DB_EVENT_PARTICIPANT',				'Participant');
+define('DB_EVENT_AVECALLOWED',				'AvecAllowed');
 
 //Table EventItem
 define('DB_TABLE_EVENTITEM',				'EventItem');
@@ -78,8 +80,9 @@ define('DB_PERSONHASEVENT_PERSONID',		'PersonId');
 define('DB_PERSONHASEVENT_EVENTID',			'EventId');
 define('DB_PERSONHASEVENT_STATUS',			'Status');
 define('DB_PERSONHASEVENT_TRANSACTIONID',	'TransactionId');
-define('DB_PERSONHASEVENT_PAYMENTTYPEID',	'PaymentTypeId');
+define('DB_PERSONHASEVENT_PAYMENTTYPE',		'PaymentType');
 define('DB_PERSONHASEVENT_UNREGISTERED',	'Unregistered');
+define('DB_PERSONHASEVENT_AVECPERSONID',	'AvecPersonId');
 define('DB_PERSONHASEVENT_CREATED',			'Created');
 define('DB_PERSONHASEVENT_CREATEDBY',		'CreatedBy');
 define('DB_PERSONHASEVENT_MODIFIED',		'Modified');
@@ -97,3 +100,6 @@ define('DB_TRANSACTION_CREATED',			'Created');
 define('DB_TRANSACTION_CREATEDBY',			'CreatedBy');
 define('DB_TRANSACTION_MODIFIED',			'Modified');
 define('DB_TRANSACTION_MODIFIEDBY',			'ModifiedBy');
+
+//Temporary tables and views
+define('DB_CUSTOM_AVEC',					'Avec');

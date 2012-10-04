@@ -14,7 +14,7 @@ define('CONTROLLER_DASHBOARD',						'dashboard');
 //Login
 define('CONTROLLER_LOGIN',							'login');
 define('CONTROLLER_LOGIN_AUTHENTICATE',				'login/authenticate');
-define('CONTROLLER_LOGIN_LOGOUT',					'/login/logout'); //Prepend '/' so that logout works from anywhere
+define('CONTROLLER_LOGIN_LOGOUT',					'login/logout');
 
 //Persons
 define('CONTROLLER_PERSONS',						'persons');
@@ -42,9 +42,10 @@ define('CONTROLLER_TRANSACTIONS_ADMIN_EDITSINGLE', CONTROLLER_TRANSACTIONS_ADMIN
 define('CONTROLLER_TRANSACTIONS_ADMIN_SAVESINGLE', CONTROLLER_TRANSACTIONS_ADMIN . '/savesingle');
 
 //Events
-define('CONTROLLER_EVENTS',						'events');
-define('CONTROLLER_EVENTS_LISTALL',				'events/listall');
-define('CONTROLLER_EVENTS_EDITSINGLE',			'events/editsingle');
-define('CONTROLLER_EVENTS_DELETESINGLE',		'events/deletesingle');
-define('CONTROLLER_EVENTS_SAVESINGLE',			'events/savesingle');
-define('CONTROLLER_EVENTS_LIST_ENROLLED',		'events/listenrolled');
+define('CONTROLLER_EVENTS',							'events');
+define('CONTROLLER_EVENTS_LISTALL',					'events/listall');
+define('CONTROLLER_EVENTS_EDITSINGLE',				'events/editsingle');
+define('CONTROLLER_EVENTS_DELETESINGLE',			'events/deletesingle');
+define('CONTROLLER_EVENTS_SAVESINGLE',				'events/savesingle');
+define('CONTROLLER_EVENTS_LIST_ENROLLED',			'events/listenrolled');
+define('CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY',  'events/editregisterdirectly');

@@ -65,6 +65,8 @@ define('LANG_KEY_FIELD_LOCATION',					'field_location');
 define('LANG_KEY_FIELD_ENROLLED',					'field_enrolled');			
 define('LANG_KEY_FIELD_PAYMENT_DUEDATE',			'field_payment_duedate');
 define('LANG_KEY_FIELD_ENROLLMENT_DUEDATE',			'field_enrollment_duedate');
+define('LANG_KEY_FIELD_PARTICIPANT',				'field_participant');
+define('LANG_KEY_FIELD_AVEC',						'field_avec');
 
 //Enumerations
 define('LANG_KEY_ENUM_VOICE_1_TENOR',				'enum_voice_1st_tenor');
@@ -75,6 +77,8 @@ define('LANG_KEY_ENUM_VOICE_CONDUCTOR',				'enum_voice_conductor');
 define('LANG_KEY_ENUM_COUNTRY_FINLAND',				'enum_country_finland');
 define('LANG_KEY_ENUM_COUNTRY_SWEDEN',				'enum_country_sweden');
 define('LANG_KEY_ENUM_COUNTRY_OTHER',				'enum_country_other');
+define('LANG_KEY_ENUM_ENABLED_NO',					'enum_enabled_no');
+define('LANG_KEY_ENUM_ENABLED_YES',					'enum_enabled_yes');
 
 //Error texts
 define('LANG_KEY_ERROR_WRONG_CREDENTIALS',			'error_wrong_credentials');
