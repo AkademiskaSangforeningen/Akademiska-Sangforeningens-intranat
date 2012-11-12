@@ -55,8 +55,13 @@ class Events extends CI_Controller {
 	}	
 	
 	
-	function editRegisterDirectly($eventId) {
+	function editRegisterDirectly($eventId = NULL) {
 		$client = CLIENT_DESKTOP;
+		
+		//Exit if no eventId given
+		if ($eventId == NULL) {
+			return;
+		}		
 		
 		//Load languages. As we don't yet know the user's language, we default to swedish
 		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);
@@ -126,13 +131,15 @@ class Events extends CI_Controller {
 				$personId = $this->person->savePerson($personData, $personId, $personId);
 				
 				// Save all event items for the person
-				$eventItemIds = $this->input->post(DB_TABLE_EVENTITEM . '_' . DB_EVENTITEM_ID);
-				for ($eventItemIds as $eventItemId) {
-					savePersonHasEventItem($personId, $eventItemId, 1, $personId);
+				$eventItemIds = $this->input->post(DB_TABLE_EVENTITEM . '_' . DB_EVENTITEM_ID);								
+				foreach ($eventItemIds as $eventItemId) {
+					$this->eventitem->savePersonHasEventItem($personId, $eventItemId, 1, $personId);
 				}
+				// Delete orphan event items for the person
+				$this->eventitem->deleteOrphanPersonHasEventItem($personId, $eventId, $eventItemIds);
 				
-				//Save the avec information (if given)
-				$avecId = NULL;
+				// Save the avec information (if given)
+				$avecId = $this->event->getCurrentAvecForPersonHasEvent($personId, $eventId);
 				if ($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED) == 1) {
 					$avecData = array(					
 						DB_PERSON_FIRSTNAME	=> $this->input->post(DB_CUSTOM_AVEC . '_' . DB_PERSON_FIRSTNAME),
@@ -143,12 +150,21 @@ class Events extends CI_Controller {
 					
 					// Save all event items for the avec
 					$avecEventItemIds = $this->input->post(DB_CUSTOM_AVEC . DB_TABLE_EVENTITEM . '_' . DB_EVENTITEM_ID);
-					for ($avecEventItemIds as $eventItemId) {
-						savePersonHasEventItem($avecId, $eventItemId, 1, $personId);
-					}					
+					foreach ($avecEventItemIds as $eventItemId) {
+						$this->eventitem->savePersonHasEventItem($avecId, $eventItemId, 1, $personId);
+					}
+
+					// Delete orphan event items for the avec
+					$this->eventitem->deleteOrphanPersonHasEventItem($avecId, $eventId, $eventItemIds);					
+				} else if ($avecId != NULL) {
+					// Delete orphan event items for the avec
+					$this->eventitem->deleteOrphanPersonHasEventItem($avecId, $eventId, null);					
+					// Delete the old avec
+					$this->person->deletePerson($avecId);
+					$avecId = NULL;
 				}
 
-				//Save the person has event-link including the avec (if given)
+				// Save the person has event-link including the avec (if given)
 				$personHasEventData = array(
 					DB_PERSONHASEVENT_AVECPERSONID	=> $avecId,
 					DB_PERSONHASEVENT_PAYMENTTYPE 	=> $this->input->post(DB_TABLE_PERSONHASEVENT . '_' . DB_PERSONHASEVENT_PAYMENTTYPE)				

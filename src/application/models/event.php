@@ -73,29 +73,46 @@ class Event extends CI_Model {
 			$this->db->select(DB_PERSONHASEVENT_EVENTID);			
 			$this->db->from(DB_TABLE_PERSONHASEVENT);
 			$this->db->where(DB_PERSONHASEVENT_EVENTID, $eventId);
-			$this->db->where(DB_PERSONHASEVENT_PERSONID, $personId);			
-			
+			$this->db->where(DB_PERSONHASEVENT_PERSONID, $personId);						
 			$query = $this->db->get();
 
-			// Update
-			if ($query->num_rows() == 1) {
+			if ($query->num_rows() != 0) {
+				//UPDATE
 				$this->db->set(DB_PERSONHASEVENT_MODIFIED, 'NOW()', FALSE);
 				$this->db->set(DB_PERSONHASEVENT_MODIFIEDBY, $personId);
 			
 				$this->db->where(DB_PERSONHASEVENT_EVENTID, $eventId);
 				$this->db->where(DB_PERSONHASEVENT_PERSONID, $personId);
 				$this->db->update(DB_TABLE_PERSONHASEVENT, $data);
-			// Insert
 			} else {
+				//INSERT
 				$this->db->set(DB_PERSONHASEVENT_CREATED, 'NOW()', FALSE);
-				$this->db->set(DB_PERSONHASEVENT_CREATEDBY, $personId);
-			
-				$this->db->where(DB_PERSONHASEVENT_EVENTID, $eventId);
-				$this->db->where(DB_PERSONHASEVENT_PERSONID, $personId);
-				$this->db->update(DB_TABLE_PERSONHASEVENT, $data);
+				$this->db->set(DB_PERSONHASEVENT_CREATEDBY, $personId);			
+				$this->db->set(DB_PERSONHASEVENT_EVENTID, $eventId);
+				$this->db->set(DB_PERSONHASEVENT_PERSONID, $personId);
+				$this->db->insert(DB_TABLE_PERSONHASEVENT, $data);
 			}
 		}
-	}		
+	}	
+
+	/**
+	* Function used for getting the current avec for a person in an event bind
+	*/		
+	function getCurrentAvecForPersonHasEvent($personId, $eventId) {
+		$this->db->select(DB_PERSONHASEVENT_AVECPERSONID);
+		$this->db->from(DB_TABLE_PERSONHASEVENT);
+		$this->db->where(DB_PERSONHASEVENT_PERSONID, $personId);
+		$this->db->where(DB_PERSONHASEVENT_EVENTID, $eventId);
+
+		$query = $this->db->get();		
+		if ($query->num_rows() == 1) {
+			foreach($query->result_array() as $row){
+				return $row[DB_PERSONHASEVENT_AVECPERSONID];
+			}		
+		} else {
+			return NULL;
+		}		
+	}
 	
 	/**
 	* Function used for deleting a single event

@@ -88,6 +88,16 @@ define('DB_PERSONHASEVENT_CREATEDBY',		'CreatedBy');
 define('DB_PERSONHASEVENT_MODIFIED',		'Modified');
 define('DB_PERSONHASEVENT_MODIFIEDBY',		'ModifiedBy');
 
+//Table PersonHasEventItem
+define('DB_TABLE_PERSONHASEVENTITEM',		'PersonHasEventItem');
+define('DB_PERSONHASEVENTITEM_PERSONID',	'PersonId');
+define('DB_PERSONHASEVENTITEM_EVENTITEMID',	'EventItemId');
+define('DB_PERSONHASEVENTITEM_AMOUNT',		'Amount');
+define('DB_PERSONHASEVENTITEM_CREATED',		'Created');
+define('DB_PERSONHASEVENTITEM_CREATEDBY',	'CreatedBy');
+define('DB_PERSONHASEVENTITEM_MODIFIED',	'Modified');
+define('DB_PERSONHASEVENTITEM_MODIFIEDBY',	'ModifiedBy');
+
 //Table Transaction
 define('DB_TABLE_TRANSACTION',				'Transaction');
 define('DB_TRANSACTION_ID',					'Id');
