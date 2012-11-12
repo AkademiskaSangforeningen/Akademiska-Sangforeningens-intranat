@@ -49,6 +49,28 @@ Class Person extends CI_Model {
 			return false;
 		}		
 	}
+	
+	/**
+	* Function used for loading a single person's id using the email address
+	*
+	* @param string $personId GUID of the user
+	* @return false if check fails, otherwise returns database result
+	*/	
+	function getPersonIdUsingEmail($email) {
+		$this->db->limit(1);
+		$this->db->select(DB_PERSON_ID);
+		$this->db->from(DB_TABLE_PERSON);
+		$this->db->where(DB_PERSON_EMAIL, $email);
+
+		$query = $this->db->get();		
+		if ($query->num_rows() == 1) {
+			foreach($query->result_array() as $row){
+				return $row[DB_PERSON_ID];
+			}		
+		} else {
+			return NULL;
+		}		
+	}	
 
 	/**
 	* Function used for loading all persons
@@ -95,18 +117,25 @@ Class Person extends CI_Model {
 	*
 	* @param string $personId GUID of the user, if NULL an INSERT is made, otherwise UPDATE
 	*/		
-	function savePerson($data, $personId = NULL) {	
+	function savePerson($data, $personId = NULL, $modifiedBy = NULL) {	
 		if (!is_null($personId)) {
 			$this->db->where(DB_PERSON_ID, $personId);
 			$this->db->set(DB_PERSON_MODIFIED, 'NOW()', FALSE);
-			$this->db->set(DB_PERSON_MODIFIEDBY, $this->session->userdata(SESSION_PERSONID));						
+			$this->db->set(DB_PERSON_MODIFIEDBY, $modifiedBy);						
 			$this->db->update(DB_TABLE_PERSON, $data);			
 		} else {
-			$data[DB_PERSON_ID] = substr(generateGuid(), 1, 36);
+			$personId = substr(generateGuid(), 1, 36);
+			
+			if (is_null($modifiedBy)) {
+				$modifiedBy = $personId;
+			}
+			
+			$data[DB_PERSON_ID] = $personId;
 			$this->db->set(DB_PERSON_CREATED, 'NOW()', FALSE);
-			$this->db->set(DB_PERSON_CREATEDBY, $this->session->userdata(SESSION_PERSONID));			
+			$this->db->set(DB_PERSON_CREATEDBY, $modifiedBy);			
 			$this->db->insert(DB_TABLE_PERSON, $data);
-		}	
+		}
+		return $personId;
 	}
 	
 	/**

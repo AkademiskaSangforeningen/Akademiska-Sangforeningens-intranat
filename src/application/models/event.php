@@ -64,6 +64,40 @@ class Event extends CI_Model {
 	}	
 	
 	/**
+	* Function used for saving a single event
+	*
+	* @param string $eventId GUID of the event, if NULL an INSERT is made, otherwise UPDATE
+	*/		
+	function savePersonHasEvent($data, $eventId, $personId) {	
+		if (!is_null($eventId) && !is_null($personId)) {
+			$this->db->select(DB_PERSONHASEVENT_EVENTID);			
+			$this->db->from(DB_TABLE_PERSONHASEVENT);
+			$this->db->where(DB_PERSONHASEVENT_EVENTID, $eventId);
+			$this->db->where(DB_PERSONHASEVENT_PERSONID, $personId);			
+			
+			$query = $this->db->get();
+
+			// Update
+			if ($query->num_rows() == 1) {
+				$this->db->set(DB_PERSONHASEVENT_MODIFIED, 'NOW()', FALSE);
+				$this->db->set(DB_PERSONHASEVENT_MODIFIEDBY, $personId);
+			
+				$this->db->where(DB_PERSONHASEVENT_EVENTID, $eventId);
+				$this->db->where(DB_PERSONHASEVENT_PERSONID, $personId);
+				$this->db->update(DB_TABLE_PERSONHASEVENT, $data);
+			// Insert
+			} else {
+				$this->db->set(DB_PERSONHASEVENT_CREATED, 'NOW()', FALSE);
+				$this->db->set(DB_PERSONHASEVENT_CREATEDBY, $personId);
+			
+				$this->db->where(DB_PERSONHASEVENT_EVENTID, $eventId);
+				$this->db->where(DB_PERSONHASEVENT_PERSONID, $personId);
+				$this->db->update(DB_TABLE_PERSONHASEVENT, $data);
+			}
+		}
+	}		
+	
+	/**
 	* Function used for deleting a single event
 	*
 	* @param string $personId GUID of the user

@@ -165,22 +165,26 @@ var AKADEMEN = (function(){
 		*	Initialize form validation.
 		*	Validation is automatically done when the form is submitted.
 		*/
-		initializeFormValidation: function() {		
+		initializeFormValidation: function(defaultPost) {		
 			$('#form_editobject')
 				.validate({
 					submitHandler: function(form) {
-						$.ajax({
-							type: 'POST',
-							url: $(form).attr("action"),
-							data: $(form).serialize(),
-							success: function(data) {													
-								$('#dialog_form').html(data);
-							},
-							error:  function(jqXHR, textStatus, errorThrown) {
-								alert(errorThrown);
-							},
-							dataType: "html"
-						});
+						if (defaultPost) {
+							$('#form_editobject').submit();
+						} else {					
+							$.ajax({
+								type: 'POST',
+								url: $(form).attr("action"),
+								data: $(form).serialize(),
+								success: function(data) {													
+									$('#dialog_form').html(data);
+								},
+								error:  function(jqXHR, textStatus, errorThrown) {
+									alert(errorThrown);
+								},
+								dataType: "html"
+							});
+						}
 						
 						return false;
 					}

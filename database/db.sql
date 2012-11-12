@@ -1,25 +1,41 @@
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
+DROP TABLE IF EXISTS `PersonHasEventItem`;
+CREATE TABLE IF NOT EXISTS `PersonHasEventItem` (
+  `PersonId` char(36) COLLATE utf8_swedish_ci NOT NULL,
+  `EventItemId` char(36) COLLATE utf8_swedish_ci NOT NULL,
+  `Amount` tinyint NOT NULL,
+  `Created` datetime NOT NULL,
+  `CreatedBy` char(36) COLLATE utf8_swedish_ci NOT NULL,
+  `Modified` datetime DEFAULT NULL,
+  `ModifiedBy` char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
+  PRIMARY KEY (`PersonId`,`EventItemId`),
+  KEY `EventItemId` (`EventItemId`),
+  KEY `CreatedBy` (`CreatedBy`),
+  KEY `ModifiedBy` (`ModifiedBy`),
+  KEY `PersonId` (`PersonId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
+
 DROP TABLE IF EXISTS `PersonHasEvent`;
 CREATE TABLE IF NOT EXISTS `PersonHasEvent` (
   `PersonId` char(36) COLLATE utf8_swedish_ci NOT NULL,
   `EventId` char(36) COLLATE utf8_swedish_ci NOT NULL,
   `Status` tinyint(4) NOT NULL,
   `TransactionId` char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
-  `PaymentTypeId` char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
+  `PaymentType`  tinyint(4) DEFAULT NULL,
   `UnRegistered` tinyint(4) DEFAULT NULL,
+  `AvecPersonId` char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
   `Created` datetime NOT NULL,
   `CreatedBy` char(36) COLLATE utf8_swedish_ci NOT NULL,
   `Modified` datetime DEFAULT NULL,
   `ModifiedBy` char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
-  PRIMARY KEY (`PersonId`,`EventId`,`Status`),
+  PRIMARY KEY (`PersonId`,`EventId`),
   KEY `TransactionId` (`TransactionId`),
   KEY `EventId` (`EventId`),
   KEY `CreatedBy` (`CreatedBy`),
   KEY `ModifiedBy` (`ModifiedBy`),
-  KEY `PersonId` (`PersonId`),
-  KEY `PaymentTypeId` (`PaymentTypeId`)
+  KEY `PersonId` (`PersonId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
 
 DROP TABLE IF EXISTS `EventHasPaymentType`;
@@ -126,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `Person` (
   `City` varchar(64) COLLATE utf8_swedish_ci DEFAULT NULL,
   `CountryId` char(2) COLLATE utf8_swedish_ci DEFAULT NULL,
   `Phone` varchar(64) COLLATE utf8_swedish_ci DEFAULT NULL,
-  `Email` varchar(64) COLLATE utf8_swedish_ci NOT NULL,
+  `Email` varchar(64) COLLATE utf8_swedish_ci DEFAULT NULL,
   `Allergies` varchar(256) COLLATE utf8_swedish_ci DEFAULT NULL,
   `Description` text COLLATE utf8_swedish_ci,
   `Status` tinyint(4) NOT NULL,
@@ -159,9 +175,8 @@ ALTER TABLE `EventItem`
   
 ALTER TABLE `EventHasPaymentType`
   ADD CONSTRAINT `EventHasPaymentType_ibfk_1` FOREIGN KEY (`EventId`) REFERENCES `Event` (`Id`),
-  ADD CONSTRAINT `EventHasPaymentType_ibfk_2` FOREIGN KEY (`PaymentTypeId`) REFERENCES `PaymentType` (`Id`),
-  ADD CONSTRAINT `EventHasPaymentType_ibfk_3` FOREIGN KEY (`CreatedBy`) REFERENCES `Person` (`Id`),
-  ADD CONSTRAINT `EventHasPaymentType_ibfk_4` FOREIGN KEY (`ModifiedBy`) REFERENCES `Person` (`Id`);
+  ADD CONSTRAINT `EventHasPaymentType_ibfk_2` FOREIGN KEY (`CreatedBy`) REFERENCES `Person` (`Id`),
+  ADD CONSTRAINT `EventHasPaymentType_ibfk_3` FOREIGN KEY (`ModifiedBy`) REFERENCES `Person` (`Id`);
 
 ALTER TABLE `PaymentType`
   ADD CONSTRAINT `PaymentType_ibfk_1` FOREIGN KEY (`CreatedBy`) REFERENCES `Person` (`Id`),
@@ -175,11 +190,15 @@ ALTER TABLE `PersonHasEvent`
   ADD CONSTRAINT `PersonHasEvent_ibfk_2` FOREIGN KEY (`PersonId`) REFERENCES `Person` (`Id`),
   ADD CONSTRAINT `PersonHasEvent_ibfk_3` FOREIGN KEY (`CreatedBy`) REFERENCES `Person` (`Id`),
   ADD CONSTRAINT `PersonHasEvent_ibfk_4` FOREIGN KEY (`ModifiedBy`) REFERENCES `Person` (`Id`),
-  ADD CONSTRAINT `PersonHasEvent_ibfk_5` FOREIGN KEY (`TransactionId`) REFERENCES `Transaction` (`Id`),
-  ADD CONSTRAINT `PersonHasEvent_ibfk_6` FOREIGN KEY (`PaymentTypeId`) REFERENCES `PaymentType` (`Id`);
+  ADD CONSTRAINT `PersonHasEvent_ibfk_5` FOREIGN KEY (`TransactionId`) REFERENCES `Transaction` (`Id`);
 
+ ALTER TABLE `PersonHasEventItem`
+  ADD CONSTRAINT `PersonHasEventItem_ibfk_1` FOREIGN KEY (`EventItemId`) REFERENCES `EventItem` (`Id`),
+  ADD CONSTRAINT `PersonHasEventItem_ibfk_2` FOREIGN KEY (`PersonId`) REFERENCES `Person` (`Id`),
+  ADD CONSTRAINT `PersonHasEventItem_ibfk_3` FOREIGN KEY (`CreatedBy`) REFERENCES `Person` (`Id`),
+  ADD CONSTRAINT `PersonHasEventItem_ibfk_4` FOREIGN KEY (`ModifiedBy`) REFERENCES `Person` (`Id`); 
+  
 ALTER TABLE `Transaction`
   ADD CONSTRAINT `Transaction_ibfk_1` FOREIGN KEY (`PersonId`) REFERENCES `Person` (`Id`),
-  ADD CONSTRAINT `Transaction_ibfk_2` FOREIGN KEY (`PaymentTypeId`) REFERENCES `PaymentType` (`Id`),
-  ADD CONSTRAINT `Transaction_ibfk_3` FOREIGN KEY (`CreatedBy`) REFERENCES `Person` (`Id`),
-  ADD CONSTRAINT `Transaction_ibfk_4` FOREIGN KEY (`ModifiedBy`) REFERENCES `Person` (`Id`);
+  ADD CONSTRAINT `Transaction_ibfk_2` FOREIGN KEY (`CreatedBy`) REFERENCES `Person` (`Id`),
+  ADD CONSTRAINT `Transaction_ibfk_3` FOREIGN KEY (`ModifiedBy`) REFERENCES `Person` (`Id`);

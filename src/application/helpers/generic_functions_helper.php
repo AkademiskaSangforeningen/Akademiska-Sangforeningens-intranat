@@ -64,6 +64,10 @@
 		}
 	}
 	
+	function isGuidValid($value) {
+		return true;
+	}
+	
 	function extractHoursFromDate($date) {
 		if (is_null($date) || $date == "") {
 			return null;

@@ -57,7 +57,9 @@ class Events extends CI_Controller {
 	
 	function editRegisterDirectly($eventId) {
 		$client = CLIENT_DESKTOP;
-		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));				
+		
+		//Load languages. As we don't yet know the user's language, we default to swedish
+		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);
 		
 		//Load edit items, add them to $data-object
 		$data = array();
@@ -73,7 +75,95 @@ class Events extends CI_Controller {
 		$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
 		$this->load->view($client . VIEW_CONTENT_EVENTS_EDITREGISTERDIRECTLY, $data);			
 		$this->load->view($client . VIEW_GENERIC_FOOTER);
-	}	
+	}
+	
+	function saveRegisterDirectly($eventId) {
+		if (!is_null($eventId)) {
+			//Load the validation library
+			$this->load->library('form_validation');
+			//Load languages
+			$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);
+			//Load module
+			$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
+			$this->load->model(MODEL_PERSON, strtolower(MODEL_PERSON), TRUE);
+			$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), TRUE);		
+
+			//Validate the form
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME,	lang(LANG_KEY_FIELD_FIRSTNAME),						'trim|max_length[50]|required|xss_clean');
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME, 	lang(LANG_KEY_FIELD_LASTNAME), 						'trim|max_length[50]|required|xss_clean');
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL, 		lang(LANG_KEY_FIELD_EMAIL), 						'trim|max_length[50]|required|valid_email|xss_clean');
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES, 	lang(LANG_KEY_FIELD_ALLERGIES), 					'trim|max_length[50]|xss_clean');
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PHONE, 		lang(LANG_KEY_FIELD_PHONE), 						'trim|max_length[50]|xss_clean');		
+			$this->form_validation->set_rules(DB_TABLE_PERSONHASEVENT . '_' . DB_PERSONHASEVENT_PAYMENTTYPE, lang(LANG_KEY_FIELD_PAYMENTTYPE), 	'required|trim|max_length[1]|xss_clean');		
+			$this->form_validation->set_rules(DB_TABLE_EVENTITEM . '_' , DB_EVENTITEM_ID . '[]', DB_TABLE_EVENTITEM . '_' , DB_EVENTITEM_ID . '[]',	'callback__checkGuidValid');
+			$this->form_validation->set_rules(DB_TABLE_EVENT . '_' , DB_EVENT_AVECALLOWED, lang(LANG_KEY_FIELD_AVEC),	'trim|max_length[1],xss_clean|numeric');
+			
+			if ($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED) == 1) {
+				$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_PERSON_FIRSTNAME,	lang(LANG_KEY_FIELD_FIRSTNAME),						'trim|max_length[50]|required|xss_clean');
+				$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_PERSON_LASTNAME, 	lang(LANG_KEY_FIELD_LASTNAME), 						'trim|max_length[50]|required|xss_clean');
+				$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_PERSON_ALLERGIES, 	lang(LANG_KEY_FIELD_ALLERGIES), 					'trim|max_length[50]|xss_clean');
+				$this->form_validation->set_rules(DB_CUSTOM_AVEC . DB_TABLE_EVENTITEM . '_' , DB_EVENTITEM_ID . '[]', DB_CUSTOM_AVEC . DB_TABLE_EVENTITEM . '_' , DB_EVENTITEM_ID . '[]',	'callback__checkGuidValid');
+			}
+			
+			//If errors found, redraw the login form to the user
+			if($this->form_validation->run() == FALSE) {
+				$client = CLIENT_DESKTOP;
+				$data['event'] 		= $this->event->getEvent($eventId);
+				$data['eventId'] 	= $eventId;
+				$data['eventItems'] = $this->eventitem->getEventItems($eventId);			
+				$this->load->view($client . VIEW_CONTENT_EVENTS_EDITSINGLE, $data);
+			} else {
+				//Get personId if found using the email address and save the person data
+				$personId = $this->person->getPersonIdUsingEmail($this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL));
+
+				$personData = array(		
+					DB_PERSON_FIRSTNAME	=> $this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME),
+					DB_PERSON_LASTNAME	=> $this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME),
+					DB_PERSON_EMAIL 	=> $this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL),					
+					DB_PERSON_PHONE 	=> $this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_PHONE),
+					DB_PERSON_ALLERGIES => $this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES)
+				);
+				$personId = $this->person->savePerson($personData, $personId, $personId);
+				
+				// Save all event items for the person
+				$eventItemIds = $this->input->post(DB_TABLE_EVENTITEM . '_' . DB_EVENTITEM_ID);
+				for ($eventItemIds as $eventItemId) {
+					savePersonHasEventItem($personId, $eventItemId, 1, $personId);
+				}
+				
+				//Save the avec information (if given)
+				$avecId = NULL;
+				if ($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED) == 1) {
+					$avecData = array(					
+						DB_PERSON_FIRSTNAME	=> $this->input->post(DB_CUSTOM_AVEC . '_' . DB_PERSON_FIRSTNAME),
+						DB_PERSON_LASTNAME 	=> $this->input->post(DB_CUSTOM_AVEC . '_' . DB_PERSON_LASTNAME),
+						DB_PERSON_ALLERGIES => $this->input->post(DB_CUSTOM_AVEC . '_' . DB_PERSON_ALLERGIES)																
+					);
+					$avecId = $this->person->savePerson($avecData, $avecId, $personId);
+					
+					// Save all event items for the avec
+					$avecEventItemIds = $this->input->post(DB_CUSTOM_AVEC . DB_TABLE_EVENTITEM . '_' . DB_EVENTITEM_ID);
+					for ($avecEventItemIds as $eventItemId) {
+						savePersonHasEventItem($avecId, $eventItemId, 1, $personId);
+					}					
+				}
+
+				//Save the person has event-link including the avec (if given)
+				$personHasEventData = array(
+					DB_PERSONHASEVENT_AVECPERSONID	=> $avecId,
+					DB_PERSONHASEVENT_PAYMENTTYPE 	=> $this->input->post(DB_TABLE_PERSONHASEVENT . '_' . DB_PERSONHASEVENT_PAYMENTTYPE)				
+				);				
+				$this->event->savePersonHasEvent($personHasEventData, $eventId, $personId);
+			}
+			
+			//redirect(CONTROLLER_EVENTS_CONFIRM_REGISTER_DIRECTLY . "/12345", 'refresh');
+		}
+	}
+	
+	function confirmRegisterDirectly($bookingNumber) {
+	// Checka att bokningsnumret är ett nummer
+		echo "tack för din bokning, ditt bokningsnummer är " . $bookingNumber;
+	}
 	
 	/**
 	*	Used for deleting a single event
@@ -211,6 +301,13 @@ class Events extends CI_Controller {
     }
   }
 
+	function _checkGuidValid($guid) {
+		if ($guid != "" && !isGuidValid($guid)) {
+			$this->form_validation->set_message('_checkGuidValid', "Fel guid din pucko: %s!");
+			return false;		
+		}
+	}  
+  
 	function _checkDateValid($date) {
 		if ($date != "" && !isDateValid($date)) {
 			$this->form_validation->set_message('_checkDateValid', "Fel datum din pucko: %s!");

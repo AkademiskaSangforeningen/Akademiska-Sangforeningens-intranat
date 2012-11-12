@@ -13,13 +13,15 @@
 		<br/>
 		Plats:
 		<b><?php echo $event->{DB_EVENT_LOCATION}; ?></b>		
-		<br/>		
-		<?php echo $event->{DB_EVENT_DESCRIPTION}; ?>
+		<br/>
+		<div style="max-width: 900px">
+			<?php echo $event->{DB_EVENT_DESCRIPTION}; ?>
+		</div>
 	</div>	
 	<label class="error">
 		<?php echo validation_errors(); ?>
 	</label>
-	<?php echo form_open(CONTROLLER_EVENTS_SAVESINGLE . (isset($eventId) ? "/" . $eventId : ""), array('id' => 'form_editobject')); ?>
+	<?php echo form_open(CONTROLLER_EVENTS_SAVE_REGISTER_DIRECTLY . (isset($eventId) ? "/" . $eventId : ""), array('id' => 'form_editobject')); ?>
 		<p>
 			<legend><span class="requiredsymbol">*</span> <?php echo lang(LANG_KEY_MISC_REQUIRED_FIELD); ?></legend> 
 		</p>		
@@ -44,7 +46,7 @@
 				<input type="text" name="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_LASTNAME ?>" id="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_LASTNAME ?>" value="<?php echo set_value(DB_TABLE_PERSON . "_" . DB_PERSON_LASTNAME, isset($person->{DB_PERSON_LASTNAME}) ? $person->{DB_PERSON_LASTNAME} : "" ); ?>" class="required ui-corner-all" />	
 			</div>
 
-			<div>
+			<div style="clear: both">
 				<label for="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL; ?>">
 					<?php echo lang(LANG_KEY_FIELD_EMAIL); ?>
 				</label>
@@ -59,10 +61,10 @@
 				</label>
 				<span class="requiredsymbol">*</span>
 				<br/>
-				<input type="text" name="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_PHONE ?>" id="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_PHONE ?>" value="<?php echo set_value(DB_TABLE_PERSON . "_" . DB_PERSON_PHONE, isset($person->{DB_PERSON_PHONE}) ? $person->{DB_PERSON_PHONE} : "" ); ?>" class="required ui-corner-all" />
+				<input type="text" name="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_PHONE ?>" id="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_PHONE ?>" value="<?php echo set_value(DB_TABLE_PERSON . "_" . DB_PERSON_PHONE, isset($person->{DB_PERSON_PHONE}) ? $person->{DB_PERSON_PHONE} : "" ); ?>" class="required phone ui-corner-all" />
 			</div>
 
-			<div>
+			<div style="clear: both">
 				<label for="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_ALLERGIES; ?>">
 					<?php echo lang(LANG_KEY_FIELD_ALLERGIES); ?>
 				</label>
@@ -86,13 +88,16 @@
 				<?php } ?>
 			</div>		
 
-			<div style="clear: both; width: auto">
-				<label>Alternativ</label>			
+			<div style="clear: both; width: auto">				
 				<?php
+					$previousCaption = "";
 					$multirowCounter = 1;
 					if (isset($eventItems)) {		
 						foreach($eventItems as $key => $eventItem):
 				?>
+				<?php if ($eventItem->{DB_EVENTITEM_CAPTION} != $previousCaption) { ?>
+					<label><?php echo $eventItem->{DB_EVENTITEM_CAPTION}; ?></label>							
+				<?php } ?>
 						<div>
 							<?php if ($eventItem->{DB_EVENTITEM_TYPE} == 1) { ?>
 								<!-- radio -->
@@ -100,8 +105,7 @@
 							<?php } else if ($eventItem->{DB_EVENTITEM_TYPE} == 2) { ?>
 								<!-- checkbox -->
 								<input type="checkbox" name="<?php echo DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_ID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" />
-							<?php } ?>
-							<?php echo $eventItem->{DB_EVENTITEM_CAPTION}; ?>			
+							<?php } ?>							
 							<?php if (strlen($eventItem->{DB_EVENTITEM_DESCRIPTION}) > 0 ) { ?> - <?php } ?>
 							<?php echo $eventItem->{DB_EVENTITEM_DESCRIPTION}; ?>
 							<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { ?>
@@ -109,6 +113,7 @@
 							<?php } ?>										
 						</div>					
 				<?php
+						$previousCaption = $eventItem->{DB_EVENTITEM_CAPTION};
 						$multirowCounter++;
 						endforeach; 
 					}
@@ -116,7 +121,7 @@
 			</div>
 
 			<?php if ($event->{DB_EVENT_AVECALLOWED} == 1) { ?>
-				<div>
+				<div style="clear: both">
 					<label for="<?php echo DB_TABLE_EVENT . "_" .  DB_EVENT_AVECALLOWED; ?>">
 						<?php echo lang(LANG_KEY_FIELD_AVEC); ?>
 					</label>
@@ -126,7 +131,7 @@
 			<?php } ?>			
 		</fieldset>
 		<?php if ($event->{DB_EVENT_AVECALLOWED} == 1) { ?>
-			<fieldset style="display: none" id="registeravec">							
+			<fieldset style="<?php if (isset($personhasevent->{DB_PERSONHASEVENT_AVECPERSONID}) && !is_null($personhasevent->{DB_PERSONHASEVENT_AVECPERSONID})) { echo ""; } ?>" id="registeravec">							
 				<legend>Min avecs anmälningsuppgifter</legend>			
 			
 				<div>
@@ -147,7 +152,7 @@
 					<input type="text" name="<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSON_LASTNAME ?>" id="<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSON_LASTNAME ?>" value="<?php echo set_value(DB_CUSTOM_AVEC . "_" . DB_PERSON_LASTNAME, isset($personAcec->{DB_PERSON_LASTNAME}) ? $personAcec->{DB_PERSON_LASTNAME} : "" ); ?>" class="required ui-corner-all" />	
 				</div>
 
-				<div>
+				<div style="clear: both">
 					<label for="<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSON_ALLERGIES; ?>">
 						<?php echo lang(LANG_KEY_FIELD_ALLERGIES); ?>
 					</label>
@@ -156,21 +161,23 @@
 				</div>			
 
 				<div style="clear: both; width: auto">
-					<label>Alternativ</label>			
 					<?php
+						$previousCaption = "";
 						$multirowCounter = 1;
 						if (isset($eventItems)) {		
 							foreach($eventItems as $key => $eventItem):
 					?>
+							<?php if ($eventItem->{DB_EVENTITEM_CAPTION} != $previousCaption) { ?>
+								<label><?php echo $eventItem->{DB_EVENTITEM_CAPTION}; ?></label>							
+							<?php } ?>					
 							<div>
 								<?php if ($eventItem->{DB_EVENTITEM_TYPE} == 1) { ?>
 									<!-- radio -->
-									<input type="radio" name="<?php echo DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_ID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" />
+									<input type="radio" name="<?php echo DB_CUSTOM_AVEC . DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_ID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" />
 								<?php } else if ($eventItem->{DB_EVENTITEM_TYPE} == 2) { ?>
 									<!-- checkbox -->
-									<input type="checkbox" name="<?php echo DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_ID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" />
+									<input type="checkbox" name="<?php echo DB_CUSTOM_AVEC . DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_ID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" />
 								<?php } ?>
-								<?php echo $eventItem->{DB_EVENTITEM_CAPTION}; ?>			
 								<?php if (strlen($eventItem->{DB_EVENTITEM_DESCRIPTION}) > 0 ) { ?> - <?php } ?>
 								<?php echo $eventItem->{DB_EVENTITEM_DESCRIPTION}; ?>
 								<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { ?>
@@ -178,6 +185,7 @@
 								<?php } ?>										
 							</div>					
 					<?php
+							$previousCaption = $eventItem->{DB_EVENTITEM_CAPTION};
 							$multirowCounter++;
 							endforeach; 
 						}
@@ -193,15 +201,21 @@
 <script>
 	var executeOnStart = function ($) {		
 		AKADEMEN.initializeButtons();		
-		AKADEMEN.initializeFormValidation();
+		AKADEMEN.initializeFormValidation(true);
 		
 		$('#<?php echo DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED; ?>').on('change.toggleRegisterAvec', function() {
 			var val = $(this).val(),
 				$registerAvec = $('#registeravec');
 			if (val === "0") {
-				$registerAvec.hide();
+				$registerAvec
+					.slideUp("fast")
+					.find('#<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSON_FIRSTNAME ?>, #<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSON_LASTNAME ?>')
+						.removeClass("required");
 			} else {
-				$registerAvec.show();
+				$registerAvec
+					.slideDown("fast")
+					.find('#<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSON_FIRSTNAME ?>, #<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSON_LASTNAME ?>')
+						.addClass("required");					
 			}
 		}).trigger('change.toggleRegisterAvec');
 	};

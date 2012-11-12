@@ -148,7 +148,7 @@ class Persons extends CI_Controller {
 			//Load the person-model
 			$this->load->model(MODEL_PERSON, strtolower(MODEL_PERSON), TRUE);
 			//save the person via the model
-			$this->person->savePerson($data, $personId);
+			$this->person->savePerson($data, $personId, $this->session->userdata(SESSION_PERSONID));
 		
 			//User inserted or updated
 			$client = CLIENT_DESKTOP;
