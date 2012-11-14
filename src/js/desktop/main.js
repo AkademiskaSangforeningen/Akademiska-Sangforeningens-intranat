@@ -170,7 +170,7 @@ var AKADEMEN = (function(){
 				.validate({
 					submitHandler: function(form) {
 						if (defaultPost) {
-							$('#form_editobject').submit();
+							form.submit();
 						} else {					
 							$.ajax({
 								type: 'POST',

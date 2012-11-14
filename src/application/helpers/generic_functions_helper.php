@@ -63,9 +63,13 @@
 			return false;
 		}
 	}
-	
-	function isGuidValid($value) {
-		return true;
+	/**
+	*	Private function for validating GUIDs. Also supports special case when a GUID has a special numeric value	
+	*	added to the end using the syntax _123.
+	*	@return 	true or false
+	*/
+	function isGuidValid($value) {		
+		return preg_match('/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}(_[0-9]{0,2})?$/', $value);
 	}
 	
 	function extractHoursFromDate($date) {

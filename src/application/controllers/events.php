@@ -55,7 +55,7 @@ class Events extends CI_Controller {
 	}	
 	
 	
-	function editRegisterDirectly($eventId = NULL) {
+	function editRegisterDirectly($eventId = NULL, $personId = NULL, $checksum = NULL) {
 		$client = CLIENT_DESKTOP;
 		
 		//Exit if no eventId given
@@ -94,20 +94,20 @@ class Events extends CI_Controller {
 			$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), TRUE);		
 
 			//Validate the form
-			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME,	lang(LANG_KEY_FIELD_FIRSTNAME),						'trim|max_length[50]|required|xss_clean');
-			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME, 	lang(LANG_KEY_FIELD_LASTNAME), 						'trim|max_length[50]|required|xss_clean');
-			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL, 		lang(LANG_KEY_FIELD_EMAIL), 						'trim|max_length[50]|required|valid_email|xss_clean');
-			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES, 	lang(LANG_KEY_FIELD_ALLERGIES), 					'trim|max_length[50]|xss_clean');
-			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PHONE, 		lang(LANG_KEY_FIELD_PHONE), 						'trim|max_length[50]|xss_clean');		
-			$this->form_validation->set_rules(DB_TABLE_PERSONHASEVENT . '_' . DB_PERSONHASEVENT_PAYMENTTYPE, lang(LANG_KEY_FIELD_PAYMENTTYPE), 	'required|trim|max_length[1]|xss_clean');		
-			$this->form_validation->set_rules(DB_TABLE_EVENTITEM . '_' , DB_EVENTITEM_ID . '[]', DB_TABLE_EVENTITEM . '_' , DB_EVENTITEM_ID . '[]',	'callback__checkGuidValid');
-			$this->form_validation->set_rules(DB_TABLE_EVENT . '_' , DB_EVENT_AVECALLOWED, lang(LANG_KEY_FIELD_AVEC),	'trim|max_length[1],xss_clean|numeric');
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME,	lang(LANG_KEY_FIELD_FIRSTNAME),				'trim|max_length[50]|required|xss_clean');
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME, 	lang(LANG_KEY_FIELD_LASTNAME), 				'trim|max_length[50]|required|xss_clean');
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL, 		lang(LANG_KEY_FIELD_EMAIL), 				'trim|max_length[50]|required|valid_email|xss_clean');
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES, 	lang(LANG_KEY_FIELD_ALLERGIES), 			'trim|max_length[50]|xss_clean');
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PHONE, 		lang(LANG_KEY_FIELD_PHONE), 				'trim|max_length[50]|xss_clean');					
+			$this->form_validation->set_rules(DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', 	DB_PERSONHASEVENTITEM_EVENTITEMID . '[]',	'trim|callback__checkGuidValid');
+			$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED, 	lang(LANG_KEY_FIELD_AVEC),					'trim|max_length[1]|xss_clean|numeric');
+			$this->form_validation->set_rules(DB_TABLE_PERSONHASEVENT . '_' . DB_PERSONHASEVENT_PAYMENTTYPE, lang(LANG_KEY_FIELD_PAYMENTTYPE), 'required|trim|max_length[1]|xss_clean');		
 			
 			if ($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED) == 1) {
-				$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_PERSON_FIRSTNAME,	lang(LANG_KEY_FIELD_FIRSTNAME),						'trim|max_length[50]|required|xss_clean');
-				$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_PERSON_LASTNAME, 	lang(LANG_KEY_FIELD_LASTNAME), 						'trim|max_length[50]|required|xss_clean');
-				$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_PERSON_ALLERGIES, 	lang(LANG_KEY_FIELD_ALLERGIES), 					'trim|max_length[50]|xss_clean');
-				$this->form_validation->set_rules(DB_CUSTOM_AVEC . DB_TABLE_EVENTITEM . '_' , DB_EVENTITEM_ID . '[]', DB_CUSTOM_AVEC . DB_TABLE_EVENTITEM . '_' , DB_EVENTITEM_ID . '[]',	'callback__checkGuidValid');
+				$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_PERSON_FIRSTNAME,	lang(LANG_KEY_FIELD_FIRSTNAME),			'trim|max_length[50]|required|xss_clean');
+				$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_PERSON_LASTNAME, 	lang(LANG_KEY_FIELD_LASTNAME), 			'trim|max_length[50]|required|xss_clean');
+				$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_PERSON_ALLERGIES, 	lang(LANG_KEY_FIELD_ALLERGIES), 		'trim|max_length[50]|xss_clean');
+				$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID . '[]',	'trim|callback__checkGuidValid');
 			}
 			
 			//If errors found, redraw the login form to the user
@@ -116,11 +116,12 @@ class Events extends CI_Controller {
 				$data['event'] 		= $this->event->getEvent($eventId);
 				$data['eventId'] 	= $eventId;
 				$data['eventItems'] = $this->eventitem->getEventItems($eventId);			
-				$this->load->view($client . VIEW_CONTENT_EVENTS_EDITSINGLE, $data);
+				$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
+				$this->load->view($client . VIEW_CONTENT_EVENTS_EDITREGISTERDIRECTLY, $data);			
+				$this->load->view($client . VIEW_GENERIC_FOOTER);
 			} else {
 				//Get personId if found using the email address and save the person data
 				$personId = $this->person->getPersonIdUsingEmail($this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL));
-
 				$personData = array(		
 					DB_PERSON_FIRSTNAME	=> $this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME),
 					DB_PERSON_LASTNAME	=> $this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME),
@@ -131,9 +132,14 @@ class Events extends CI_Controller {
 				$personId = $this->person->savePerson($personData, $personId, $personId);
 				
 				// Save all event items for the person
-				$eventItemIds = $this->input->post(DB_TABLE_EVENTITEM . '_' . DB_EVENTITEM_ID);								
-				foreach ($eventItemIds as $eventItemId) {
-					$this->eventitem->savePersonHasEventItem($personId, $eventItemId, 1, $personId);
+				$eventItemIds = $this->input->post(DB_PERSONHASEVENTITEM_EVENTITEMID);								
+				foreach ($eventItemIds as &$eventItemId) {
+					$eventItemAmount = (strlen($eventItemId) > 37) ? substr($eventItemId, 37) : 1;
+					if (strlen($eventItemId) > 37 && intval($eventItemAmount) == 0) {
+						continue;
+					}					
+					$eventItemId = substr($eventItemId, 0, 36);						
+					$this->eventitem->savePersonHasEventItem($personId, $eventItemId, $eventItemAmount, $personId);
 				}
 				// Delete orphan event items for the person
 				$this->eventitem->deleteOrphanPersonHasEventItem($personId, $eventId, $eventItemIds);
@@ -149,9 +155,14 @@ class Events extends CI_Controller {
 					$avecId = $this->person->savePerson($avecData, $avecId, $personId);
 					
 					// Save all event items for the avec
-					$avecEventItemIds = $this->input->post(DB_CUSTOM_AVEC . DB_TABLE_EVENTITEM . '_' . DB_EVENTITEM_ID);
+					$avecEventItemIds = $this->input->post(DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID);
 					foreach ($avecEventItemIds as $eventItemId) {
-						$this->eventitem->savePersonHasEventItem($avecId, $eventItemId, 1, $personId);
+						$eventItemAmount = (strlen($eventItemId) > 37) ? substr($eventItemId, 37) : 1;
+						if (strlen($eventItemId) > 37 && intval($eventItemAmount) == 0) {
+							continue;
+						}						
+						$eventItemId = substr($eventItemId, 0, 36);						
+						$this->eventitem->savePersonHasEventItem($avecId, $eventItemId, $eventItemAmount, $personId);
 					}
 
 					// Delete orphan event items for the avec
@@ -212,7 +223,7 @@ class Events extends CI_Controller {
 		//Validate the fields
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_NAME,								lang(LANG_KEY_FIELD_NAME),					'trim|max_length[255]|required|xss_clean');
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_LOCATION, 						lang(LANG_KEY_FIELD_LOCATION),				'trim|max_length[255]|xss_clean');
-    $this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_PRICE, 						lang(LANG_KEY_FIELD_LOCATION),				'trim|max_length[255]|xss_clean');
+		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_PRICE, 							lang(LANG_KEY_FIELD_LOCATION),				'trim|max_length[255]|xss_clean');
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_STARTDATE,						lang(LANG_KEY_FIELD_STARTDATE), 			'trim|max_length[10]|required|callback__checkDateValid');
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_STARTDATE . PREFIX_HH,			lang(LANG_KEY_FIELD_STARTDATE), 			'trim|max_length[2]|is_natural');
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_STARTDATE . PREFIX_MM,			lang(LANG_KEY_FIELD_STARTDATE), 			'trim|max_length[2]|is_natural');		
@@ -246,8 +257,7 @@ class Events extends CI_Controller {
 				DB_EVENT_PRICE 					=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PRICE),
 				DB_EVENT_STARTDATE 				=> formatDateODBC($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_STARTDATE), 
 																$this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_STARTDATE . PREFIX_HH), 
-																$this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_STARTDATE . PREFIX_MM)),
-						
+																$this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_STARTDATE . PREFIX_MM)),						
 				DB_EVENT_ENDDATE 				=> formatDateODBC($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_ENDDATE), 
 																$this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_ENDDATE . PREFIX_HH), 
 															$this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_ENDDATE . PREFIX_MM)),
@@ -320,14 +330,18 @@ class Events extends CI_Controller {
 	function _checkGuidValid($guid) {
 		if ($guid != "" && !isGuidValid($guid)) {
 			$this->form_validation->set_message('_checkGuidValid', "Fel guid din pucko: %s!");
-			return false;		
+			return FALSE;		
+		} else {
+			return TRUE;
 		}
 	}  
   
 	function _checkDateValid($date) {
 		if ($date != "" && !isDateValid($date)) {
 			$this->form_validation->set_message('_checkDateValid', "Fel datum din pucko: %s!");
-			return false;		
+			return FALSE;		
+		} else {
+			return TRUE;
 		}
 	}
 
