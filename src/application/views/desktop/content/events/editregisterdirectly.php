@@ -102,10 +102,10 @@
 							<?php if ($eventItem->{DB_EVENTITEM_MAXPCS} == 0) { ?>
 								<?php if ($eventItem->{DB_EVENTITEM_TYPE} == 1) { ?>
 									<!-- radio -->
-									<input type="radio" name="<?php echo DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" <?php echo set_radio(DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', $eventItem->{DB_EVENTITEM_ID}); ?> />
+									<input type="radio" name="<?php echo DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" <?php echo set_radio(DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', $eventItem->{DB_EVENTITEM_ID}); ?> data-price="<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { echo $eventItem->{DB_EVENTITEM_AMOUNT}; } ?>" />
 								<?php } else if ($eventItem->{DB_EVENTITEM_TYPE} == 2) { ?>
 									<!-- checkbox -->
-									<input type="checkbox" name="<?php echo DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" <?php echo set_checkbox(DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', $eventItem->{DB_EVENTITEM_ID}); ?> />
+									<input type="checkbox" name="<?php echo DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" <?php echo set_checkbox(DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', $eventItem->{DB_EVENTITEM_ID}); ?> data-price="<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { echo $eventItem->{DB_EVENTITEM_AMOUNT}; } ?>" />
 								<?php } ?>																	
 								<?php if (strlen($eventItem->{DB_EVENTITEM_DESCRIPTION}) > 0 ) { ?> - <?php } ?>
 								<?php echo $eventItem->{DB_EVENTITEM_DESCRIPTION}; ?>
@@ -113,7 +113,7 @@
 									 - pris: <?php echo formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}); ?>						
 								<?php } ?>																															
 							<?php } else { ?>
-								<select name="<?php echo DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" class="short">
+								<select name="<?php echo DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" class="short" data-price="<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { echo $eventItem->{DB_EVENTITEM_AMOUNT}; } ?>">
 									<?php for($i = 0; $i <= ($eventItem->{DB_EVENTITEM_MAXPCS}); $i++) { ?>
 										<option value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>_<?php echo $i; ?>" <?php echo set_select(DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', $eventItem->{DB_EVENTITEM_ID} . '_' . $i); ?> ><?php echo $i; ?> st.</option>
 									<?php } ?>								
@@ -190,10 +190,10 @@
 								<?php if ($eventItem->{DB_EVENTITEM_MAXPCS} == 0) { ?>
 									<?php if ($eventItem->{DB_EVENTITEM_TYPE} == 1) { ?>
 										<!-- radio -->
-										<input type="radio" name="<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" <?php echo set_radio(DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', $eventItem->{DB_EVENTITEM_ID}); ?> />
+										<input type="radio" name="<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" <?php echo set_radio(DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', $eventItem->{DB_EVENTITEM_ID}); ?> data-price="<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { echo $eventItem->{DB_EVENTITEM_AMOUNT}; } ?>" />
 									<?php } else if ($eventItem->{DB_EVENTITEM_TYPE} == 2) { ?>
 										<!-- checkbox -->
-										<input type="checkbox" name="<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" <?php echo set_checkbox(DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', $eventItem->{DB_EVENTITEM_ID}); ?> />
+										<input type="checkbox" name="<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" <?php echo set_checkbox(DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', $eventItem->{DB_EVENTITEM_ID}); ?> data-price="<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { echo $eventItem->{DB_EVENTITEM_AMOUNT}; } ?>" />
 									<?php } ?>																	
 									<?php if (strlen($eventItem->{DB_EVENTITEM_DESCRIPTION}) > 0 ) { ?> - <?php } ?>
 									<?php echo $eventItem->{DB_EVENTITEM_DESCRIPTION}; ?>
@@ -201,7 +201,7 @@
 										 - pris: <?php echo formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}); ?>						
 									<?php } ?>																															
 								<?php } else { ?>
-									<select name="<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" class="short">
+									<select name="<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" class="short" data-price="<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { echo $eventItem->{DB_EVENTITEM_AMOUNT}; } ?>">
 										<?php for($i = 0; $i <= ($eventItem->{DB_EVENTITEM_MAXPCS}); $i++) { ?>
 											<option value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>_<?php echo $i; ?>" <?php echo set_select(DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', $eventItem->{DB_EVENTITEM_ID} . '_' . $i); ?> ><?php echo $i; ?> st.</option>
 										<?php } ?>								
@@ -221,7 +221,10 @@
 				</div>			
 			
 			</fieldset>			
-		<?php } ?>		
+		<?php } ?>
+		<div style="font-weight: bold">
+			Totalt: <span id="totalprice"></span> euro
+		</div>
 		<button type="submit" class="button">Anmäl mig</button>
 	</form>
 </div>
@@ -236,17 +239,36 @@
 				$registerAvec = $('#registeravec');
 			if (val === "0") {
 				$registerAvec
-					.slideUp("fast")
+					.slideUp("fast", function() {
+						$('input[data-price], select[data-price]').eq(0).trigger('change.calculateTotalPrice');
+					})
 					.find('#<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSON_FIRSTNAME ?>, #<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSON_LASTNAME ?>')
 						.removeClass("required");
 				$('button[type="submit"] span').text('Anmäl mig');
 			} else {
 				$registerAvec
-					.slideDown("fast")
+					.slideDown("fast", function() {
+						$('input[data-price], select[data-price]').eq(0).trigger('change.calculateTotalPrice');		
+					})
 					.find('#<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSON_FIRSTNAME ?>, #<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSON_LASTNAME ?>')
 						.addClass("required");					
 				$('button[type="submit"] span').text('Anmäl oss');
-			}
+			}						
 		}).trigger('change.toggleRegisterAvec');
+		
+		// Calculate the total sum
+		$('input[data-price], select[data-price]')
+			.on('change.calculateTotalPrice', function () {
+				var totalPrice = 0;
+				$('input[data-price]:checked:visible').each(function() {
+					totalPrice += parseFloat($(this).data('price'));
+				});
+				$('select[data-price]:visible').each(function() {
+					totalPrice += (parseFloat($(this).data('price')) * parseInt($(this).val().substring(37), 10));
+				});
+				$('#totalprice').text(totalPrice);
+			})
+			.eq(0)
+				.trigger('change.calculateTotalPrice');
 	};
 </script>
