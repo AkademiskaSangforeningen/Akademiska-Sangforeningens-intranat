@@ -356,10 +356,13 @@ class Events extends CI_Controller {
 		}
 	}
 
-	function _checkAlreadyRegistreredEmail($email, $eventId) {
-		//TODO: Check if address already registered for event
-		$this->form_validation->set_message('_checkAlreadyRegistreredEmail', 'En person med den angivna e-postadressen är redan anmäld till evenemanget, kontrollera din e-postadress.<br/>Om du vill ändra på din anmälan, använd länken i det e-postmeddelande som skickades åt dig då du första gången anmälde dig.');
-		return FALSE;
+	function _checkAlreadyRegistreredEmail($email, $eventId) {	
+		if($this->event->isEmailAlreadyRegisteredToEvent($email, $eventId)) {
+			$this->form_validation->set_message('_checkAlreadyRegistreredEmail', 'En person med den angivna e-postadressen är redan anmäld till evenemanget, kontrollera din angivna e-postadress.<br/>Om du vill ändra på din anmälan, använd länken i det e-postmeddelande som skickades åt dig då du första gången anmälde dig.');		
+			return FALSE;
+		} else {
+			return TRUE;
+		}
 	}
 	
 	function _checkGuidValid($guid) {

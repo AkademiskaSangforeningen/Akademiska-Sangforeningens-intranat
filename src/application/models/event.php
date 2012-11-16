@@ -144,7 +144,16 @@ class Event extends CI_Model {
 		return $query->result();
 	}
 	
-	
+	function isEmailAlreadyRegisteredToEvent($email, $eventId) {
+		$this->db->select(DB_PERSONHASEVENT_EVENTID);
+		$this->db->from(DB_TABLE_PERSONHASEVENT);
+		$this->db->join(DB_TABLE_PERSON, DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_PERSONID . ' = ' . DB_TABLE_PERSON . '.' . DB_PERSON_ID);		
+		$this->db->where(DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_EVENTID, $eventId);		
+		$this->db->where(DB_TABLE_PERSON . '.' . DB_PERSON_EMAIL, $email);
+		$query = $this->db->get();		
+		
+		return ($query->num_rows() > 0);
+	}
 	
 	// TODO: Join with get_closest_future_events and getEvent
 	function getAttendanceCount($eventId) {
