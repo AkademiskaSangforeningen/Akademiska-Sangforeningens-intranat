@@ -134,11 +134,11 @@ class Events extends CI_Controller {
 				// Save all event items for the person
 				$eventItemIds = $this->input->post(DB_PERSONHASEVENTITEM_EVENTITEMID);								
 				foreach ($eventItemIds as $eventItemId) {
-					$eventItemAmount 		= $this->input->post($eventItemId . '_' . DB_PERSONHASEVENTITEM_AMOUNT);
-					$eventItemDescription 	= $this->input->post($eventItemId . '_' . DB_PERSONHASEVENTITEM_DESCRIPTION);
-					if ($eventItemAmount == FALSE) {
-						$eventItemAmount = 1;
-					}										
+					$eventItemAmount 		= $this->input->post($eventItemId . '_' . DB_PERSONHASEVENTITEM_AMOUNT, TRUE);
+					$eventItemDescription 	= $this->input->post($eventItemId . '_' . DB_PERSONHASEVENTITEM_DESCRIPTION, TRUE);
+						if ($eventItemAmount == FALSE && !isset($_POST[$eventItemId . '_' . DB_PERSONHASEVENTITEM_AMOUNT])) {
+							$eventItemAmount = 1;
+						}									
 					if ($eventItemDescription == FALSE) {
 						$eventItemDescription = NULL;
 					}					
@@ -161,8 +161,8 @@ class Events extends CI_Controller {
 					// Save all event items for the avec
 					$avecEventItemIds = $this->input->post(DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID);
 					foreach ($avecEventItemIds as $eventItemId) {
-						$eventItemAmount 		= $this->input->post(DB_CUSTOM_AVEC . '_' . $eventItemId . '_' . DB_PERSONHASEVENTITEM_AMOUNT);
-						$eventItemDescription 	= $this->input->post(DB_CUSTOM_AVEC . '_' . $eventItemId . '_' . DB_PERSONHASEVENTITEM_DESCRIPTION);
+						$eventItemAmount 		= $this->input->post(DB_CUSTOM_AVEC . '_' . $eventItemId . '_' . DB_PERSONHASEVENTITEM_AMOUNT, TRUE);
+						$eventItemDescription 	= $this->input->post(DB_CUSTOM_AVEC . '_' . $eventItemId . '_' . DB_PERSONHASEVENTITEM_DESCRIPTION, TRUE);
 						if ($eventItemAmount == FALSE && !isset($_POST[DB_CUSTOM_AVEC . '_' . $eventItemId . '_' . DB_PERSONHASEVENTITEM_AMOUNT])) {
 							$eventItemAmount = 1;
 						}
