@@ -17,6 +17,7 @@ class EventItem extends CI_Model {
 		$this->db->select('*');
 		$this->db->from(DB_TABLE_EVENTITEM);
 		$this->db->where(DB_EVENTITEM_EVENTID,	$eventId);
+		$this->db->order_by(DB_EVENTITEM_ROWORDER);
 		$this->db->order_by(DB_EVENTITEM_TYPE);
 		$this->db->order_by(DB_EVENTITEM_CAPTION);
 		$this->db->order_by(DB_EVENTITEM_DESCRIPTION);
@@ -54,7 +55,7 @@ class EventItem extends CI_Model {
 	/**
 	* Function used for saving a single person event item bind
 	*/
-	function savePersonHasEventItem($personId, $eventItemId, $amount, $modifiedBy) {
+	function savePersonHasEventItem($personId, $eventItemId, $amount, $description, $modifiedBy) {
 		$this->db->select(DB_PERSONHASEVENTITEM_PERSONID);
 		$this->db->from(DB_TABLE_PERSONHASEVENTITEM);
 		$this->db->where(DB_PERSONHASEVENTITEM_PERSONID, $personId);
@@ -63,19 +64,21 @@ class EventItem extends CI_Model {
 
 		if ($query->num_rows() != 0) {
 			//UPDATE
-			$this->db->where(DB_PERSONHASEVENTITEM_PERSONID, $personId);
+			$this->db->where(DB_PERSONHASEVENTITEM_PERSONID, 	$personId);
 			$this->db->where(DB_PERSONHASEVENTITEM_EVENTITEMID, $eventItemId);
-			$this->db->set(DB_PERSONHASEVENTITEM_AMOUNT, $amount);
-			$this->db->set(DB_PERSONHASEVENTITEM_MODIFIED, 'NOW()', FALSE);
-			$this->db->set(DB_PERSONHASEVENTITEM_MODIFIEDBY, $modifiedBy);
+			$this->db->set(DB_PERSONHASEVENTITEM_AMOUNT, 		$amount);
+			$this->db->set(DB_PERSONHASEVENTITEM_DESCRIPTION, 	$description);
+			$this->db->set(DB_PERSONHASEVENTITEM_MODIFIED, 		'NOW()', FALSE);
+			$this->db->set(DB_PERSONHASEVENTITEM_MODIFIEDBY, 	$modifiedBy);
 			$this->db->update(DB_TABLE_PERSONHASEVENTITEM);
 		} else {
 			//INSERT
-			$this->db->set(DB_PERSONHASEVENTITEM_PERSONID, $personId);
-			$this->db->set(DB_PERSONHASEVENTITEM_EVENTITEMID, $eventItemId);
-			$this->db->set(DB_PERSONHASEVENTITEM_AMOUNT, $amount);
-			$this->db->set(DB_PERSONHASEVENTITEM_CREATED, 'NOW()', FALSE);
-			$this->db->set(DB_PERSONHASEVENTITEM_CREATEDBY, $modifiedBy);
+			$this->db->set(DB_PERSONHASEVENTITEM_PERSONID, 		$personId);
+			$this->db->set(DB_PERSONHASEVENTITEM_EVENTITEMID, 	$eventItemId);
+			$this->db->set(DB_PERSONHASEVENTITEM_AMOUNT, 		$amount);
+			$this->db->set(DB_PERSONHASEVENTITEM_DESCRIPTION, 	$description);
+			$this->db->set(DB_PERSONHASEVENTITEM_CREATED, 		'NOW()', FALSE);
+			$this->db->set(DB_PERSONHASEVENTITEM_CREATEDBY, 	$modifiedBy);
 			$this->db->insert(DB_TABLE_PERSONHASEVENTITEM);
 		}
 	}

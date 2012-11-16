@@ -8,7 +8,7 @@
 	<fieldset class="ui-corner-all">
 		<legend>Evenemangsinformation</legend>
 	
-		<div>
+		<div class="single-field">
 			<label for="<?php echo DB_TABLE_EVENT . "_" .  DB_EVENT_NAME; ?>">
 				<?php echo lang(LANG_KEY_FIELD_NAME); ?>
 			</label>
@@ -17,7 +17,7 @@
 			<input maxlength="255" type="text" name="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_NAME ?>" id="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_NAME ?>" value="<?php echo set_value(DB_TABLE_EVENT . "_" . DB_EVENT_NAME, isset($event->{DB_EVENT_NAME}) ? $event->{DB_EVENT_NAME} : "" ); ?>" class="required ui-corner-all"/>	
 		</div>
 		
-		<div>
+		<div class="single-field">
 			<label for="<?php echo DB_TABLE_EVENT . "_" .  DB_EVENT_LOCATION; ?>">
 				<?php echo lang(LANG_KEY_FIELD_LOCATION); ?>
 			</label>
@@ -25,7 +25,7 @@
 			<input maxlength="255" type="text" name="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_LOCATION ?>" id="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_LOCATION ?>" value="<?php echo set_value(DB_TABLE_EVENT . "_" . DB_EVENT_LOCATION, isset($event->{DB_EVENT_LOCATION}) ? $event->{DB_EVENT_LOCATION} : "" ); ?>" class="ui-corner-all"/>	
 		</div>		
 		
-		<div>
+		<div class="single-field">
 			<label for="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_STARTDATE; ?>">
 				<?php echo lang(LANG_KEY_FIELD_STARTDATE); ?>
 			</label>
@@ -46,7 +46,7 @@
 			</select>	
 		</div>
 
-		<div>
+		<div class="single-field">
 			<label for="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_ENDDATE; ?>">
 				<?php echo lang(LANG_KEY_FIELD_FINISHDATE); ?>
 			</label>
@@ -66,7 +66,7 @@
 			</select>				
 		</div>	
 
-		<div>
+		<div class="single-field">
 			<label for="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_REGISTRATIONDUEDATE; ?>">
 				<?php echo lang(LANG_KEY_FIELD_ENROLLMENT_DUEDATE); ?>
 			</label>
@@ -86,7 +86,7 @@
 			</select>			
 		</div>
 
-		<div>
+		<div class="single-field">
 			<label for="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTDUEDATE; ?>">
 				<?php echo lang(LANG_KEY_FIELD_PAYMENT_DUEDATE); ?>
 			</label>
@@ -106,7 +106,7 @@
 			</select>			
 		</div>
     
-		<div>
+		<div class="single-field">
 			<label for="<?php echo DB_TABLE_EVENT . "_" .  DB_EVENT_PAYMENTTYPE; ?>[]">
 				<?php echo lang(LANG_KEY_FIELD_PAYMENTTYPE); ?>
 			</label>
@@ -118,7 +118,7 @@
 			</select>			
 		</div>	
 
-		<div>
+		<div class="single-field">
 			<label for="<?php echo DB_TABLE_EVENT . "_" .  DB_EVENT_PARTICIPANT; ?>[]">
 				<?php echo lang(LANG_KEY_FIELD_PARTICIPANT); ?>
 			</label>
@@ -130,7 +130,7 @@
 			</select>			
 		</div>							
 
-		<div>
+		<div class="single-field">
 			<label for="<?php echo DB_TABLE_EVENT . "_" .  DB_EVENT_AVECALLOWED; ?>">
 				<?php echo lang(LANG_KEY_FIELD_AVEC); ?>
 			</label>
@@ -150,8 +150,9 @@
 						<div class="multirow-header">Typ</div>
 						<div class="multirow-field">
 							<select name="<?php echo DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_TYPE ?>" style="width: auto" disabled="disabled" >
-								<option value="1">Valmöjlighet</option>
-								<option value="2">Extra möjlighet</option>
+								<option value="<?php echo EVENT_TYPE_RADIO; ?>">Valmöjlighet</option>
+								<option value="<?php echo EVENT_TYPE_CHECKBOX; ?>">Extra möjlighet</option>
+								<option value="<?php echo EVENT_TYPE_TEXTAREA; ?>">Textbox</option>
 							</select>
 						</div>
 					</div>			
@@ -176,18 +177,47 @@
 					<div style="float: left">
 						<div class="multirow-header">Max antal</div>
 						<div class="multirow-field">
-							<select name="<?php echo DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_MAXPCS ?>" disabled="disabled" style="width: auto">
+							<select name="<?php echo DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_MAXPCS ?>" disabled="disabled" class="short">
 								<option value="0">-</option>
 								<?php for($i = 1; $i < 11; $i++) { ?>
 									<option value="<?php echo $i ?>"><?php echo $i ?></option>							
 								<?php } ?>
 							</select>
 						</div>
-					</div>					
+					</div>				
+					<div style="float: left">
+						<div class="multirow-header">Färdigt vald</div>
+						<div class="multirow-field">
+							<select name="<?php echo DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_PRESELECTED ?>" disabled="disabled" class="short">
+								<?php foreach (getEnum(ENUM_ENABLED) as $key => $val) { ?>
+									<option value="<?php echo $key; ?>" <?php echo set_select(DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_PRESELECTED, $key); ?>><?php echo $val; ?></option>
+								<?php } ?>							
+							</select>
+						</div>
+					</div>
+					<div style="float: left">
+						<div class="multirow-header">Visa för avec</div>
+						<div class="multirow-field">
+							<select name="<?php echo DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_SHOWFORAVEC ?>" disabled="disabled" class="short">
+								<?php foreach (getEnum(ENUM_ENABLED) as $key => $val) { ?>
+									<option value="<?php echo $key; ?>" <?php echo set_select(DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_SHOWFORAVEC, $key); ?>><?php echo $val; ?></option>
+								<?php } ?>							
+							</select>
+						</div>
+					</div>						
+					
+					<div style="float: left">
+						<div class="multirow-header">Ordning</div>
+						<div class="multirow-field">
+							<a href="" class="button" data-icon="ui-icon-arrowthick-1-n" data-text="false">Flytta uppåt</a>
+							<a href="" class="button" data-icon="ui-icon-arrowthick-1-s" data-text="false">Flytta neråt</a>
+						</div>
+					</div>
 					<div style="float: left">
 						<div class="multirow-header">&nbsp;</div>
 						<div class="multirow-field">
 							<input type="hidden" name="<?php echo DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_ID ?>" disabled="disabled" />
+							<input type="hidden" name="<?php echo DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_ROWORDER ?>" disabled="disabled" />
 							<a href="" class="button" data-icon="ui-icon-trash" data-text="false">Radera</a>
 						</div>
 					</div>
@@ -200,9 +230,10 @@
 					<div>
 						<div style="float: left">
 							<div class="multirow-field">
-								<select name="<?php echo DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_TYPE .$multirowCounter ?>" style="width: auto">
-									<option value="1" <?php if (1 == set_value(DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_TYPE, isset($eventItem->{DB_EVENTITEM_TYPE}) ? $eventItem->{DB_EVENTITEM_TYPE} : 1 )) { echo "selected=\"selected\""; } ?>>Valmöjlighet</option>
-									<option value="2" <?php if (2 == set_value(DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_TYPE, isset($eventItem->{DB_EVENTITEM_TYPE}) ? $eventItem->{DB_EVENTITEM_TYPE} : 1 )) { echo "selected=\"selected\""; } ?>>Extra möjlighet</option>
+								<select name="<?php echo DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_TYPE .$multirowCounter ?>" style="width: auto">														
+									<option value="<?php echo EVENT_TYPE_RADIO; ?>" <?php if (EVENT_TYPE_RADIO == set_value(DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_TYPE, isset($eventItem->{DB_EVENTITEM_TYPE}) ? $eventItem->{DB_EVENTITEM_TYPE} : EVENT_TYPE_RADIO )) { echo "selected=\"selected\""; } ?>>Valmöjlighet</option>
+									<option value="<?php echo EVENT_TYPE_CHECKBOX; ?>" <?php if (EVENT_TYPE_CHECKBOX == set_value(DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_TYPE, isset($eventItem->{DB_EVENTITEM_TYPE}) ? $eventItem->{DB_EVENTITEM_TYPE} : EVENT_TYPE_RADIO )) { echo "selected=\"selected\""; } ?>>Extra möjlighet</option>
+									<option value="<?php echo EVENT_TYPE_TEXTAREA; ?>" <?php if (EVENT_TYPE_TEXTAREA == set_value(DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_TYPE, isset($eventItem->{DB_EVENTITEM_TYPE}) ? $eventItem->{DB_EVENTITEM_TYPE} : EVENT_TYPE_RADIO )) { echo "selected=\"selected\""; } ?>>Textbox</option>
 								</select>
 							</div>
 						</div>			
@@ -223,16 +254,41 @@
 						</div>
 						<div style="float: left">
 							<div class="multirow-field">
-								<select name="<?php echo DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_MAXPCS . $multirowCounter; ?>" style="width: auto">
+								<select name="<?php echo DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_MAXPCS . $multirowCounter; ?>" class="short">
 									<option value="0" <?php if (0 == set_value(DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_MAXPCS, isset($eventItem->{DB_EVENTITEM_MAXPCS}) ? $eventItem->{DB_EVENTITEM_MAXPCS} : 0 )) { echo "selected=\"selected\""; } ?>>-</option>
 									<?php for($i = 1; $i < 11; $i++) { ?>
-										<option value="<?php echo $i ?>" <?php if ($i == set_value(DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_MAXPCS, isset($eventItem->{DB_EVENTITEM_MAXPCS}) ? $eventItem->{DB_EVENTITEM_MAXPCS} : 0 )) { echo "selected=\"selected\""; } ?>><?php echo $i ?></option>
+										<option value="<?php echo $i ?>" <?php if ($i == set_value(DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_MAXPCS . $multirowCounter, isset($eventItem->{DB_EVENTITEM_MAXPCS}) ? $eventItem->{DB_EVENTITEM_MAXPCS} : 0 )) { echo "selected=\"selected\""; } ?>><?php echo $i ?></option>
 									<?php } ?>
 								</select>
+							</div>
+						</div>		
+						<div style="float: left">
+							<div class="multirow-field">
+								<select name="<?php echo DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_PRESELECTED  . $multirowCounter; ?>" class="short">
+									<?php foreach (getEnum(ENUM_ENABLED) as $key => $val) { ?>
+										<option value="<?php echo $key; ?>" <?php if ($key == set_value(DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_PRESELECTED . $multirowCounter, isset($eventItem->{DB_EVENTITEM_PRESELECTED}) ? $eventItem->{DB_EVENTITEM_PRESELECTED} : 0 )) { echo "selected=\"selected\""; } ?>><?php echo $val ?></option>
+									<?php } ?>							
+								</select>
+							</div>
+						</div>
+						<div style="float: left">
+							<div class="multirow-field">
+								<select name="<?php echo DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_SHOWFORAVEC  . $multirowCounter; ?>" class="short">
+									<?php foreach (getEnum(ENUM_ENABLED) as $key => $val) { ?>
+										<option value="<?php echo $key; ?>" <?php if ($key == set_value(DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_SHOWFORAVEC . $multirowCounter, isset($eventItem->{DB_EVENTITEM_SHOWFORAVEC}) ? $eventItem->{DB_EVENTITEM_SHOWFORAVEC} : 0 )) { echo "selected=\"selected\""; } ?>><?php echo $val ?></option>
+									<?php } ?>							
+								</select>
+							</div>
+						</div>
+						<div style="float: left">
+							<div class="multirow-field">
+								<a href="" class="button" data-icon="ui-icon-arrowthick-1-n" data-text="false">Flytta uppåt</a>
+								<a href="" class="button" data-icon="ui-icon-arrowthick-1-s" data-text="false">Flytta neråt</a>
 							</div>
 						</div>					
 						<div style="float: left">
 							<div class="multirow-field">
+								<input type="hidden" name="<?php echo DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_ROWORDER . $multirowCounter; ?>" value="<?php echo set_value(DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_ROWORDER, isset($eventItem->{DB_EVENTITEM_ROWORDER}) ? $eventItem->{DB_EVENTITEM_ROWORDER} : "" ); ?>" />
 								<input type="hidden" name="<?php echo DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_ID . $multirowCounter; ?>" value="<?php echo set_value(DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_ID, isset($eventItem->{DB_EVENTITEM_ID}) ? $eventItem->{DB_EVENTITEM_ID} : "" ); ?>" />
 								<a href="" class="button" data-icon="ui-icon-trash" data-text="false">Radera</a>
 							</div>
@@ -264,7 +320,7 @@
 <script>
 	AKADEMEN.initializeButtons('#dialog_form');	
 	
-	$('#multirow-price-button-add')			
+	$('#multirow-price-button-add')
 		.on('click', function () {
 			var nextRow = $('#multirow-price-button-add').data('row') + 1;	
 			$(this).data('row', nextRow)
@@ -283,14 +339,56 @@
 								.end()
 							.insertAfter($('.multirow>div:last'));
 		});
+		
+		$('.multirow').trigger('custom.recalculateRowOrder');
+		
 		return false;		
 	});
 	
-	$('.multirow a')
+	$('.multirow')
+		.on('custom.recalculateRowOrder', function () {
+			var i = 0;
+			$('input[name^="<?php echo DB_TABLE_EVENTITEM; ?>_<?php echo DB_EVENTITEM_ROWORDER; ?>"]').each(function () {
+				$(this).val(i);
+				i++;
+			});	
+			return false;
+		});
+	
+	$('.multirow a[data-icon="ui-icon-trash"]')
 		.on('click', function () {
 			$(this).closest('.multirow>div').remove();
 			return false;
-		});	
+		});		
+		
+	$('.multirow a[data-icon="ui-icon-arrowthick-1-s"]')
+		.on('click', function () {
+			var	$currentRow = $(this).closest('.multirow>div'),
+				$nextRow 	= $currentRow.next();
+				
+			if ($nextRow.length) {
+				$nextRow.after($currentRow.detach());			
+			}
+			
+			$('.multirow').trigger('custom.recalculateRowOrder');
+			
+			return false;
+		});
+		
+	$('.multirow a[data-icon="ui-icon-arrowthick-1-n"]')
+		.on('click', function () {
+			var	$currentRow = $(this).closest('.multirow>div'),
+				$previousRow = $currentRow.prevAll();					
+				
+			if ($previousRow.length > 1) {
+				$previousRow.first().before($currentRow.detach());			
+			}
+			
+			$('.multirow').trigger('custom.recalculateRowOrder');
+			
+			return false;
+		});		
+		
 
 	$('#<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_STARTDATE ?>').datepicker();
 	$('#<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_ENDDATE ?>').datepicker();

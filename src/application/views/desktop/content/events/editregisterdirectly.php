@@ -18,7 +18,7 @@
 			<?php echo $event->{DB_EVENT_DESCRIPTION}; ?>
 		</div>
 	</div>	
-	<label class="error">
+	<label class="error" style="font-size: 1em">
 		<?php echo validation_errors(); ?>
 	</label>
 	<?php echo form_open(CONTROLLER_EVENTS_SAVE_REGISTER_DIRECTLY . (isset($eventId) ? "/" . $eventId : ""), array('id' => 'form_editobject')); ?>
@@ -28,7 +28,7 @@
 		<fieldset class="ui-corner-all">
 			<legend>Mina anmälningsuppgifter</legend>
 
-			<div>
+			<div class="single-field">
 				<label for="<?php echo DB_TABLE_PERSON . "_" .  DB_PERSON_FIRSTNAME; ?>">
 					<?php echo lang(LANG_KEY_FIELD_FIRSTNAME); ?>
 				</label>
@@ -37,7 +37,7 @@
 				<input type="text" name="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_FIRSTNAME ?>" id="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_FIRSTNAME ?>" value="<?php echo set_value(DB_TABLE_PERSON . "_" . DB_PERSON_FIRSTNAME, isset($person->{DB_PERSON_FIRSTNAME}) ? $person->{DB_PERSON_FIRSTNAME} : "" ); ?>" maxlength="50" class="required ui-corner-all" />	
 			</div>
 			
-			<div>
+			<div class="single-field">
 				<label for="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_LASTNAME; ?>">
 					<?php echo lang(LANG_KEY_FIELD_LASTNAME); ?>
 				</label>
@@ -46,7 +46,7 @@
 				<input type="text" name="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_LASTNAME ?>" id="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_LASTNAME ?>" value="<?php echo set_value(DB_TABLE_PERSON . "_" . DB_PERSON_LASTNAME, isset($person->{DB_PERSON_LASTNAME}) ? $person->{DB_PERSON_LASTNAME} : "" ); ?>" maxlength="50" class="required ui-corner-all" />	
 			</div>
 
-			<div style="clear: both">
+			<div class="single-field">
 				<label for="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL; ?>">
 					<?php echo lang(LANG_KEY_FIELD_EMAIL); ?>
 				</label>
@@ -55,7 +55,7 @@
 				<input type="email" name="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL ?>" id="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL ?>" value="<?php echo set_value(DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL, isset($person->{DB_PERSON_EMAIL}) ? $person->{DB_PERSON_EMAIL} : "" ); ?>" maxlength="50" class="required email ui-corner-all" />	
 			</div>
 			
-			<div>
+			<div class="single-field">
 				<label for="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_PHONE; ?>">
 					<?php echo lang(LANG_KEY_FIELD_PHONE); ?>
 				</label>
@@ -64,7 +64,7 @@
 				<input type="text" name="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_PHONE ?>" id="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_PHONE ?>" value="<?php echo set_value(DB_TABLE_PERSON . "_" . DB_PERSON_PHONE, isset($person->{DB_PERSON_PHONE}) ? $person->{DB_PERSON_PHONE} : "" ); ?>" maxlength="50" class="required phone ui-corner-all" />
 			</div>
 
-			<div style="clear: both">
+			<div class="single-field">
 				<label for="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_ALLERGIES; ?>">
 					<?php echo lang(LANG_KEY_FIELD_ALLERGIES); ?>
 				</label>
@@ -72,66 +72,71 @@
 				<input type="text" name="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_ALLERGIES ?>" id="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_ALLERGIES ?>" value="<?php echo set_value(DB_TABLE_PERSON . "_" . DB_PERSON_ALLERGIES, isset($person->{DB_PERSON_ALLERGIES}) ? $person->{DB_PERSON_ALLERGIES} : "" ); ?>" maxlength="255" class="ui-corner-all" />	
 			</div>			
 			
-			<div style="clear: both">
+			<div class="single-field" style="clear: both">
 				<label for="<?php echo DB_TABLE_PERSONHASEVENT . "_" .  DB_PERSONHASEVENT_PAYMENTTYPE; ?>">
 					<?php echo lang(LANG_KEY_FIELD_PAYMENTTYPE); ?>
 				</label>
+				<span class="requiredsymbol">*</span>
 				<br/>
 				<?php if (($event->{DB_EVENT_PAYMENTTYPE} & 1) == 1) { ?>
-					<input style="width: auto" type="radio" name="<?php echo DB_TABLE_PERSONHASEVENT . "_" .  DB_PERSONHASEVENT_PAYMENTTYPE; ?>" id="<?php echo DB_TABLE_PERSONHASEVENT . "_" .  DB_PERSONHASEVENT_PAYMENTTYPE; ?>" value="1" <?php echo set_value(DB_TABLE_PERSONHASEVENT . "_" .  DB_PERSONHASEVENT_PAYMENTTYPE, (isset($personhasevent->{DB_PERSONHASEVENT_PAYMENTTYPE}) ? $personhasevent->{DB_PERSONHASEVENT_PAYMENTTYPE} : "")) ==  1 ? ' checked="checked"' : ''; ?>/>KK
+					<input class="required" style="width: auto" type="radio" name="<?php echo DB_TABLE_PERSONHASEVENT . "_" .  DB_PERSONHASEVENT_PAYMENTTYPE; ?>" id="<?php echo DB_TABLE_PERSONHASEVENT . "_" .  DB_PERSONHASEVENT_PAYMENTTYPE; ?>" value="1" <?php echo set_value(DB_TABLE_PERSONHASEVENT . "_" .  DB_PERSONHASEVENT_PAYMENTTYPE, (isset($personhasevent->{DB_PERSONHASEVENT_PAYMENTTYPE}) ? $personhasevent->{DB_PERSONHASEVENT_PAYMENTTYPE} : "")) ==  1 ? ' checked="checked"' : ''; ?>/>KK<br/>
 				<?php } ?>
 				<?php if (($event->{DB_EVENT_PAYMENTTYPE} & 2) == 2) { ?>
-					<input style="width: auto" type="radio" name="<?php echo DB_TABLE_PERSONHASEVENT . "_" .  DB_PERSONHASEVENT_PAYMENTTYPE; ?>" id="<?php echo DB_TABLE_PERSONHASEVENT . "_" .  DB_PERSONHASEVENT_PAYMENTTYPE; ?>" value="2" <?php echo set_value(DB_TABLE_PERSONHASEVENT . "_" .  DB_PERSONHASEVENT_PAYMENTTYPE, (isset($personhasevent->{DB_PERSONHASEVENT_PAYMENTTYPE}) ? $personhasevent->{DB_PERSONHASEVENT_PAYMENTTYPE} : "")) ==  2 ? ' checked="checked"' : ''; ?>/>Cash
+					<input class="required" style="width: auto" type="radio" name="<?php echo DB_TABLE_PERSONHASEVENT . "_" .  DB_PERSONHASEVENT_PAYMENTTYPE; ?>" id="<?php echo DB_TABLE_PERSONHASEVENT . "_" .  DB_PERSONHASEVENT_PAYMENTTYPE; ?>" value="2" <?php echo set_value(DB_TABLE_PERSONHASEVENT . "_" .  DB_PERSONHASEVENT_PAYMENTTYPE, (isset($personhasevent->{DB_PERSONHASEVENT_PAYMENTTYPE}) ? $personhasevent->{DB_PERSONHASEVENT_PAYMENTTYPE} : "")) ==  2 ? ' checked="checked"' : ''; ?>/>Cash<br/>
 				<?php } ?>				
 				<?php if (($event->{DB_EVENT_PAYMENTTYPE} & 4) == 4) { ?>
-					<input style="width: auto" type="radio" name="<?php echo DB_TABLE_PERSONHASEVENT . "_" .  DB_PERSONHASEVENT_PAYMENTTYPE; ?>" id="<?php echo DB_TABLE_PERSONHASEVENT . "_" .  DB_PERSONHASEVENT_PAYMENTTYPE; ?>" value="4" <?php echo set_value(DB_TABLE_PERSONHASEVENT . "_" .  DB_PERSONHASEVENT_PAYMENTTYPE, (isset($personhasevent->{DB_PERSONHASEVENT_PAYMENTTYPE}) ? $personhasevent->{DB_PERSONHASEVENT_PAYMENTTYPE} : "")) ==  4 ? ' checked="checked"' : ''; ?>/>Konto
+					<input class="required" style="width: auto" type="radio" name="<?php echo DB_TABLE_PERSONHASEVENT . "_" .  DB_PERSONHASEVENT_PAYMENTTYPE; ?>" id="<?php echo DB_TABLE_PERSONHASEVENT . "_" .  DB_PERSONHASEVENT_PAYMENTTYPE; ?>" value="4" <?php echo set_value(DB_TABLE_PERSONHASEVENT . "_" .  DB_PERSONHASEVENT_PAYMENTTYPE, (isset($personhasevent->{DB_PERSONHASEVENT_PAYMENTTYPE}) ? $personhasevent->{DB_PERSONHASEVENT_PAYMENTTYPE} : "")) ==  4 ? ' checked="checked"' : ''; ?>/>Konto<br/>
 				<?php } ?>
-			</div>		
+				<label for="PersonHasEvent_PaymentType" class="error" generated="true"></label>
+			</div>		 
 
 			<div style="clear: both; width: auto">				
 				<?php
 					$previousCaption = "";
 					$multirowCounter = 1;
 					if (isset($eventItems)) {		
-						foreach($eventItems as $key => $eventItem):
+						foreach($eventItems as $key => $eventItem) {
 				?>
-				<?php if ($eventItem->{DB_EVENTITEM_CAPTION} != $previousCaption) { ?>
-					<div style="margin-top: 1em"><label><?php echo $eventItem->{DB_EVENTITEM_CAPTION}; ?></label></div>
-				<?php } ?>
-						<div> 
-							<?php if ($eventItem->{DB_EVENTITEM_MAXPCS} == 0) { ?>
-								<?php if ($eventItem->{DB_EVENTITEM_TYPE} == 1) { ?>
-									<!-- radio -->
-									<input type="radio" name="<?php echo DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" <?php echo set_radio(DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', $eventItem->{DB_EVENTITEM_ID}); ?> data-price="<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { echo $eventItem->{DB_EVENTITEM_AMOUNT}; } ?>" />
-								<?php } else if ($eventItem->{DB_EVENTITEM_TYPE} == 2) { ?>
-									<!-- checkbox -->
-									<input type="checkbox" name="<?php echo DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" <?php echo set_checkbox(DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', $eventItem->{DB_EVENTITEM_ID}); ?> data-price="<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { echo $eventItem->{DB_EVENTITEM_AMOUNT}; } ?>" />
-								<?php } ?>																	
-								<?php if (strlen($eventItem->{DB_EVENTITEM_DESCRIPTION}) > 0 ) { ?> - <?php } ?>
-								<?php echo $eventItem->{DB_EVENTITEM_DESCRIPTION}; ?>
-								<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { ?>
-									 - pris: <?php echo formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}); ?>						
-								<?php } ?>																															
-							<?php } else { ?>
-								<select name="<?php echo DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" class="short" data-price="<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { echo $eventItem->{DB_EVENTITEM_AMOUNT}; } ?>">
-									<?php for($i = 0; $i <= ($eventItem->{DB_EVENTITEM_MAXPCS}); $i++) { ?>
-										<option value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>_<?php echo $i; ?>" <?php echo set_select(DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', $eventItem->{DB_EVENTITEM_ID} . '_' . $i); ?> ><?php echo $i; ?> st.</option>
-									<?php } ?>								
-								</select>							
-								<?php echo $eventItem->{DB_EVENTITEM_DESCRIPTION}; ?>
-								<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { ?>
-									 - pris: <?php echo formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}); ?> per styck
-								<?php } ?>
-							<?php } ?>									
-						</div>					
+							<?php if ($eventItem->{DB_EVENTITEM_CAPTION} != $previousCaption) { ?>
+								<div style="margin-top: 1em"><label><?php echo $eventItem->{DB_EVENTITEM_CAPTION}; ?></label></div>
+							<?php } ?>
+							<div> 
+								<?php if ($eventItem->{DB_EVENTITEM_MAXPCS} == 0) { ?>
+									<?php if ($eventItem->{DB_EVENTITEM_TYPE} == EVENT_TYPE_RADIO) { ?>
+										<!-- radio -->
+										<input type="radio" name="<?php echo DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" <?php echo set_radio(DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', $eventItem->{DB_EVENTITEM_ID}, $eventItem->{DB_EVENTITEM_PRESELECTED}); ?> data-price="<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { echo $eventItem->{DB_EVENTITEM_AMOUNT}; } ?>" />
+									<?php } else if ($eventItem->{DB_EVENTITEM_TYPE} == EVENT_TYPE_CHECKBOX) { ?>
+										<!-- checkbox -->
+										<input type="checkbox" name="<?php echo DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" <?php echo set_checkbox(DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', $eventItem->{DB_EVENTITEM_ID}, $eventItem->{DB_EVENTITEM_PRESELECTED}); ?> data-price="<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { echo $eventItem->{DB_EVENTITEM_AMOUNT}; } ?>" />
+									<?php } else if ($eventItem->{DB_EVENTITEM_TYPE} == EVENT_TYPE_TEXTAREA) { ?>									
+										<textarea name="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>_<?php echo DB_PERSONHASEVENTITEM_DESCRIPTION; ?>" class="ui-corner-all"><?php echo set_value($eventItem->{DB_EVENTITEM_ID} . '_' . DB_PERSONHASEVENTITEM_DESCRIPTION, $eventItem->{DB_EVENTITEM_DESCRIPTION}); ?></textarea>
+										<input type="hidden" name="<?php echo DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" /> 
+									<?php } ?>																	
+									<?php if (strlen($eventItem->{DB_EVENTITEM_DESCRIPTION}) > 0 ) { ?> - <?php } ?>
+									<?php echo $eventItem->{DB_EVENTITEM_DESCRIPTION}; ?>
+									<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { ?>
+										 - pris: <?php echo formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}); ?>						
+									<?php } ?>																															
+								<?php } else { ?>
+									<select name="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>_<?php echo DB_PERSONHASEVENTITEM_AMOUNT; ?>" class="short" data-price="<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { echo $eventItem->{DB_EVENTITEM_AMOUNT}; } ?>">
+										<?php for($i = 0; $i <= ($eventItem->{DB_EVENTITEM_MAXPCS}); $i++) { ?>
+											<option value="<?php echo $i; ?>" <?php echo set_select($eventItem->{DB_EVENTITEM_ID} . '_' . DB_PERSONHASEVENTITEM_AMOUNT, $i); ?>><?php echo $i; ?> st.</option>
+										<?php } ?>								
+									</select>
+									<input type="hidden" name="<?php echo DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" /> 
+									<?php echo $eventItem->{DB_EVENTITEM_DESCRIPTION}; ?>
+									<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { ?>
+										 - pris: <?php echo formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}); ?> per styck
+									<?php } ?>
+								<?php } ?>									
+							</div>					
 				<?php
-						$previousCaption = $eventItem->{DB_EVENTITEM_CAPTION};
-						$multirowCounter++;
-						endforeach; 
+							$previousCaption = $eventItem->{DB_EVENTITEM_CAPTION};
+							$multirowCounter++;
+						}
 					}
 				?>			
 			</div>
-
 			<?php if ($event->{DB_EVENT_AVECALLOWED} == 1) { ?>
 				<div style="clear: both">
 					<label for="<?php echo DB_TABLE_EVENT . "_" .  DB_EVENT_AVECALLOWED; ?>">
@@ -181,19 +186,26 @@
 						$previousCaption = "";
 						$multirowCounter = 1;
 						if (isset($eventItems)) {		
-							foreach($eventItems as $key => $eventItem):
+							foreach($eventItems as $key => $eventItem) {
+					
+								if ($eventItem->{DB_EVENTITEM_SHOWFORAVEC} == FALSE) {
+									continue;
+								}
 					?>
-						<?php if ($eventItem->{DB_EVENTITEM_CAPTION} != $previousCaption) { ?>
-							<div style="margin-top: 1em"><label><?php echo $eventItem->{DB_EVENTITEM_CAPTION}; ?></label></div>
-						<?php } ?>				
+								<?php if ($eventItem->{DB_EVENTITEM_CAPTION} != $previousCaption) { ?>					
+									<div style="margin-top: 1em"><label><?php echo $eventItem->{DB_EVENTITEM_CAPTION}; ?></label></div>
+								<?php } ?>				
 							<div> 
 								<?php if ($eventItem->{DB_EVENTITEM_MAXPCS} == 0) { ?>
-									<?php if ($eventItem->{DB_EVENTITEM_TYPE} == 1) { ?>
+									<?php if ($eventItem->{DB_EVENTITEM_TYPE} == EVENT_TYPE_RADIO) { ?>
 										<!-- radio -->
-										<input type="radio" name="<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" <?php echo set_radio(DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', $eventItem->{DB_EVENTITEM_ID}); ?> data-price="<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { echo $eventItem->{DB_EVENTITEM_AMOUNT}; } ?>" />
-									<?php } else if ($eventItem->{DB_EVENTITEM_TYPE} == 2) { ?>
+										<input type="radio" name="<?php echo DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" <?php echo set_radio(DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', $eventItem->{DB_EVENTITEM_ID}); ?> data-price="<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { echo $eventItem->{DB_EVENTITEM_AMOUNT}; } ?>" />
+									<?php } else if ($eventItem->{DB_EVENTITEM_TYPE} == EVENT_TYPE_CHECKBOX) { ?>
 										<!-- checkbox -->
-										<input type="checkbox" name="<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" <?php echo set_checkbox(DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', $eventItem->{DB_EVENTITEM_ID}); ?> data-price="<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { echo $eventItem->{DB_EVENTITEM_AMOUNT}; } ?>" />
+										<input type="checkbox" name="<?php echo DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" <?php echo set_checkbox(DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', $eventItem->{DB_EVENTITEM_ID}); ?> data-price="<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { echo $eventItem->{DB_EVENTITEM_AMOUNT}; } ?>" />
+									<?php } else if ($eventItem->{DB_EVENTITEM_TYPE} == EVENT_TYPE_TEXTAREA) { ?>									
+										<textarea name="<?php echo DB_CUSTOM_AVEC . '_' . $eventItem->{DB_EVENTITEM_ID}; ?>_<?php echo DB_PERSONHASEVENTITEM_DESCRIPTION; ?>" class="ui-corner-all"><?php echo set_value(DB_CUSTOM_AVEC . '_' . $eventItem->{DB_EVENTITEM_ID} . '_' . DB_PERSONHASEVENTITEM_DESCRIPTION, $eventItem->{DB_EVENTITEM_DESCRIPTION}); ?></textarea>
+										<input type="hidden" name="<?php echo DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" /> 
 									<?php } ?>																	
 									<?php if (strlen($eventItem->{DB_EVENTITEM_DESCRIPTION}) > 0 ) { ?> - <?php } ?>
 									<?php echo $eventItem->{DB_EVENTITEM_DESCRIPTION}; ?>
@@ -201,21 +213,22 @@
 										 - pris: <?php echo formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}); ?>						
 									<?php } ?>																															
 								<?php } else { ?>
-									<select name="<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" class="short" data-price="<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { echo $eventItem->{DB_EVENTITEM_AMOUNT}; } ?>">
+									<select name="<?php echo DB_CUSTOM_AVEC . '_' . $eventItem->{DB_EVENTITEM_ID}; ?>_<?php echo DB_PERSONHASEVENTITEM_AMOUNT; ?>" class="short" data-price="<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { echo $eventItem->{DB_EVENTITEM_AMOUNT}; } ?>">
 										<?php for($i = 0; $i <= ($eventItem->{DB_EVENTITEM_MAXPCS}); $i++) { ?>
-											<option value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>_<?php echo $i; ?>" <?php echo set_select(DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', $eventItem->{DB_EVENTITEM_ID} . '_' . $i); ?> ><?php echo $i; ?> st.</option>
+											<option value="<?php echo $i; ?>" <?php echo set_select(DB_CUSTOM_AVEC . '_' . $eventItem->{DB_EVENTITEM_ID} . '_' . DB_PERSONHASEVENTITEM_AMOUNT, $i); ?>><?php echo $i; ?> st.</option>
 										<?php } ?>								
-									</select>							
+									</select>
+									<input type="hidden" name="<?php echo DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" /> 
 									<?php echo $eventItem->{DB_EVENTITEM_DESCRIPTION}; ?>
 									<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { ?>
-										 - pris: <?php echo formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}); ?> per styck					
+										 - pris: <?php echo formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}); ?> per styck
 									<?php } ?>
 								<?php } ?>									
-							</div>						
+							</div>	
 					<?php
-							$previousCaption = $eventItem->{DB_EVENTITEM_CAPTION};
-							$multirowCounter++;
-							endforeach; 
+								$previousCaption = $eventItem->{DB_EVENTITEM_CAPTION};
+								$multirowCounter++;
+							}
 						}
 					?>			
 				</div>			
@@ -264,7 +277,7 @@
 					totalPrice += parseFloat($(this).data('price'));
 				});
 				$('select[data-price]:visible').each(function() {
-					totalPrice += (parseFloat($(this).data('price')) * parseInt($(this).val().substring(37), 10));
+					totalPrice += (parseFloat($(this).data('price')) * $(this).val());
 				});
 				$('#totalprice').text(totalPrice);
 			})

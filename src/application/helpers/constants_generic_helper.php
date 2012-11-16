@@ -19,3 +19,8 @@ define('SESSION_ACCESSRIGHT',				'AccessRight');
 
 define('PREFIX_HH',							'_hh');
 define('PREFIX_MM',							'_mm');
+
+//Event types
+define('EVENT_TYPE_RADIO',					1);
+define('EVENT_TYPE_CHECKBOX',				2);
+define('EVENT_TYPE_TEXTAREA',				3);

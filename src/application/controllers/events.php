@@ -55,13 +55,13 @@ class Events extends CI_Controller {
 	}	
 	
 	
-	function editRegisterDirectly($eventId = NULL, $personId = NULL, $checksum = NULL) {
+	function editRegisterDirectly($eventId = NULL, $personId = NULL, $hash = NULL) {
 		$client = CLIENT_DESKTOP;
 		
 		//Exit if no eventId given
 		if ($eventId == NULL) {
 			return;
-		}		
+		}
 		
 		//Load languages. As we don't yet know the user's language, we default to swedish
 		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);
@@ -96,7 +96,7 @@ class Events extends CI_Controller {
 			//Validate the form
 			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME,	lang(LANG_KEY_FIELD_FIRSTNAME),				'trim|max_length[50]|required|xss_clean');
 			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME, 	lang(LANG_KEY_FIELD_LASTNAME), 				'trim|max_length[50]|required|xss_clean');
-			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL, 		lang(LANG_KEY_FIELD_EMAIL), 				'trim|max_length[50]|required|valid_email|xss_clean');
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL, 		lang(LANG_KEY_FIELD_EMAIL), 				'trim|max_length[50]|required|valid_email|xss_clean|callback__checkAlreadyRegistreredEmail['. $eventId . ']');
 			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES, 	lang(LANG_KEY_FIELD_ALLERGIES), 			'trim|max_length[50]|xss_clean');
 			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PHONE, 		lang(LANG_KEY_FIELD_PHONE), 				'trim|max_length[50]|xss_clean');					
 			$this->form_validation->set_rules(DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', 	DB_PERSONHASEVENTITEM_EVENTITEMID . '[]',	'trim|callback__checkGuidValid');
@@ -108,7 +108,7 @@ class Events extends CI_Controller {
 				$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_PERSON_LASTNAME, 	lang(LANG_KEY_FIELD_LASTNAME), 			'trim|max_length[50]|required|xss_clean');
 				$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_PERSON_ALLERGIES, 	lang(LANG_KEY_FIELD_ALLERGIES), 		'trim|max_length[50]|xss_clean');
 				$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID . '[]',	'trim|callback__checkGuidValid');
-			}
+			}						
 			
 			//If errors found, redraw the login form to the user
 			if($this->form_validation->run() == FALSE) {
@@ -133,13 +133,17 @@ class Events extends CI_Controller {
 				
 				// Save all event items for the person
 				$eventItemIds = $this->input->post(DB_PERSONHASEVENTITEM_EVENTITEMID);								
-				foreach ($eventItemIds as &$eventItemId) {
-					$eventItemAmount = (strlen($eventItemId) > 37) ? substr($eventItemId, 37) : 1;
-					if (strlen($eventItemId) > 37 && intval($eventItemAmount) == 0) {
-						continue;
+				foreach ($eventItemIds as $eventItemId) {
+					$eventItemAmount 		= $this->input->post($eventItemId . '_' . DB_PERSONHASEVENTITEM_AMOUNT);
+					$eventItemDescription 	= $this->input->post($eventItemId . '_' . DB_PERSONHASEVENTITEM_DESCRIPTION);
+					if ($eventItemAmount == FALSE) {
+						$eventItemAmount = 1;
+					}										
+					if ($eventItemDescription == FALSE) {
+						$eventItemDescription = NULL;
 					}					
-					$eventItemId = substr($eventItemId, 0, 36);						
-					$this->eventitem->savePersonHasEventItem($personId, $eventItemId, $eventItemAmount, $personId);
+					
+					$this->eventitem->savePersonHasEventItem($personId, $eventItemId, $eventItemAmount, $eventItemDescription, $personId);
 				}
 				// Delete orphan event items for the person
 				$this->eventitem->deleteOrphanPersonHasEventItem($personId, $eventId, $eventItemIds);
@@ -157,16 +161,20 @@ class Events extends CI_Controller {
 					// Save all event items for the avec
 					$avecEventItemIds = $this->input->post(DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID);
 					foreach ($avecEventItemIds as $eventItemId) {
-						$eventItemAmount = (strlen($eventItemId) > 37) ? substr($eventItemId, 37) : 1;
-						if (strlen($eventItemId) > 37 && intval($eventItemAmount) == 0) {
-							continue;
-						}						
-						$eventItemId = substr($eventItemId, 0, 36);						
-						$this->eventitem->savePersonHasEventItem($avecId, $eventItemId, $eventItemAmount, $personId);
+						$eventItemAmount 		= $this->input->post(DB_CUSTOM_AVEC . '_' . $eventItemId . '_' . DB_PERSONHASEVENTITEM_AMOUNT);
+						$eventItemDescription 	= $this->input->post(DB_CUSTOM_AVEC . '_' . $eventItemId . '_' . DB_PERSONHASEVENTITEM_DESCRIPTION);
+						if ($eventItemAmount == FALSE && !isset($_POST[DB_CUSTOM_AVEC . '_' . $eventItemId . '_' . DB_PERSONHASEVENTITEM_AMOUNT])) {
+							$eventItemAmount = 1;
+						}
+						if ($eventItemDescription == FALSE) {
+							$eventItemDescription = NULL;
+						}
+						
+						$this->eventitem->savePersonHasEventItem($avecId, $eventItemId, $eventItemAmount, $eventItemDescription, $personId);
 					}
 
 					// Delete orphan event items for the avec
-					$this->eventitem->deleteOrphanPersonHasEventItem($avecId, $eventId, $eventItemIds);					
+					$this->eventitem->deleteOrphanPersonHasEventItem($avecId, $eventId, $avecEventItemIds);					
 				} else if ($avecId != NULL) {
 					// Delete orphan event items for the avec
 					$this->eventitem->deleteOrphanPersonHasEventItem($avecId, $eventId, null);					
@@ -181,15 +189,33 @@ class Events extends CI_Controller {
 					DB_PERSONHASEVENT_PAYMENTTYPE 	=> $this->input->post(DB_TABLE_PERSONHASEVENT . '_' . DB_PERSONHASEVENT_PAYMENTTYPE)				
 				);				
 				$this->event->savePersonHasEvent($personHasEventData, $eventId, $personId);
-			}
-			
-			//redirect(CONTROLLER_EVENTS_CONFIRM_REGISTER_DIRECTLY . "/12345", 'refresh');
+				
+				$hash = md5($eventId . $this->config->item('encryption_key') . $personId);	
+				redirect(CONTROLLER_EVENTS_CONFIRM_REGISTER_DIRECTLY . '/' . $eventId . '/' . $personId . '/' . $hash, 'refresh');
+			}						
 		}
 	}
 	
-	function confirmRegisterDirectly($bookingNumber) {
-	// Checka att bokningsnumret �r ett nummer
-		echo "tack f�r din bokning, ditt bokningsnummer �r " . $bookingNumber;
+	function confirmRegisterDirectly($eventId = NULL, $personId = NULL, $hash = NULL) {
+		//Exit if no eventId or personId is given
+		if ($eventId == NULL || $personId == NULL || $hash == NULL) {
+			return;
+		}			
+
+		//Exit it the hash in the URL isn't correct
+		if (md5($eventId . $this->config->item('encryption_key') . $personId) != $hash) {
+			return;
+		}
+	
+	
+		$client = CLIENT_DESKTOP;
+
+		//Load languages. As we don't yet know the user's language, we default to swedish
+		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);	
+	
+		$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
+		$this->load->view($client . VIEW_CONTENT_EVENTS_CONFIRMREGISTERDIRECTLY);			
+		$this->load->view($client . VIEW_GENERIC_FOOTER);	
 	}
 	
 	/**
@@ -291,7 +317,10 @@ class Events extends CI_Controller {
 					DB_EVENTITEM_CAPTION		=> $this->input->post(DB_TABLE_EVENTITEM . '_' . DB_EVENTITEM_CAPTION . $rowNumber),
 					DB_EVENTITEM_DESCRIPTION	=> $this->input->post(DB_TABLE_EVENTITEM . '_' . DB_EVENTITEM_DESCRIPTION . $rowNumber),
 					DB_EVENTITEM_AMOUNT			=> parseAmount($this->input->post(DB_TABLE_EVENTITEM . '_' . DB_EVENTITEM_AMOUNT . $rowNumber)),
-					DB_EVENTITEM_MAXPCS			=> $this->input->post(DB_TABLE_EVENTITEM . '_' . DB_EVENTITEM_MAXPCS . $rowNumber)
+					DB_EVENTITEM_MAXPCS			=> $this->input->post(DB_TABLE_EVENTITEM . '_' . DB_EVENTITEM_MAXPCS . $rowNumber),					
+					DB_EVENTITEM_PRESELECTED	=> $this->input->post(DB_TABLE_EVENTITEM . '_' . DB_EVENTITEM_PRESELECTED . $rowNumber),
+					DB_EVENTITEM_SHOWFORAVEC	=> $this->input->post(DB_TABLE_EVENTITEM . '_' . DB_EVENTITEM_SHOWFORAVEC . $rowNumber),
+					DB_EVENTITEM_ROWORDER		=> $this->input->post(DB_TABLE_EVENTITEM . '_' . DB_EVENTITEM_ROWORDER . $rowNumber)
 				);
 				
 				$eventItemId = $this->input->post(DB_TABLE_EVENTITEM . '_' . DB_EVENTITEM_ID . $rowNumber);
@@ -313,20 +342,26 @@ class Events extends CI_Controller {
 		}
 	}
   
-  function showEvent($eventId) {
-    $this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
-    $event = $this->event->getEvent($eventId);
-    
-    if($event){
-      $data['event'] = $event;
-      $this->load->view(CLIENT_DESKTOP . VIEW_GENERIC_HEADER);
-      $this->load->view(CLIENT_DESKTOP . '/content/events/showevent', $data);
-      $this->load->view(CLIENT_DESKTOP . VIEW_GENERIC_FOOTER);
-    } else {
-      show_error("Could not find event for id: '" . $eventId . "'");
-    }
-  }
+	function showEvent($eventId) {
+		$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
+		$event = $this->event->getEvent($eventId);
 
+		if($event){
+			$data['event'] = $event;
+			$this->load->view(CLIENT_DESKTOP . VIEW_GENERIC_HEADER);
+			$this->load->view(CLIENT_DESKTOP . '/content/events/showevent', $data);
+			$this->load->view(CLIENT_DESKTOP . VIEW_GENERIC_FOOTER);
+		} else {
+			show_error("Could not find event for id: '" . $eventId . "'");
+		}
+	}
+
+	function _checkAlreadyRegistreredEmail($email, $eventId) {
+		//TODO: Check if address already registered for event
+		$this->form_validation->set_message('_checkAlreadyRegistreredEmail', 'En person med den angivna e-postadressen är redan anmäld till evenemanget, kontrollera din e-postadress.<br/>Om du vill ändra på din anmälan, använd länken i det e-postmeddelande som skickades åt dig då du första gången anmälde dig.');
+		return FALSE;
+	}
+	
 	function _checkGuidValid($guid) {
 		if ($guid != "" && !isGuidValid($guid)) {
 			$this->form_validation->set_message('_checkGuidValid', "Fel guid din pucko: %s!");

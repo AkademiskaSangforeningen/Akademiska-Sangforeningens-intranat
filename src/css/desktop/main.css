@@ -96,7 +96,7 @@ input.error {
 	border: 1px solid red;
 }
 
-input.short {
+input.short , select.short {
 	width: 85px;
 }
 
@@ -107,6 +107,8 @@ input.middle {
 textarea {
 	padding: 4px;
 	width: 535px;
+	margin: 0.5em 0 0.5em 0;
+	border: 1px solid gray;	
 }
 
 table {
@@ -141,6 +143,10 @@ td {
 
 .alignright {
 	text-align: right;
+}
+
+.single-field:nth-child(even) {
+	clear: both;
 }
 
 .multirow-header {

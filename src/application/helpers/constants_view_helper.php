@@ -25,6 +25,7 @@ define('VIEW_CONTENT_EVENTS_LISTALL',					'/content/events/listevents');
 define('VIEW_CONTENT_EVENTS_EDITSINGLE',				'/content/events/editevent');
 define('VIEW_CONTENT_EVENTS_MY_UPCOMING',				'/content/events/myupcoming');
 define('VIEW_CONTENT_EVENTS_EDITREGISTERDIRECTLY',		'/content/events/editregisterdirectly');
+define('VIEW_CONTENT_EVENTS_CONFIRMREGISTERDIRECTLY',	'/content/events/confirmregisterdirectly');
 
 define('VIEW_CONTENT_USERMANAGER_LISTUSERS',    		'/content/usermanager/listusers');
 
