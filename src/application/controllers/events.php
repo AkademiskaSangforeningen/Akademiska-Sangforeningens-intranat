@@ -49,7 +49,7 @@ class Events extends CI_Controller {
 			$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), TRUE);
 			$data['event'] 		= $this->event->getEvent($eventId);
 			$data['eventId'] 	= $eventId;
-			$data['eventItems'] = $this->eventitem->getEventItems($eventId);			
+			$data['eventItems'] = $this->eventitem->getEventItems($eventId, NULL);			
 		}				
 		$this->load->view($client . VIEW_CONTENT_EVENTS_EDITSINGLE, $data);		
 	}	
@@ -63,6 +63,11 @@ class Events extends CI_Controller {
 			return;
 		}
 		
+		//Exit it the hash in the URL isn't correct
+		if ($personId != NULL && md5($eventId . $this->config->item('encryption_key') . $personId) != $hash) {
+			return;
+		}		
+		
 		//Load languages. As we don't yet know the user's language, we default to swedish
 		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);
 		
@@ -70,18 +75,24 @@ class Events extends CI_Controller {
 		$data = array();
 		$data['eventItems'] = array();
 		if (!is_null($eventId)) {
-			$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
-			$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), TRUE);
-			$data['event'] 		= $this->event->getEvent($eventId);
-			$data['eventId'] 	= $eventId;
-			$data['eventItems'] = $this->eventitem->getEventItems($eventId);			
+			$this->load->model(MODEL_EVENT, 	strtolower(MODEL_EVENT), 		TRUE);
+			$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), 	TRUE);
+			$this->load->model(MODEL_PERSON, 	strtolower(MODEL_PERSON), 		TRUE);
+
+			$data['eventId'] 		= $eventId;			
+			$data['event'] 			= $this->event->getEvent($eventId);			
+			$data['personHasEvent']	= $this->event->getPersonHasEvent($eventId, $personId);
+			$data['eventItems'] 	= $this->eventitem->getEventItems($eventId, $personId);			
+			$data['avecEventItems']	= $this->eventitem->getEventItems($eventId, $data['personHasEvent']->{DB_PERSONHASEVENT_AVECPERSONID});
+			$data['person']			= $this->person->getPerson($personId);
+			$data['personAvec'] 	= $this->person->getPerson($data['personHasEvent']->{DB_PERSONHASEVENT_AVECPERSONID});
 		}
-		
+
 		$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
 		$this->load->view($client . VIEW_CONTENT_EVENTS_EDITREGISTERDIRECTLY, $data);			
 		$this->load->view($client . VIEW_GENERIC_FOOTER);
 	}
-	
+
 	function saveRegisterDirectly($eventId) {
 		if (!is_null($eventId)) {
 			//Load the validation library
@@ -98,7 +109,7 @@ class Events extends CI_Controller {
 			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME, 	lang(LANG_KEY_FIELD_LASTNAME), 				'trim|max_length[50]|required|xss_clean');
 			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL, 		lang(LANG_KEY_FIELD_EMAIL), 				'trim|max_length[50]|required|valid_email|xss_clean|callback__checkAlreadyRegistreredEmail['. $eventId . ']');
 			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES, 	lang(LANG_KEY_FIELD_ALLERGIES), 			'trim|max_length[50]|xss_clean');
-			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PHONE, 		lang(LANG_KEY_FIELD_PHONE), 				'trim|max_length[50]|xss_clean');					
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PHONE, 		lang(LANG_KEY_FIELD_PHONE), 				'trim|max_length[50]|xss_clean');
 			$this->form_validation->set_rules(DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', 	DB_PERSONHASEVENTITEM_EVENTITEMID . '[]',	'trim|callback__checkGuidValid');
 			$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED, 	lang(LANG_KEY_FIELD_AVEC),					'trim|max_length[1]|xss_clean|numeric');
 			$this->form_validation->set_rules(DB_TABLE_PERSONHASEVENT . '_' . DB_PERSONHASEVENT_PAYMENTTYPE, lang(LANG_KEY_FIELD_PAYMENTTYPE), 'required|trim|max_length[1]|xss_clean');		
@@ -108,14 +119,25 @@ class Events extends CI_Controller {
 				$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_PERSON_LASTNAME, 	lang(LANG_KEY_FIELD_LASTNAME), 			'trim|max_length[50]|required|xss_clean');
 				$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_PERSON_ALLERGIES, 	lang(LANG_KEY_FIELD_ALLERGIES), 		'trim|max_length[50]|xss_clean');
 				$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID . '[]',	'trim|callback__checkGuidValid');
-			}						
+			}
+			
+			//Validate individual event items' special fields
+			$eventItems = $this->eventitem->getEventItems($eventId, NULL);
+			foreach($eventItems as $key => $eventItem) {
+				$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . $eventItem->{DB_EVENTITEM_ID} . '_' . DB_PERSONHASEVENTITEM_DESCRIPTION, 	DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', 	'trim|max_length[8096]|xss_clean');
+				$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . $eventItem->{DB_EVENTITEM_ID} . '_' . DB_PERSONHASEVENTITEM_AMOUNT, 		DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', 	'trim|numeric|xss_clean');
+				$this->form_validation->set_rules($eventItem->{DB_EVENTITEM_ID} . '_' . DB_PERSONHASEVENTITEM_DESCRIPTION, 							DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', 							'trim|max_length[8096]|xss_clean');
+				$this->form_validation->set_rules($eventItem->{DB_EVENTITEM_ID} . '_' . DB_PERSONHASEVENTITEM_AMOUNT, 								DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', 							'trim|numeric|xss_clean');
+			}
 			
 			//If errors found, redraw the login form to the user
-			if($this->form_validation->run() == FALSE) {
+			if($this->form_validation->run() == FALSE) {										
 				$client = CLIENT_DESKTOP;
 				$data['event'] 		= $this->event->getEvent($eventId);
 				$data['eventId'] 	= $eventId;
-				$data['eventItems'] = $this->eventitem->getEventItems($eventId);			
+				$data['eventItems'] = $eventItems;
+				$data['avecEventItems']	= $eventItems;				
+				
 				$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
 				$this->load->view($client . VIEW_CONTENT_EVENTS_EDITREGISTERDIRECTLY, $data);			
 				$this->load->view($client . VIEW_GENERIC_FOOTER);
@@ -205,8 +227,7 @@ class Events extends CI_Controller {
 		//Exit it the hash in the URL isn't correct
 		if (md5($eventId . $this->config->item('encryption_key') . $personId) != $hash) {
 			return;
-		}
-	
+		}	
 	
 		$client = CLIENT_DESKTOP;
 

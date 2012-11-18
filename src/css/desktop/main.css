@@ -96,7 +96,7 @@ input.error {
 	border: 1px solid red;
 }
 
-input.short , select.short {
+input.short {
 	width: 85px;
 }
 
@@ -181,4 +181,22 @@ td {
 /* Overwrite jQuery UI theme to add more space in ui-tab-panel */
 .ui-tabs-panel {
 	padding: 1em 0.5em !important;
+}
+
+.registerdirectly-map {
+	float: left;
+	margin-left: 1em;
+}
+
+.registerdirectly-map img {
+	border: 1px solid #aaa;
+}
+
+.registerdirectly-header {
+	clear: both;
+}
+
+.registerdirectly-info {
+	float: left;
+	max-width: 450px;
 }

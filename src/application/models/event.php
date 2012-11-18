@@ -38,7 +38,7 @@ class Event extends CI_Model {
 		if ($query->num_rows() == 1) {
 			return $query->row();
 		} else {
-			return false;
+			return FALSE;
 		}		
 	}
 	
@@ -62,6 +62,24 @@ class Event extends CI_Model {
 		}
 		return $eventId;
 	}	
+	
+	function getPersonHasEvent($eventId = NULL, $personId = NULL) {
+		if ($eventId == NULL || $personId == NULL) {
+			return FALSE;
+		}
+
+		$this->db->select('*');			
+		$this->db->from(DB_TABLE_PERSONHASEVENT);
+		$this->db->where(DB_PERSONHASEVENT_EVENTID, $eventId);
+		$this->db->where(DB_PERSONHASEVENT_PERSONID, $personId);						
+		$query = $this->db->get();		
+
+		if ($query->num_rows() == 1) {
+			return $query->row();
+		} else {
+			return FALSE;
+		}				
+	}
 	
 	/**
 	* Function used for saving a single event

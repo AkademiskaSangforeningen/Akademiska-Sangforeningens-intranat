@@ -26,7 +26,7 @@ Class Person extends CI_Model {
 		if ($query->num_rows() == 1) {
 			return $query->row();
 		} else {
-			return false;
+			return FALSE;
 		}
 	}
 
@@ -37,6 +37,10 @@ Class Person extends CI_Model {
 	* @return false if check fails, otherwise returns database result
 	*/	
 	function getPerson($personId) {
+		if ($personId == NULL) {
+			return FALSE;
+		}
+	
 		$this->db->select('*');
 		$this->db->from(DB_TABLE_PERSON);
 		$this->db->where(DB_PERSON_ID,	$personId);
@@ -46,7 +50,7 @@ Class Person extends CI_Model {
 		if ($query->num_rows() == 1) {
 			return $query->row();
 		} else {
-			return false;
+			return FALSE;
 		}		
 	}
 	

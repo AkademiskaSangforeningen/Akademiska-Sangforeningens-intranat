@@ -13,9 +13,13 @@ class EventItem extends CI_Model {
         parent::__construct();
     }
 
-	function getEventItems($eventId) {
-		$this->db->select('*');
-		$this->db->from(DB_TABLE_EVENTITEM);
+	function getEventItems($eventId, $personId) {
+		$this->db->select(DB_TABLE_EVENTITEM . '.*');
+		$this->db->select(DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_EVENTITEMID . ' AS ' . DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_EVENTITEMID, FALSE);
+		$this->db->select(DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_DESCRIPTION . ' AS ' . DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_DESCRIPTION, FALSE);
+		$this->db->select(DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_AMOUNT . ' AS ' . DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_AMOUNT, FALSE);
+		$this->db->from(DB_TABLE_EVENTITEM);	
+		$this->db->join(DB_TABLE_PERSONHASEVENTITEM, DB_TABLE_EVENTITEM . "." . DB_EVENTITEM_ID . ' = ' . DB_TABLE_PERSONHASEVENTITEM . "." . DB_PERSONHASEVENTITEM_EVENTITEMID . ' AND ' .  DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_PERSONID . ' = \'' . $personId . '\'', 'left');		
 		$this->db->where(DB_EVENTITEM_EVENTID,	$eventId);
 		$this->db->order_by(DB_EVENTITEM_ROWORDER);
 		$this->db->order_by(DB_EVENTITEM_TYPE);
