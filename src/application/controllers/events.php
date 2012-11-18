@@ -82,10 +82,12 @@ class Events extends CI_Controller {
 			$data['eventId'] 		= $eventId;			
 			$data['event'] 			= $this->event->getEvent($eventId);			
 			$data['personHasEvent']	= $this->event->getPersonHasEvent($eventId, $personId);
-			$data['eventItems'] 	= $this->eventitem->getEventItems($eventId, $personId);			
-			$data['avecEventItems']	= $this->eventitem->getEventItems($eventId, $data['personHasEvent']->{DB_PERSONHASEVENT_AVECPERSONID});
+			$data['eventItems'] 	= $this->eventitem->getEventItems($eventId, $personId);						
 			$data['person']			= $this->person->getPerson($personId);
-			$data['personAvec'] 	= $this->person->getPerson($data['personHasEvent']->{DB_PERSONHASEVENT_AVECPERSONID});
+			
+			$personAvecId = isset($data['personHasEvent']->{DB_PERSONHASEVENT_AVECPERSONID}) ? $data['personHasEvent']->{DB_PERSONHASEVENT_AVECPERSONID} : NULL;
+			$data['avecEventItems']	= $this->eventitem->getEventItems($eventId, $personAvecId);
+			$data['personAvec'] 	= $this->person->getPerson($personAvecId);
 		}
 
 		$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
