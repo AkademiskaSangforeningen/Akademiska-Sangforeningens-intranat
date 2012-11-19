@@ -21,7 +21,7 @@ class Event extends CI_Model {
         // TODO: Make StartDate a bit smarter, so you can see 'Today' events even
         // if the event has no time, which would mean it would be equal to midnight,
         // and would not be shown in the morning of the same day.
-        $query = $this->db->query('SELECT * FROM Event WHERE StartDate>='.time().
+        $query = $this->db->query('SELECT * FROM event WHERE StartDate>='.time().
                                   ' ORDER BY StartDate ASC'.
                                   ($limit ? ' LIMIT '.$this->db->escape($limit) : '')
 								  );
@@ -156,7 +156,7 @@ class Event extends CI_Model {
 		$this->db->select(DB_EVENT_LOCATION);
 		$this->db->select(DB_EVENT_STARTDATE);
 		$this->db->select(DB_EVENT_ENDDATE);
-		$this->db->select('(SELECT COUNT(*) FROM PersonHasEvent AS A WHERE A.EventId = Event.Id) AS Enrolled', FALSE);
+		$this->db->select('(SELECT COUNT(*) FROM personHasEvent AS A WHERE A.EventId = Event.Id) AS Enrolled', FALSE);
 		$this->db->select(DB_PERSONHASEVENT_STATUS);
 		$this->db->from(DB_TABLE_EVENT);
 		$this->db->join(DB_TABLE_PERSONHASEVENT, DB_TABLE_EVENT . '.' . DB_EVENT_ID . ' = ' . DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_EVENTID, 'LEFT OUTER');
@@ -183,13 +183,13 @@ class Event extends CI_Model {
 	
 	// TODO: Join with get_closest_future_events and getEvent
 	function getAttendanceCount($eventId) {
-        $query = $this->db->query('COUNT PersonId FROM Personhasevent WHERE EventId = ' . $eventId);
+        $query = $this->db->query('COUNT PersonId FROM personhasevent WHERE EventId = ' . $eventId);
         return $query->result();		
 	}
 	
 	//TODO: Clean up to only include necessary rows
 	function getGuestList($eventId) {
-        $query = $this->db->query('SELECT a.*, b.* FROM Personhasevent a, Person b WHERE a.PersonId = b.Id AND EventId = "' . $eventId . '"');
+        $query = $this->db->query('SELECT a.*, b.* FROM personhasevent a, Person b WHERE a.PersonId = b.Id AND EventId = "' . $eventId . '"');
         return $query->result();		
 	}    
 }

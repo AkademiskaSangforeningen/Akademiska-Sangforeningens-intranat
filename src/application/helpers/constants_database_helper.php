@@ -7,7 +7,7 @@
 */
 
 //Table Event
-define('DB_TABLE_EVENT',					'Event');
+define('DB_TABLE_EVENT',					'event');
 define('DB_EVENT_ID',						'Id');
 define('DB_EVENT_NAME',						'Name');
 define('DB_EVENT_STARTDATE',				'StartDate');
@@ -30,7 +30,7 @@ define('DB_EVENT_PARTICIPANT',				'Participant');
 define('DB_EVENT_AVECALLOWED',				'AvecAllowed');
 
 //Table EventItem
-define('DB_TABLE_EVENTITEM',				'EventItem');
+define('DB_TABLE_EVENTITEM',				'eventitem');
 define('DB_EVENTITEM_ID',					'Id');
 define('DB_EVENTITEM_EVENTID',				'EventId');
 define('DB_EVENTITEM_TYPE',					'Type');
@@ -47,7 +47,7 @@ define('DB_EVENTITEM_MODIFIED',				'Modified');
 define('DB_EVENTITEM_MODIFIEDBY',			'ModifiedBy');
 
 //Table PaymentType
-define('DB_TABLE_PAYMENTTYPE',				'PaymentType');
+define('DB_TABLE_PAYMENTTYPE',				'paymenttype');
 define('DB_PAYMENTTYPE_ID',					'Id');
 define('DB_PAYMENTTYPE_NAME',				'Name');
 define('DB_PAYMENTTYPE_CREATED',			'Created');
@@ -56,7 +56,7 @@ define('DB_PAYMENTTYPE_MODIFIED',			'Modified');
 define('DB_PAYMENTTYPE_MODIFIEDBY',			'ModifiedBy');
 
 //Table Person
-define('DB_TABLE_PERSON',					'Person');
+define('DB_TABLE_PERSON',					'person');
 define('DB_PERSON_ID',						'Id');
 define('DB_PERSON_ACCESSRIGHT',				'AccessRight');
 define('DB_PERSON_FIRSTNAME',				'FirstName');
@@ -78,7 +78,7 @@ define('DB_PERSON_MODIFIED',				'Modified');
 define('DB_PERSON_MODIFIEDBY',				'ModifiedBy');
 
 //Table PersonHasEvent
-define('DB_TABLE_PERSONHASEVENT',			'PersonHasEvent');
+define('DB_TABLE_PERSONHASEVENT',			'personhasevent');
 define('DB_PERSONHASEVENT_PERSONID',		'PersonId');
 define('DB_PERSONHASEVENT_EVENTID',			'EventId');
 define('DB_PERSONHASEVENT_STATUS',			'Status');
@@ -92,7 +92,7 @@ define('DB_PERSONHASEVENT_MODIFIED',		'Modified');
 define('DB_PERSONHASEVENT_MODIFIEDBY',		'ModifiedBy');
 
 //Table PersonHasEventItem
-define('DB_TABLE_PERSONHASEVENTITEM',		'PersonHasEventItem');
+define('DB_TABLE_PERSONHASEVENTITEM',		'personhaseventitem');
 define('DB_PERSONHASEVENTITEM_PERSONID',	'PersonId');
 define('DB_PERSONHASEVENTITEM_EVENTITEMID',	'EventItemId');
 define('DB_PERSONHASEVENTITEM_AMOUNT',		'Amount');
@@ -103,7 +103,7 @@ define('DB_PERSONHASEVENTITEM_MODIFIED',	'Modified');
 define('DB_PERSONHASEVENTITEM_MODIFIEDBY',	'ModifiedBy');
 
 //Table Transaction
-define('DB_TABLE_TRANSACTION',				'Transaction');
+define('DB_TABLE_TRANSACTION',				'transaction');
 define('DB_TRANSACTION_ID',					'Id');
 define('DB_TRANSACTION_PERSONID',			'PersonId');
 define('DB_TRANSACTION_TRANSACTIONDATE',	'TransactionDate');
