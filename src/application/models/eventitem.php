@@ -13,14 +13,17 @@ class EventItem extends CI_Model {
         parent::__construct();
     }
 
-	function getEventItems($eventId, $personId) {
+	function getEventItems($eventId, $personId, $onlyShowRegistered = FALSE) {
 		$this->db->select(DB_TABLE_EVENTITEM . '.*');
 		$this->db->select(DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_EVENTITEMID . ' AS ' . DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_EVENTITEMID, FALSE);
 		$this->db->select(DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_DESCRIPTION . ' AS ' . DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_DESCRIPTION, FALSE);
 		$this->db->select(DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_AMOUNT . ' AS ' . DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_AMOUNT, FALSE);
 		$this->db->from(DB_TABLE_EVENTITEM);	
-		$this->db->join(DB_TABLE_PERSONHASEVENTITEM, DB_TABLE_EVENTITEM . "." . DB_EVENTITEM_ID . ' = ' . DB_TABLE_PERSONHASEVENTITEM . "." . DB_PERSONHASEVENTITEM_EVENTITEMID . ' AND ' .  DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_PERSONID . ' = \'' . $personId . '\'', 'left');		
+		$this->db->join(DB_TABLE_PERSONHASEVENTITEM, DB_TABLE_EVENTITEM . "." . DB_EVENTITEM_ID . ' = ' . DB_TABLE_PERSONHASEVENTITEM . "." . DB_PERSONHASEVENTITEM_EVENTITEMID . ' AND ' .  DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_PERSONID . ' = \'' . $personId . '\'', 'left');				
 		$this->db->where(DB_EVENTITEM_EVENTID,	$eventId);
+		if ($onlyShowRegistered	== TRUE) {
+			$this->db->where(DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_PERSONID, $personId);
+		}
 		$this->db->order_by(DB_EVENTITEM_ROWORDER);
 		$this->db->order_by(DB_EVENTITEM_TYPE);
 		$this->db->order_by(DB_EVENTITEM_CAPTION);
@@ -87,13 +90,15 @@ class EventItem extends CI_Model {
 		}
 	}
 
-	function deleteOrphanPersonHasEventItem($personId, $eventId, $eventItemIds) {
+	function deleteOrphanPersonHasEventItem($personId, $eventId, $eventItemIds = NULL) {
 		$this->db->select(DB_PERSONHASEVENTITEM_EVENTITEMID);
 		$this->db->from(DB_TABLE_PERSONHASEVENTITEM);
 		$this->db->join(DB_TABLE_EVENTITEM, DB_TABLE_PERSONHASEVENTITEM . "." . DB_PERSONHASEVENTITEM_EVENTITEMID . " = " . DB_TABLE_EVENTITEM . "." . DB_EVENTITEM_ID);
 		$this->db->where(DB_TABLE_PERSONHASEVENTITEM . "." . DB_PERSONHASEVENTITEM_PERSONID, $personId);
 		$this->db->where(DB_TABLE_EVENTITEM . "." . DB_EVENTITEM_EVENTID, $eventId);
-		$this->db->where_not_in(DB_TABLE_PERSONHASEVENTITEM . "." . DB_PERSONHASEVENTITEM_EVENTITEMID, $eventItemIds);
+		if ($eventItemIds != null) {
+			$this->db->where_not_in(DB_TABLE_PERSONHASEVENTITEM . "." . DB_PERSONHASEVENTITEM_EVENTITEMID, $eventItemIds);
+		}
 		$query = $this->db->get();
 
 		if ($query->num_rows() > 0) {

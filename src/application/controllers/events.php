@@ -47,6 +47,7 @@ class Events extends CI_Controller {
 		if (!is_null($eventId)) {
 			$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
 			$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), TRUE);
+			
 			$data['event'] 		= $this->event->getEvent($eventId);
 			$data['eventId'] 	= $eventId;
 			$data['eventItems'] = $this->eventitem->getEventItems($eventId, NULL);			
@@ -66,7 +67,7 @@ class Events extends CI_Controller {
 		//Exit it the hash in the URL isn't correct
 		if ($personId != NULL && md5($eventId . $this->config->item('encryption_key') . $personId) != $hash) {
 			return;
-		}		
+		}
 		
 		//Load languages. As we don't yet know the user's language, we default to swedish
 		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);
@@ -79,7 +80,9 @@ class Events extends CI_Controller {
 			$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), 	TRUE);
 			$this->load->model(MODEL_PERSON, 	strtolower(MODEL_PERSON), 		TRUE);
 
-			$data['eventId'] 		= $eventId;			
+			$data['eventId'] 		= $eventId;
+			$data['personId'] 		= $personId;
+			$data['hash'] 			= $hash;
 			$data['event'] 			= $this->event->getEvent($eventId);			
 			$data['personHasEvent']	= $this->event->getPersonHasEvent($eventId, $personId);
 			$data['eventItems'] 	= $this->eventitem->getEventItems($eventId, $personId);						
@@ -91,11 +94,18 @@ class Events extends CI_Controller {
 		}
 
 		$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
-		$this->load->view($client . VIEW_CONTENT_EVENTS_EDITREGISTERDIRECTLY, $data);			
+		$this->load->view($client . VIEW_CONTENT_EVENTS_EDIT_REGISTER_DIRECTLY, $data);			
 		$this->load->view($client . VIEW_GENERIC_FOOTER);
 	}
 
-	function saveRegisterDirectly($eventId) {
+	function saveRegisterDirectly($eventId, $personId = NULL, $hash = NULL) {	
+		//Exit it the hash in the URL isn't correct
+		if ($personId != NULL && md5($eventId . $this->config->item('encryption_key') . $personId) != $hash) {
+			return;
+		}
+		
+		$updateRegistration = ($personId != NULL);
+	
 		if (!is_null($eventId)) {
 			//Load the validation library
 			$this->load->library('form_validation');
@@ -104,12 +114,17 @@ class Events extends CI_Controller {
 			//Load module
 			$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
 			$this->load->model(MODEL_PERSON, strtolower(MODEL_PERSON), TRUE);
-			$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), TRUE);		
+			$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), TRUE);
 
 			//Validate the form
 			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME,	lang(LANG_KEY_FIELD_FIRSTNAME),				'trim|max_length[50]|required|xss_clean');
 			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME, 	lang(LANG_KEY_FIELD_LASTNAME), 				'trim|max_length[50]|required|xss_clean');
-			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL, 		lang(LANG_KEY_FIELD_EMAIL), 				'trim|max_length[50]|required|valid_email|xss_clean|callback__checkAlreadyRegistreredEmail['. $eventId . ']');
+			
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL, 		lang(LANG_KEY_FIELD_EMAIL), 				'trim|max_length[50]|required|valid_email|xss_clean');
+			if ($personId == NULL) {
+				$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL, 	lang(LANG_KEY_FIELD_EMAIL),					'callback__checkAlreadyRegistreredEmail['. $eventId . ']');
+			}			
+			
 			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES, 	lang(LANG_KEY_FIELD_ALLERGIES), 			'trim|max_length[50]|xss_clean');
 			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PHONE, 		lang(LANG_KEY_FIELD_PHONE), 				'trim|max_length[50]|xss_clean');
 			$this->form_validation->set_rules(DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', 	DB_PERSONHASEVENTITEM_EVENTITEMID . '[]',	'trim|callback__checkGuidValid');
@@ -135,13 +150,15 @@ class Events extends CI_Controller {
 			//If errors found, redraw the login form to the user
 			if($this->form_validation->run() == FALSE) {										
 				$client = CLIENT_DESKTOP;
-				$data['event'] 		= $this->event->getEvent($eventId);
 				$data['eventId'] 	= $eventId;
+				$data['personId'] 	= $personId;
+				$data['hash'] 		= $hash;				
+				$data['event'] 		= $this->event->getEvent($eventId);				
 				$data['eventItems'] = $eventItems;
 				$data['avecEventItems']	= $eventItems;				
 				
 				$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
-				$this->load->view($client . VIEW_CONTENT_EVENTS_EDITREGISTERDIRECTLY, $data);			
+				$this->load->view($client . VIEW_CONTENT_EVENTS_EDIT_REGISTER_DIRECTLY, $data);			
 				$this->load->view($client . VIEW_GENERIC_FOOTER);
 			} else {
 				//Get personId if found using the email address and save the person data
@@ -214,13 +231,58 @@ class Events extends CI_Controller {
 				);				
 				$this->event->savePersonHasEvent($personHasEventData, $eventId, $personId);
 				
-				$hash = md5($eventId . $this->config->item('encryption_key') . $personId);	
-				redirect(CONTROLLER_EVENTS_CONFIRM_REGISTER_DIRECTLY . '/' . $eventId . '/' . $personId . '/' . $hash, 'refresh');
+				if ($hash == NULL) {
+					$hash = md5($eventId . $this->config->item('encryption_key') . $personId);	
+				}
+				
+				// Send an email to the person
+				$this->_sendConfirmMail($eventId, $personId, $hash, $updateRegistration);
+				
+				redirect(CONTROLLER_EVENTS_CONFIRM_SAVE_REGISTER_DIRECTLY . '/' . $eventId . '/' . $personId . '/' . $hash, 'refresh');
 			}						
 		}
 	}
 	
-	function confirmRegisterDirectly($eventId = NULL, $personId = NULL, $hash = NULL) {
+	function _sendConfirmMail($eventId = NULL, $personId = NULL, $hash = NULL, $updateRegistration = FALSE) {
+		//Exit if no eventId or personId is given
+		if ($eventId == NULL || $personId == NULL || $hash == NULL) {
+			return;
+		}
+		
+		$client = CLIENT_DESKTOP;
+		
+		//Load module
+		$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
+		$this->load->model(MODEL_PERSON, strtolower(MODEL_PERSON), TRUE);
+		$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), TRUE);		
+
+		$data['eventId'] 			= $eventId;
+		$data['personId'] 			= $personId;
+		$data['hash']				= $hash;
+		$data['updateRegistration']	= $updateRegistration;
+		$data['event'] 				= $this->event->getEvent($eventId);			
+		$data['personHasEvent']		= $this->event->getPersonHasEvent($eventId, $personId, TRUE);
+		$data['eventItems'] 		= $this->eventitem->getEventItems($eventId, $personId);						
+		$data['person']				= $this->person->getPerson($personId);		
+		
+		$personAvecId = isset($data['personHasEvent']->{DB_PERSONHASEVENT_AVECPERSONID}) ? $data['personHasEvent']->{DB_PERSONHASEVENT_AVECPERSONID} : NULL;
+		$data['avecEventItems']	= $this->eventitem->getEventItems($eventId, $personAvecId, TRUE);
+		$data['personAvec'] 	= $this->person->getPerson($personAvecId);
+		
+		$this->load->library('email');				
+		$this->email->from('anmalningar@akademen.com', 'Akademiska Sångföreningen');
+		$this->email->to($data['person']->{DB_PERSON_EMAIL}); 
+		$this->email->bcc('anmalningar@akademen.com');
+		if ($updateRegistration) {		
+			$this->email->subject('Din anmälan till ' . $data['event']->{DB_EVENT_NAME} . ' är nu uppdaterad');
+		} else {
+			$this->email->subject('Du är nu anmäld till ' . $data['event']->{DB_EVENT_NAME});
+		}
+		$this->email->message($this->load->view($client . VIEW_CONTENT_EVENTS_CONFIRM_SAVE_REGISTER_MAIL, $data, TRUE));			
+		$this->email->send();	
+	}		
+
+	function confirmSaveRegisterDirectly($eventId = NULL, $personId = NULL, $hash = NULL) {
 		//Exit if no eventId or personId is given
 		if ($eventId == NULL || $personId == NULL || $hash == NULL) {
 			return;
@@ -237,9 +299,92 @@ class Events extends CI_Controller {
 		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);	
 	
 		$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
-		$this->load->view($client . VIEW_CONTENT_EVENTS_CONFIRMREGISTERDIRECTLY);			
+		$this->load->view($client . VIEW_CONTENT_EVENTS_CONFIRM_SAVE_REGISTER_DIRECTLY);			
 		$this->load->view($client . VIEW_GENERIC_FOOTER);	
 	}
+	
+	function cancelRegisterDirectly($eventId = NULL, $personId = NULL, $hash = NULL) {
+		//Exit if no eventId or personId is given
+		if ($eventId == NULL || $personId == NULL || $hash == NULL) {
+			return;
+		}			
+
+		//Exit it the hash in the URL isn't correct
+		if (md5($eventId . $this->config->item('encryption_key') . $personId) != $hash) {
+			return;
+		}
+
+		$client = CLIENT_DESKTOP;
+		
+		$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
+		
+		$data['eventId'] 	= $eventId;
+		$data['personId']	= $personId;
+		$data['hash']		= $hash;
+		$data['event'] 		= $this->event->getEvent($eventId);	
+		
+		$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
+		$this->load->view($client . VIEW_CONTENT_EVENTS_CANCEL_REGISTER_DIRECTLY, $data);			
+		$this->load->view($client . VIEW_GENERIC_FOOTER);		
+	}
+	
+	function saveCancelRegisterDirectly($eventId = NULL, $personId = NULL, $hash = NULL) {
+		//Exit if no eventId or personId is given
+		if ($eventId == NULL || $personId == NULL || $hash == NULL) {
+			return;
+		}			
+
+		//Exit it the hash in the URL isn't correct
+		if (md5($eventId . $this->config->item('encryption_key') . $personId) != $hash) {
+			return;
+		}
+		
+		$this->load->model(MODEL_EVENT, 	strtolower(MODEL_EVENT), 		TRUE);
+		$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), 	TRUE);
+		$this->load->model(MODEL_PERSON, 	strtolower(MODEL_PERSON), 		TRUE);
+		
+		$personAvecId = $this->event->getCurrentAvecForPersonHasEvent($personId, $eventId);				
+		
+		// Delete links between avec and event items
+		if ($personAvecId != null) {
+			$this->eventitem->deleteOrphanPersonHasEventItem($personAvecId, $eventId);
+		}
+		// Delete links between person and event items
+		$this->eventitem->deleteOrphanPersonHasEventItem($personId, $eventId);
+		
+		// Delete link between person and event
+		$this->event->deletePersonHasEvent($eventId, $personId);
+		
+		// Delete the orphan avec
+		if ($personAvecId != null) {
+			$this->person->deletePerson($personAvecId);
+		}
+
+		redirect(CONTROLLER_EVENTS_CONFIRM_CANCEL_REGISTER_DIRECTLY . '/' . $eventId . '/' . $personId . '/' . $hash, 'refresh');	
+	}
+	
+	function confirmCancelRegisterDirectly($eventId = NULL, $personId = NULL, $hash = NULL) {
+		//Exit if no eventId or personId is given
+		if ($eventId == NULL || $personId == NULL || $hash == NULL) {
+			return;
+		}			
+
+		//Exit it the hash in the URL isn't correct
+		if (md5($eventId . $this->config->item('encryption_key') . $personId) != $hash) {
+			return;
+		}	
+	
+		$client = CLIENT_DESKTOP;
+
+		//Load languages. As we don't yet know the user's language, we default to swedish
+		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);	
+	
+		$data['eventId'] = $eventId;
+	
+		$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
+		$this->load->view($client . VIEW_CONTENT_EVENTS_CONFIRM_CANCEL_REGISTER_DIRECTLY, $data);			
+		$this->load->view($client . VIEW_GENERIC_FOOTER);	
+	}	
 	
 	/**
 	*	Used for deleting a single event

@@ -42,12 +42,15 @@ define('CONTROLLER_TRANSACTIONS_ADMIN_EDITSINGLE', CONTROLLER_TRANSACTIONS_ADMIN
 define('CONTROLLER_TRANSACTIONS_ADMIN_SAVESINGLE', CONTROLLER_TRANSACTIONS_ADMIN . '/savesingle');
 
 //Events
-define('CONTROLLER_EVENTS',							'events');
-define('CONTROLLER_EVENTS_LISTALL',					'events/listall');
-define('CONTROLLER_EVENTS_EDITSINGLE',				'events/editsingle');
-define('CONTROLLER_EVENTS_DELETESINGLE',			'events/deletesingle');
-define('CONTROLLER_EVENTS_SAVESINGLE',				'events/savesingle');
-define('CONTROLLER_EVENTS_LIST_ENROLLED',			'events/listenrolled');
-define('CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY',  'events/editregisterdirectly');
-define('CONTROLLER_EVENTS_SAVE_REGISTER_DIRECTLY',  'events/saveregisterdirectly');
-define('CONTROLLER_EVENTS_CONFIRM_REGISTER_DIRECTLY',	'events/confirmregisterdirectly');
+define('CONTROLLER_EVENTS',										'events');
+define('CONTROLLER_EVENTS_LISTALL',								'events/listall');
+define('CONTROLLER_EVENTS_EDITSINGLE',							'events/editsingle');
+define('CONTROLLER_EVENTS_DELETESINGLE',						'events/deletesingle');
+define('CONTROLLER_EVENTS_SAVESINGLE',							'events/savesingle');
+define('CONTROLLER_EVENTS_LIST_ENROLLED',						'events/listenrolled');
+define('CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY',  			'events/editregisterdirectly');
+define('CONTROLLER_EVENTS_SAVE_REGISTER_DIRECTLY',  			'events/saveregisterdirectly');
+define('CONTROLLER_EVENTS_CONFIRM_SAVE_REGISTER_DIRECTLY',		'events/confirmsaveregisterdirectly');
+define('CONTROLLER_EVENTS_CANCEL_REGISTER_DIRECTLY',  			'events/cancelregisterdirectly');
+define('CONTROLLER_SAVE_CANCEL_REGISTER_DIRECTLY',  			'events/savecancelregisterdirectly');
+define('CONTROLLER_EVENTS_CONFIRM_CANCEL_REGISTER_DIRECTLY',	'events/confirmcancelregisterdirectly');

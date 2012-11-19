@@ -111,6 +111,14 @@ class Event extends CI_Model {
 				$this->db->insert(DB_TABLE_PERSONHASEVENT, $data);
 			}
 		}
+	}
+	
+	function deletePersonHasEvent($eventId, $personId) {
+		if (!is_null($eventId) && !is_null($personId)) {
+			$this->db->where(DB_PERSONHASEVENT_EVENTID, $eventId);
+			$this->db->where(DB_PERSONHASEVENT_PERSONID, $personId);
+			$this->db->delete(DB_TABLE_PERSONHASEVENT);			
+		}
 	}	
 
 	/**

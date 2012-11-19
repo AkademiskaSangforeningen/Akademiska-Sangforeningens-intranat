@@ -31,7 +31,7 @@
 			<legend><span class="requiredsymbol">*</span> <?php echo lang(LANG_KEY_MISC_REQUIRED_FIELD); ?></legend> 
 		</p>	
 	</div>
-	<?php echo form_open(CONTROLLER_EVENTS_SAVE_REGISTER_DIRECTLY . (isset($eventId) ? "/" . $eventId : ""), array('id' => 'form_editobject')); ?>
+	<?php echo form_open(CONTROLLER_EVENTS_SAVE_REGISTER_DIRECTLY . (isset($eventId) ? "/" . $eventId : "") . (isset($personId) ? "/" . $personId : "") . (isset($hash) ? "/" . $hash : ""), array('id' => 'form_editobject')); ?>
 		<fieldset class="ui-corner-all">
 			<legend>Mina anmälningsuppgifter</legend>
 
@@ -100,7 +100,6 @@
 			<div style="clear: both; width: auto">				
 				<?php
 					$previousCaption = "";
-					$multirowCounter = 1;
 					if (isset($eventItems)) {		
 						foreach($eventItems as $key => $eventItem) {					
 				?>
@@ -127,7 +126,7 @@
 								<?php } else { ?>
 									<select name="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>_<?php echo DB_PERSONHASEVENTITEM_AMOUNT; ?>" class="short" data-price="<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { echo $eventItem->{DB_EVENTITEM_AMOUNT}; } ?>">
 										<?php for($i = 0; $i <= ($eventItem->{DB_EVENTITEM_MAXPCS}); $i++) { ?>
-											<option value="<?php echo $i; ?>" <?php echo set_select($eventItem->{DB_EVENTITEM_ID} . '_' . DB_PERSONHASEVENTITEM_AMOUNT, $i, $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_AMOUNT}); ?>><?php echo $i; ?> st.</option>
+											<option value="<?php echo $i; ?>" <?php echo set_select($eventItem->{DB_EVENTITEM_ID} . '_' . DB_PERSONHASEVENTITEM_AMOUNT, $i, $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_AMOUNT} == $i); ?>><?php echo $i; ?> st.</option>
 										<?php } ?>
 									</select>
 									<input type="hidden" name="<?php echo DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" /> 
@@ -139,7 +138,6 @@
 							</div>					
 				<?php
 							$previousCaption = $eventItem->{DB_EVENTITEM_CAPTION};
-							$multirowCounter++;
 						}
 					}
 				?>			
@@ -191,7 +189,6 @@
 				<div style="clear: both; width: auto">
 					<?php
 						$previousCaption = "";
-						$multirowCounter = 1;
 						if (isset($avecEventItems)) {		
 							foreach($avecEventItems as $key => $eventItem) {
 					
@@ -222,7 +219,7 @@
 								<?php } else { ?>
 									<select name="<?php echo DB_CUSTOM_AVEC . '_' . $eventItem->{DB_EVENTITEM_ID}; ?>_<?php echo DB_PERSONHASEVENTITEM_AMOUNT; ?>" class="short" data-price="<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { echo $eventItem->{DB_EVENTITEM_AMOUNT}; } ?>">
 										<?php for($i = 0; $i <= ($eventItem->{DB_EVENTITEM_MAXPCS}); $i++) { ?>
-											<option value="<?php echo $i; ?>" <?php echo set_select(DB_CUSTOM_AVEC . '_' . $eventItem->{DB_EVENTITEM_ID} . '_' . DB_PERSONHASEVENTITEM_AMOUNT, $i, $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_AMOUNT}); ?>><?php echo $i; ?> st.</option>
+											<option value="<?php echo $i; ?>" <?php echo set_select(DB_CUSTOM_AVEC . '_' . $eventItem->{DB_EVENTITEM_ID} . '_' . DB_PERSONHASEVENTITEM_AMOUNT, $i, $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_AMOUNT} == $i); ?>><?php echo $i; ?> st.</option>
 										<?php } ?>
 									</select>
 									<input type="hidden" name="<?php echo DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" /> 
@@ -234,7 +231,6 @@
 							</div>	
 					<?php
 								$previousCaption = $eventItem->{DB_EVENTITEM_CAPTION};
-								$multirowCounter++;
 							}
 						}
 					?>			
@@ -290,5 +286,7 @@
 			})
 			.eq(0)
 				.trigger('change.calculateTotalPrice');
+				
+		$('input:first').focus();
 	};
 </script>
