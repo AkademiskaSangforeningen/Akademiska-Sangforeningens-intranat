@@ -19,9 +19,9 @@
 		<div style="max-width: 900px">
 			<?php echo $event->{DB_EVENT_DESCRIPTION}; ?>
 		</div>
-	</div>
+	</div>	
 	<div class="registerdirectly-map">
-		<img src="https://maps.googleapis.com/maps/api/staticmap?center=Grand+Plaza+Mannerheimv%C3%A4gen+50+Helsingfors&zoom=14&size=250x250&sensor=false&markers=mid%7Grand+Plaza+Mannerheimv%C3%A4gen+50+Helsingfors" />
+		<img src="https://maps.googleapis.com/maps/api/staticmap?center=<?php echo urlencode(str_replace(',', ' ', $event->{DB_EVENT_LOCATION})); ?>&zoom=14&size=250x250&sensor=false&markers=mid%7<?php echo urlencode(str_replace(',', ' ', $event->{DB_EVENT_LOCATION})); ?>" />
 	</div>
 	<div style="clear: both">
 	<label class="error" style="font-size: 1em">
