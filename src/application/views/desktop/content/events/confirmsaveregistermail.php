@@ -186,8 +186,8 @@
 				</tr>
 			</table>
 			<p>Betalning bör ske till Akademiska Sångföreningens konto FI97 4055 1810 0000 87 (BIC: HELSFIHH), ange som meddelande i betalningen "jubileum".</p>			
-			<p><a href="http://intra.akademen.com/src/index.php/events/editregisterdirectly/<?php echo $eventId; ?>/<?php echo $personId; ?>/<?php echo $hash; ?>"><b>Klicka här</b></a> för att ändra din anmälan.</p>
-			<p><a href="http://intra.akademen.com/src/index.php/events/cancelregisterdirectly/<?php echo $eventId; ?>/<?php echo $personId; ?>/<?php echo $hash; ?>"><b>Klicka här</b></a> för att annulera din anmälan.</p>
+			<p><a href="<?php echo site_url() . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY; ?>/<?php echo $eventId; ?>/<?php echo $personId; ?>/<?php echo $hash; ?>"><b>Klicka här</b></a> för att ändra din anmälan.</p>
+			<p><a href="<?php echo site_url() . CONTROLLER_EVENTS_CANCEL_REGISTER_DIRECTLY; ?>/<?php echo $eventId; ?>/<?php echo $personId; ?>/<?php echo $hash; ?>"><b>Klicka här</b></a> för att annulera din anmälan.</p>
 			<?php if (isset($event->{DB_EVENT_REGISTRATIONDUEDATE})) { ?>
 				<p>Det är möjligt att ändra eller annulera anmälningen fram till den <b><?php echo formatDateGerman($event->{DB_EVENT_REGISTRATIONDUEDATE}); ?></b>.</p>
 			<?php } ?>
