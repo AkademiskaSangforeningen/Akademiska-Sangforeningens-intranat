@@ -278,7 +278,7 @@
 								}								
 								echo $eventItem->{DB_EVENTITEM_DESCRIPTION};
 								if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) {
-									 echo "- pris: " . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT});
+									 echo " - pris: " . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT});
 								}
 								echo "</b>";
 								echo "<br/>";
@@ -287,7 +287,7 @@
 								echo $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_AMOUNT} . " st. ";
 								echo $eventItem->{DB_EVENTITEM_DESCRIPTION};
 								if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) {
-									 echo "- pris: " . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}) . " per styck";
+									 echo " - pris: " . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}) . " per styck";
 								}
 								echo "</b>";
 								echo "<br/>";
