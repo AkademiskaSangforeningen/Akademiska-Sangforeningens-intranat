@@ -6,7 +6,11 @@
  *
 */
 
-$lang[LANG_KEY_LOGIN_HEADER]					= "Akademiska Sångföreningens intranät";
+$lang[LANG_KEY_HEADER_LOGIN]						= "Akademiska Sångföreningens intranät";
+$lang[LANG_KEY_HEADER_EVENT_REGISTRATION_SUCCEEDED]	= "Anmälningen lyckades";
+$lang[LANG_KEY_HEADER_EVENT_REGISTRATION_CANCELLED] = "Din anmälan är nu annulerad";
+$lang[LANG_KEY_HEADER_EVENT_NOT_FOUND]				= "Evenemanget kunde inte hittas";
+$lang[LANG_KEY_HEADER_EVENT_REGISTRATION_NOT_FOUND]	= "Din anmälan till evenemanget kunde inte hittas";
 
 $lang[LANG_KEY_BUTTON_LOG_IN]					= "Logga in";
 $lang[LANG_KEY_BUTTON_LOGGING_IN]				= "Loggar in dig";
@@ -73,15 +77,20 @@ $lang[LANG_KEY_ENUM_ENABLED_NO]					= "Nej";
 $lang[LANG_KEY_ENUM_ENABLED_YES]				= "Ja";
 
 $lang[LANG_KEY_ERROR_WRONG_CREDENTIALS]			= "Fel användarnamn eller lösenord";
+$lang[LANG_KEY_ERROR_INVALID_DATE]				= "Felaktigt datum: ";
+$lang[LANG_KEY_ERROR_INVALID_GUID]				= "Felaktig GUID: ";
 
 $lang[LANG_KEY_MISC_REQUIRED_FIELD]				= "Obligatoriskt fält";
 
 $lang['signup_submit']							= "Anmäl dig";
 
-$lang['signup_submit']							= "Anmäl dig";
-
 //KK related stuff
 $lang['kk_header']								= "Kvartettkonto";
-$lang['button_transaction_admin_controls'] = "Administrera KK";
+$lang['button_transaction_admin_controls'] 		= "Administrera KK";
 
-
+//Event registration
+$lang[LANG_KEY_BODY_EVENT_REGISTRATION_SUCCEEDED]		= "Du är nu anmäld, ett e-post meddelande har sänts till din angivna e-postadress.<br/>Meddelandet innehåller information hur du ändrar på din anmälan eller annulerar den.";
+$lang[LANG_KEY_BODY_EVENT_YOU_CAN_REREGISTER]			= "Du kan anmäla dig på nytt genom att klicka på länken nedan.";
+$lang[LANG_KEY_BODY_EVENT_CHECK_CORRECT_ADDRESS]		= "Kontrollera att du har angett en korrekt address.";
+$lang[LANG_KEY_BODY_EVENT_EMAIL_ALREADY_REGISTERED]		= "En person med den angivna e-postadressen är redan anmäld till evenemanget, kontrollera din angivna e-postadress.<br/>Om du vill ändra på din anmälan, använd länken i det e-postmeddelande som skickades åt dig då du första gången anmälde dig.";
+$lang[LANG_KEY_LINK_REREGISTER]							= "Anmäl dig på nytt";

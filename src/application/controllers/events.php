@@ -121,7 +121,6 @@ class Events extends CI_Controller {
 
 		$updateRegistration = ($personId != NULL);
 
-
 		//Load the validation library
 		$this->load->library('form_validation');
 
@@ -171,7 +170,11 @@ class Events extends CI_Controller {
 			$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
 			$this->load->view($client . VIEW_CONTENT_EVENTS_EDIT_REGISTER_DIRECTLY, $data);
 			$this->load->view($client . VIEW_GENERIC_FOOTER);
-		} else {
+			
+		} else {		
+			// Start a database transaction
+			$this->db->trans_start();		
+		
 			//Get personId if not set using the email address and save the person data
 			if (!$updateRegistration) {
 				$personId = $this->person->getPersonIdUsingEmail($this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL));
@@ -256,6 +259,9 @@ class Events extends CI_Controller {
 				$hash = md5($eventId . $this->config->item('encryption_key') . $personId);
 			}
 
+			// Commit the transaction
+			$this->db->trans_complete();
+			
 			// Send an email to the person
 			$this->_sendConfirmMail($eventId, $personId, $hash, $updateRegistration);
 
@@ -320,8 +326,8 @@ class Events extends CI_Controller {
 		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);
 		
 		
-		$data['header']	= 'Anmälningen lyckades';
-		$data['body']	= 'Du är nu anmäld, ett e-post meddelande har sänts till din angivna e-postadress.<br/>Meddelandet innehåller information hur du ändrar på din anmälan eller annulerar den.';
+		$data['header']	= lang(LANG_KEY_HEADER_LOGIN);
+		$data['body']	= lang(LANG_KEY_BODY_EVENT_REGISTRATION_SUCCEEDED);
 		
 		$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
 		$this->load->view($client . VIEW_GENERIC_BODY_MESSAGE, $data);
@@ -415,10 +421,10 @@ class Events extends CI_Controller {
 		//Load languages. As we don't yet know the user's language, we default to swedish
 		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);
 
-		$data['header']	= 'Din anmälning är nu annulerad';
-		$data['body']	= 'Du kan anmäla dig på nytt genom att klicka på länken nedan.';
+		$data['header']	= lang(LANG_KEY_HEADER_EVENT_REGISTRATION_CANCELLED);
+		$data['body']	= lang(LANG_KEY_BODY_EVENT_YOU_CAN_REREGISTER);
 		
-		$links['/' . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $eventId] = 'Anmäl dig på nytt';
+		$links['/' . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $eventId] = lang(LANG_KEY_LINK_REREGISTER);
 		$data['links']	= $links;
 		
 		$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
@@ -577,18 +583,18 @@ class Events extends CI_Controller {
 		
 		//Show error message and return if event is not found
 		if ($event === FALSE) {
-			$data['header']	= 'Evenemanget kunde inte hittas';
-			$data['body']	= 'Kontrollera att du har angett en korrekt address.';
+			$data['header']	= lang(LANG_KEY_HEADER_EVENT_NOT_FOUND);
+			$data['body']	= lang(LANG_KEY_BODY_EVENT_CHECK_CORRECT_ADDRESS);
 			
 			$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
 			$this->load->view($client . VIEW_GENERIC_BODY_MESSAGE, $data);
 			$this->load->view($client . VIEW_GENERIC_FOOTER);
 			return FALSE;
 		} else if ($personId != NULL && $personHasEvent === FALSE) {
-			$data['header']	= 'Din anmälan till evenemanget kunde inte hittas';
-			$data['body']	= 'Kontrollera att du har angett en korrekt address.';
+			$data['header']	= lang(LANG_KEY_HEADER_EVENT_REGISTRATION_NOT_FOUND);
+			$data['body']	= lang(LANG_KEY_BODY_EVENT_CHECK_CORRECT_ADDRESS);
 			
-			$links['/' . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $eventId] = 'Anmäl dig på nytt';
+			$links['/' . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $eventId] = lang(LANG_KEY_LINK_REREGISTER);
 			$data['links']	= $links;
 			
 			$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
@@ -602,7 +608,7 @@ class Events extends CI_Controller {
 	
 	function _checkAlreadyRegistreredEmail($email, $eventId) {
 		if($this->event->isEmailAlreadyRegisteredToEvent($email, $eventId)) {
-			$this->form_validation->set_message('_checkAlreadyRegistreredEmail', 'En person med den angivna e-postadressen är redan anmäld till evenemanget, kontrollera din angivna e-postadress.<br/>Om du vill ändra på din anmälan, använd länken i det e-postmeddelande som skickades åt dig då du första gången anmälde dig.');
+			$this->form_validation->set_message('_checkAlreadyRegistreredEmail', lang(LANG_KEY_BODY_EVENT_EMAIL_ALREADY_REGISTERED));
 			return FALSE;
 		} else {
 			return TRUE;
@@ -611,7 +617,7 @@ class Events extends CI_Controller {
 
 	function _checkGuidValid($guid) {
 		if ($guid != "" && !isGuidValid($guid)) {
-			$this->form_validation->set_message('_checkGuidValid', "Fel guid din pucko: %s!");
+			$this->form_validation->set_message('_checkGuidValid', lang(LANG_KEY_ERROR_INVALID_GUID) . '%s');
 			return FALSE;
 		} else {
 			return TRUE;
@@ -620,7 +626,7 @@ class Events extends CI_Controller {
 
 	function _checkDateValid($date) {
 		if ($date != "" && !isDateValid($date)) {
-			$this->form_validation->set_message('_checkDateValid', "Fel datum din pucko: %s!");
+			$this->form_validation->set_message('_checkDateValid', lang(LANG_KEY_ERROR_INVALID_DATE) . '%s');
 			return FALSE;
 		} else {
 			return TRUE;
@@ -635,8 +641,6 @@ class Events extends CI_Controller {
 				$rowNumbers[] = $matches[2];
 			}
 		}
-
 		return $rowNumbers;
 	}
-
 }

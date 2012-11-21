@@ -13,7 +13,11 @@ define('LANG_FILE',									'Text');
 define('LANG_LANGUAGE_SV',							'sv');	
 
 //Headers
-define('LANG_KEY_LOGIN_HEADER',						'login_header');
+define('LANG_KEY_HEADER_LOGIN',							'header_login');
+define('LANG_KEY_HEADER_EVENT_REGISTRATION_SUCCEEDED',	'header_event_registration_succeeded');
+define('LANG_KEY_HEADER_EVENT_REGISTRATION_CANCELLED',	'header_event_registration_cancelled');
+define('LANG_KEY_HEADER_EVENT_NOT_FOUND',				'header_event_not_found');
+define('LANG_KEY_HEADER_EVENT_REGISTRATION_NOT_FOUND',	'header_event_registration_not_found');
 
 //Buttons
 define('LANG_KEY_BUTTON_LOG_IN',					'button_log_in');
@@ -82,6 +86,15 @@ define('LANG_KEY_ENUM_ENABLED_YES',					'enum_enabled_yes');
 
 //Error texts
 define('LANG_KEY_ERROR_WRONG_CREDENTIALS',			'error_wrong_credentials');
+define('LANG_KEY_ERROR_INVALID_DATE',				'error_invalid_date');
+define('LANG_KEY_ERROR_INVALID_GUID',				'error_invalid_GUID');
 
 //Misc
 define('LANG_KEY_MISC_REQUIRED_FIELD',				'misc_required_field');
+
+//Event registration
+define('LANG_KEY_BODY_EVENT_REGISTRATION_SUCCEEDED',	'body_event_registration_succeeded');
+define('LANG_KEY_BODY_EVENT_YOU_CAN_REREGISTER',		'body_event_registration_you_can_reregister');
+define('LANG_KEY_BODY_EVENT_CHECK_CORRECT_ADDRESS',		'body_event_check_correct_address');
+define('LANG_KEY_BODY_EVENT_EMAIL_ALREADY_REGISTERED',	'body_event_email_already_registered');
+define('LANG_KEY_LINK_REREGISTER',						'link_reregister');
