@@ -138,4 +138,10 @@
 			$value = str_replace(',', '.', $value);
 			return $value;
 		}
-	}	
+	}
+	
+	function addToArrayIfNotFalse($array, $key, $value) {
+		if ($value !== FALSE) {
+			$array[$key] = $value;
+		}	
+	}

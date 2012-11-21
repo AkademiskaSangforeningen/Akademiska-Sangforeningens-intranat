@@ -52,15 +52,17 @@
 				<br/>
 				<input type="text" name="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_LASTNAME ?>" id="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_LASTNAME ?>" value="<?php echo set_value(DB_TABLE_PERSON . "_" . DB_PERSON_LASTNAME, isset($person->{DB_PERSON_LASTNAME}) ? $person->{DB_PERSON_LASTNAME} : "" ); ?>" maxlength="50" class="required ui-corner-all" />	
 			</div>
-
-			<div class="single-field">
-				<label for="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL; ?>">
-					<?php echo lang(LANG_KEY_FIELD_EMAIL); ?>
-				</label>
-				<span class="requiredsymbol">*</span>
-				<br/>
-				<input type="email" name="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL ?>" id="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL ?>" value="<?php echo set_value(DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL, isset($person->{DB_PERSON_EMAIL}) ? $person->{DB_PERSON_EMAIL} : "" ); ?>" maxlength="50" class="required email ui-corner-all" />	
-			</div>
+			
+			<?php if ($updateRegistration == FALSE) { ?>
+				<div class="single-field">
+					<label for="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL; ?>">
+						<?php echo lang(LANG_KEY_FIELD_EMAIL); ?>
+					</label>
+					<span class="requiredsymbol">*</span>
+					<br/>
+					<input type="email" name="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL ?>" id="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL ?>" value="<?php echo set_value(DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL, isset($person->{DB_PERSON_EMAIL}) ? $person->{DB_PERSON_EMAIL} : "" ); ?>" maxlength="50" class="required email ui-corner-all" />	
+				</div>
+			<?php } ?>
 			
 			<div class="single-field">
 				<label for="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_PHONE; ?>">
