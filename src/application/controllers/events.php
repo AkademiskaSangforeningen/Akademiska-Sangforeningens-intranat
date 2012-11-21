@@ -60,52 +60,21 @@ class Events extends CI_Controller {
 		$client = CLIENT_DESKTOP;
 		
 		//Load languages. As we don't yet know the user's language, we default to swedish
-		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);			
-	
-		//Return if the event in the URL isn't valid
-		if ($eventId == NULL || !isGuidValid($eventId)) {
-			return;
-		}	
-		
-		//Exit it the hash in the URL isn't correct
-		if ($personId != NULL && md5($eventId . $this->config->item('encryption_key') . $personId) != $hash) {
-			return;
-		}			
+		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);					
 		
 		//Load models
 		$this->load->model(MODEL_EVENT, 	strtolower(MODEL_EVENT), 		TRUE);
 		$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), 	TRUE);
 		$this->load->model(MODEL_PERSON, 	strtolower(MODEL_PERSON), 		TRUE);	
 
-		//Load event
+		//Load event and person has event bind
 		$event = $this->event->getEvent($eventId);
-		
-		//Show error message and return if event is not found
-		if ($event === FALSE) {
-			$data['header']	= 'Evenemanget kunde inte hittas';
-			$data['body']	= 'Kontrollera att du har angett en korrekt address.';
-			
-			$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
-			$this->load->view($client . VIEW_GENERIC_BODY_MESSAGE, $data);
-			$this->load->view($client . VIEW_GENERIC_FOOTER);
-			return;
-		}
-		
 		$personHasEvent = $this->event->getPersonHasEvent($eventId, $personId);
 		
 		//Show error message and return if person has event bind is not found
-		if ($personId != NULL && $personHasEvent === FALSE) {
-			$data['header']	= 'Din anmälan till evenemanget kunde inte hittas';
-			$data['body']	= 'Kontrollera att du har angett en korrekt address.';
-			
-			$links['/' . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $eventId] = 'Anmäl dig på nytt';
-			$data['links']	= $links;
-			
-			$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
-			$this->load->view($client . VIEW_GENERIC_BODY_MESSAGE, $data);
-			$this->load->view($client . VIEW_GENERIC_FOOTER);
+		if ($this->_validateEditDirectlyVariables($client, $eventId, $personId, $hash, $event, $personHasEvent) === FALSE) {
 			return;
-		}				
+		}
 
 		//Load edit items, add them to $data-object
 		$data = array();
@@ -134,52 +103,21 @@ class Events extends CI_Controller {
 		$client = CLIENT_DESKTOP;
 		
 		//Load languages. As we don't yet know the user's language, we default to swedish
-		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);			
-	
-		//Return if the event in the URL isn't valid
-		if ($eventId == NULL || !isGuidValid($eventId)) {
-			return;
-		}	
-		
-		//Exit it the hash in the URL isn't correct
-		if ($personId != NULL && md5($eventId . $this->config->item('encryption_key') . $personId) != $hash) {
-			return;
-		}			
+		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);					
 		
 		//Load models
 		$this->load->model(MODEL_EVENT, 	strtolower(MODEL_EVENT), 		TRUE);
 		$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), 	TRUE);
 		$this->load->model(MODEL_PERSON, 	strtolower(MODEL_PERSON), 		TRUE);	
 
-		//Load event
+		//Load event and person has event bind
 		$event = $this->event->getEvent($eventId);
-		
-		//Show error message and return if event is not found
-		if ($event === FALSE) {
-			$data['header']	= 'Evenemanget kunde inte hittas';
-			$data['body']	= 'Kontrollera att du har angett en korrekt address.';
-			
-			$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
-			$this->load->view($client . VIEW_GENERIC_BODY_MESSAGE, $data);
-			$this->load->view($client . VIEW_GENERIC_FOOTER);
-			return;
-		}
-		
 		$personHasEvent = $this->event->getPersonHasEvent($eventId, $personId);
 		
 		//Show error message and return if person has event bind is not found
-		if ($personId != NULL && $personHasEvent === FALSE) {
-			$data['header']	= 'Din anmälan till evenemanget kunde inte hittas';
-			$data['body']	= 'Kontrollera att du har angett en korrekt address.';
-			
-			$links['/' . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $eventId] = 'Anmäl dig på nytt';
-			$data['links']	= $links;
-			
-			$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
-			$this->load->view($client . VIEW_GENERIC_BODY_MESSAGE, $data);
-			$this->load->view($client . VIEW_GENERIC_FOOTER);
+		if ($this->_validateEditDirectlyVariables($client, $eventId, $personId, $hash, $event, $personHasEvent) === FALSE) {
 			return;
-		}				
+		}		
 
 		$updateRegistration = ($personId != NULL);
 
@@ -388,22 +326,27 @@ class Events extends CI_Controller {
 		$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
 		$this->load->view($client . VIEW_GENERIC_BODY_MESSAGE, $data);
 		$this->load->view($client . VIEW_GENERIC_FOOTER);		
-	}
-
+	}	
+	
 	function cancelRegisterDirectly($eventId = NULL, $personId = NULL, $hash = NULL) {
-		//Exit if no eventId or personId is given
-		if ($eventId == NULL || $personId == NULL || $hash == NULL) {
-			return;
-		}
-
-		//Exit it the hash in the URL isn't correct
-		if (md5($eventId . $this->config->item('encryption_key') . $personId) != $hash) {
-			return;
-		}
-
+		//Default to desktop client
 		$client = CLIENT_DESKTOP;
+		
+		//Load languages. As we don't yet know the user's language, we default to swedish
+		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);			
+	
+		//Load models
+		$this->load->model(MODEL_EVENT, 	strtolower(MODEL_EVENT), 		TRUE);
+		$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), 	TRUE);		
 
-		$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
+		//Load event and person has event bind
+		$event = $this->event->getEvent($eventId);							
+		$personHasEvent = $this->event->getPersonHasEvent($eventId, $personId);
+		
+		//Show error message and return if person has event bind is not found
+		if ($this->_validateEditDirectlyVariables($client, $eventId, $personId, $hash, $event, $personHasEvent) === FALSE) {
+			return;
+		}
 
 		$data['eventId'] 	= $eventId;
 		$data['personId']	= $personId;
@@ -416,24 +359,30 @@ class Events extends CI_Controller {
 	}
 
 	function saveCancelRegisterDirectly($eventId = NULL, $personId = NULL, $hash = NULL) {
-		//Exit if no eventId or personId is given
-		if ($eventId == NULL || $personId == NULL || $hash == NULL) {
-			return;
-		}
-
-		//Exit it the hash in the URL isn't correct
-		if (md5($eventId . $this->config->item('encryption_key') . $personId) != $hash) {
-			return;
-		}
-
+		//Default to desktop client
+		$client = CLIENT_DESKTOP;
+		
+		//Load languages. As we don't yet know the user's language, we default to swedish
+		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);			
+	
+		//Load models
 		$this->load->model(MODEL_EVENT, 	strtolower(MODEL_EVENT), 		TRUE);
 		$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), 	TRUE);
 		$this->load->model(MODEL_PERSON, 	strtolower(MODEL_PERSON), 		TRUE);
 
+		//Load event and person has event bind
+		$event = $this->event->getEvent($eventId);							
+		$personHasEvent = $this->event->getPersonHasEvent($eventId, $personId);
+	
+		//Show error message and return if person has event bind is not found
+		if ($this->_validateEditDirectlyVariables($client, $eventId, $personId, $hash, $event, $personHasEvent) === FALSE) {
+			return;
+		}	
+
 		$personAvecId = $this->event->getCurrentAvecForPersonHasEvent($personId, $eventId);
 
 		// Delete links between avec and event items
-		if ($personAvecId != null) {
+		if ($personAvecId != NULL) {
 			$this->eventitem->deleteOrphanPersonHasEventItem($personAvecId, $eventId);
 		}
 		// Delete links between person and event items
@@ -443,7 +392,7 @@ class Events extends CI_Controller {
 		$this->event->deletePersonHasEvent($eventId, $personId);
 
 		// Delete the orphan avec
-		if ($personAvecId != null) {
+		if ($personAvecId != NULL) {
 			$this->person->deletePerson($personAvecId);
 		}
 
@@ -615,6 +564,42 @@ class Events extends CI_Controller {
 		}
 	}
 
+	function _validateEditDirectlyVariables($client, $eventId, $personId, $hash, $event, $personHasEvent) {
+		//Return if the event in the URL isn't valid
+		if ($eventId == NULL || !isGuidValid($eventId)) {
+			return FALSE;
+		}	
+		
+		//Exit it the hash in the URL isn't correct
+		if ($personId != NULL && md5($eventId . $this->config->item('encryption_key') . $personId) != $hash) {
+			return FALSE;
+		}	
+		
+		//Show error message and return if event is not found
+		if ($event === FALSE) {
+			$data['header']	= 'Evenemanget kunde inte hittas';
+			$data['body']	= 'Kontrollera att du har angett en korrekt address.';
+			
+			$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
+			$this->load->view($client . VIEW_GENERIC_BODY_MESSAGE, $data);
+			$this->load->view($client . VIEW_GENERIC_FOOTER);
+			return FALSE;
+		} else if ($personId != NULL && $personHasEvent === FALSE) {
+			$data['header']	= 'Din anmälan till evenemanget kunde inte hittas';
+			$data['body']	= 'Kontrollera att du har angett en korrekt address.';
+			
+			$links['/' . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $eventId] = 'Anmäl dig på nytt';
+			$data['links']	= $links;
+			
+			$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
+			$this->load->view($client . VIEW_GENERIC_BODY_MESSAGE, $data);
+			$this->load->view($client . VIEW_GENERIC_FOOTER);
+			return FALSE;
+		} else {
+			return TRUE;
+		}		
+	}	
+	
 	function _checkAlreadyRegistreredEmail($email, $eventId) {
 		if($this->event->isEmailAlreadyRegisteredToEvent($email, $eventId)) {
 			$this->form_validation->set_message('_checkAlreadyRegistreredEmail', 'En person med den angivna e-postadressen är redan anmäld till evenemanget, kontrollera din angivna e-postadress.<br/>Om du vill ändra på din anmälan, använd länken i det e-postmeddelande som skickades åt dig då du första gången anmälde dig.');
