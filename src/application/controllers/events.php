@@ -263,16 +263,16 @@ class Events extends CI_Controller {
 			$this->db->trans_complete();
 			
 			// Send an email to the person
-			$this->_sendConfirmMail($eventId, $personId, $hash, $updateRegistration);
+			$this->_sendSaveRegisterConfirmMail($eventId, $personId, $hash, $updateRegistration);
 
 			//Everything ok, redirect the user to the confirmation page
 			redirect(CONTROLLER_EVENTS_CONFIRM_SAVE_REGISTER_DIRECTLY . '/' . $eventId . '/' . $personId . '/' . $hash, 'refresh');
 		}
 	}
 
-	function _sendConfirmMail($eventId = NULL, $personId = NULL, $hash = NULL, $updateRegistration = FALSE) {
-		//Exit if no eventId or personId is given
-		if ($eventId == NULL || $personId == NULL || $hash == NULL) {
+	function _sendSaveRegisterConfirmMail($eventId = NULL, $personId = NULL, $hash = NULL, $updateRegistration = FALSE) {
+//Exit if no eventId or personId is given
+		if ($eventId == NULL || $personId == NULL) {
 			return;
 		}
 
@@ -294,18 +294,22 @@ class Events extends CI_Controller {
 
 		$personAvecId = isset($data['personHasEvent']->{DB_PERSONHASEVENT_AVECPERSONID}) ? $data['personHasEvent']->{DB_PERSONHASEVENT_AVECPERSONID} : NULL;
 		$data['avecEventItems']	= $this->eventitem->getEventItems($eventId, $personAvecId, TRUE);
-		$data['personAvec'] 	= $this->person->getPerson($personAvecId);
+		$data['personAvec'] 	= $this->person->getPerson($personAvecId);		
+		
+		$messageSubject = ($updateRegistration) ? ('Din anmälan till ' . $data['event']->{DB_EVENT_NAME} . ' är nu uppdaterad') : ('Du är nu anmäld till ' . $data['event']->{DB_EVENT_NAME});
+		$data['header'] = $messageSubject;
 
 		$this->load->library('email');
 		$this->email->from('anmalningar@akademen.com', 'Akademiska Sångföreningen');
 		$this->email->to($data['person']->{DB_PERSON_EMAIL});
 		$this->email->bcc('anmalningar@akademen.com');
-		if ($updateRegistration) {
-			$this->email->subject('Din anmälan till ' . $data['event']->{DB_EVENT_NAME} . ' är nu uppdaterad');
-		} else {
-			$this->email->subject('Du är nu anmäld till ' . $data['event']->{DB_EVENT_NAME});
-		}
-		$this->email->message($this->load->view($client . VIEW_CONTENT_EVENTS_CONFIRM_SAVE_REGISTER_MAIL, $data, TRUE));
+		$this->email->subject($messageSubject);
+		
+		$messageBody =	$this->load->view($client . VIEW_GENERIC_MAIL_HEADER, $data, TRUE);
+		$messageBody .= $this->load->view($client . VIEW_CONTENT_EVENTS_CONFIRM_SAVE_REGISTER_MAIL, $data, TRUE);
+		$messageBody .= $this->load->view($client . VIEW_GENERIC_MAIL_FOOTER, $data, TRUE);		
+		
+		$this->email->message($messageBody);
 		$this->email->send();
 	}
 
@@ -387,6 +391,9 @@ class Events extends CI_Controller {
 
 		$personAvecId = $this->event->getCurrentAvecForPersonHasEvent($personId, $eventId);
 
+		// Start a database transaction
+		$this->db->trans_start();		
+		
 		// Delete links between avec and event items
 		if ($personAvecId != NULL) {
 			$this->eventitem->deleteOrphanPersonHasEventItem($personAvecId, $eventId);
@@ -396,15 +403,54 @@ class Events extends CI_Controller {
 
 		// Delete link between person and event
 		$this->event->deletePersonHasEvent($eventId, $personId);
+		
+		// Commit the transaction
+		$this->db->trans_complete();		
 
 		// Delete the orphan avec
 		if ($personAvecId != NULL) {
 			$this->person->deletePerson($personAvecId);
 		}
+		
+		// Send an email to the person
+		$this->_sendCancelRegisterConfirmMail($eventId, $personId);		
 
 		redirect(CONTROLLER_EVENTS_CONFIRM_CANCEL_REGISTER_DIRECTLY . '/' . $eventId . '/' . $personId . '/' . $hash, 'refresh');
 	}
 
+	function _sendCancelRegisterConfirmMail($eventId = NULL, $personId = NULL) {
+		//Exit if no eventId or personId is given
+		if ($eventId == NULL || $personId == NULL) {
+			return;
+		}
+
+		$client = CLIENT_DESKTOP;
+
+		//Load module
+		$this->load->model(MODEL_EVENT, 	strtolower(MODEL_EVENT), 		TRUE);
+		$this->load->model(MODEL_PERSON, 	strtolower(MODEL_PERSON), 		TRUE);
+
+		$data['eventId'] 			= $eventId;
+		$data['event'] 				= $this->event->getEvent($eventId);
+		$data['person']				= $this->person->getPerson($personId);
+		
+		$messageSubject = 'Din anmälan till ' . $data['event']->{DB_EVENT_NAME} . ' är nu annulerad';
+		$data['header'] = $messageSubject;
+
+		$this->load->library('email');
+		$this->email->from('anmalningar@akademen.com', 'Akademiska Sångföreningen');
+		$this->email->to($data['person']->{DB_PERSON_EMAIL});
+		$this->email->bcc('anmalningar@akademen.com');
+		$this->email->subject($messageSubject);
+		
+		$messageBody =	$this->load->view($client . VIEW_GENERIC_MAIL_HEADER, $data, TRUE);
+		$messageBody .= $this->load->view($client . VIEW_CONTENT_EVENTS_CONFIRM_CANCEL_REGISTER_MAIL, $data, TRUE);
+		$messageBody .= $this->load->view($client . VIEW_GENERIC_MAIL_FOOTER, $data, TRUE);		
+		
+		$this->email->message($messageBody);
+		$this->email->send();
+	}	
+	
 	function confirmCancelRegisterDirectly($eventId = NULL, $personId = NULL, $hash = NULL) {
 		//Exit if no eventId or personId is given
 		if ($eventId == NULL || $personId == NULL || $hash == NULL) {
@@ -424,7 +470,7 @@ class Events extends CI_Controller {
 		$data['header']	= lang(LANG_KEY_HEADER_EVENT_REGISTRATION_CANCELLED);
 		$data['body']	= lang(LANG_KEY_BODY_EVENT_YOU_CAN_REREGISTER);
 		
-		$links['/' . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $eventId] = lang(LANG_KEY_LINK_REREGISTER);
+		$links[site_url() . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $eventId] = lang(LANG_KEY_LINK_REREGISTER);
 		$data['links']	= $links;
 		
 		$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
@@ -594,7 +640,7 @@ class Events extends CI_Controller {
 			$data['header']	= lang(LANG_KEY_HEADER_EVENT_REGISTRATION_NOT_FOUND);
 			$data['body']	= lang(LANG_KEY_BODY_EVENT_CHECK_CORRECT_ADDRESS);
 			
-			$links['/' . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $eventId] = lang(LANG_KEY_LINK_REREGISTER);
+			$links[site_url() . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $eventId] = lang(LANG_KEY_LINK_REREGISTER);
 			$data['links']	= $links;
 			
 			$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);

@@ -12,6 +12,9 @@ define('VIEW_GENERIC_HEADER_NAVITABS',							'/generic/header_navitabs');
 
 define('VIEW_GENERIC_FOOTER',									'/generic/footer');
 
+define('VIEW_GENERIC_MAIL_HEADER',								'/generic/mail/header');
+define('VIEW_GENERIC_MAIL_FOOTER',								'/generic/mail/footer');
+
 define('VIEW_GENERIC_DIALOG_CLOSE_AND_RELOAD_PARENT',			'/generic/dialog/close_and_reload_parent');
 
 define('VIEW_GENERIC_BODY_MESSAGE',								'/generic/body_message');
@@ -29,6 +32,7 @@ define('VIEW_CONTENT_EVENTS_MY_UPCOMING',						'/content/events/myupcoming');
 define('VIEW_CONTENT_EVENTS_EDIT_REGISTER_DIRECTLY',			'/content/events/editregisterdirectly');
 define('VIEW_CONTENT_EVENTS_CANCEL_REGISTER_DIRECTLY',			'/content/events/cancelregisterdirectly');
 define('VIEW_CONTENT_EVENTS_CONFIRM_SAVE_REGISTER_MAIL',		'/content/events/confirmsaveregistermail');
+define('VIEW_CONTENT_EVENTS_CONFIRM_CANCEL_REGISTER_MAIL',		'/content/events/confirmcancelregistermail');
 
 define('VIEW_CONTENT_USERMANAGER_LISTUSERS',    				'/content/usermanager/listusers');
 
