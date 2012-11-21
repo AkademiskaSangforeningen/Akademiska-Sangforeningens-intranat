@@ -14,6 +14,8 @@ define('VIEW_GENERIC_FOOTER',									'/generic/footer');
 
 define('VIEW_GENERIC_DIALOG_CLOSE_AND_RELOAD_PARENT',			'/generic/dialog/close_and_reload_parent');
 
+define('VIEW_GENERIC_BODY_MESSAGE',								'/generic/body_message');
+
 define('VIEW_CONTENT_LOGIN_FORM',								'/content/login/form');
 
 define('VIEW_CONTENT_MYPAGE_DASHBOARD',							'/content/mypage/dashboard');
@@ -25,10 +27,8 @@ define('VIEW_CONTENT_EVENTS_LISTALL',							'/content/events/listevents');
 define('VIEW_CONTENT_EVENTS_EDITSINGLE',						'/content/events/editevent');
 define('VIEW_CONTENT_EVENTS_MY_UPCOMING',						'/content/events/myupcoming');
 define('VIEW_CONTENT_EVENTS_EDIT_REGISTER_DIRECTLY',			'/content/events/editregisterdirectly');
-define('VIEW_CONTENT_EVENTS_CONFIRM_SAVE_REGISTER_DIRECTLY',	'/content/events/confirmsaveregisterdirectly');
-define('VIEW_CONTENT_EVENTS_CONFIRM_SAVE_REGISTER_MAIL',		'/content/events/confirmsaveregistermail');
 define('VIEW_CONTENT_EVENTS_CANCEL_REGISTER_DIRECTLY',			'/content/events/cancelregisterdirectly');
-define('VIEW_CONTENT_EVENTS_CONFIRM_CANCEL_REGISTER_DIRECTLY',	'/content/events/confirmcancelregisterdirectly');
+define('VIEW_CONTENT_EVENTS_CONFIRM_SAVE_REGISTER_MAIL',		'/content/events/confirmsaveregistermail');
 
 define('VIEW_CONTENT_USERMANAGER_LISTUSERS',    				'/content/usermanager/listusers');
 
