@@ -201,6 +201,11 @@ class Events extends CI_Controller {
 					$eventItemDescription = NULL;
 				}
 
+				//Don't save not-selected event items or event items with empty (but not NULL) descriptions
+				if ($eventItemAmount == 0 || $eventItemDescription === '') {
+					continue;
+				}
+
 				//Save a single person event item link into the database
 				$this->eventitem->savePersonHasEventItem($personId, $eventItemId, $eventItemAmount, $eventItemDescription, $personId);
 			}
@@ -231,6 +236,11 @@ class Events extends CI_Controller {
 					if ($eventItemDescription === FALSE) {
 						$eventItemDescription = NULL;
 					}
+					
+					//Don't save not-selected event items or event items with empty (but not NULL) descriptions
+					if ($eventItemAmount == 0 || $eventItemDescription === '') {
+						continue;
+					}					
 
 					//Save a single avec event item link into the database
 					$this->eventitem->savePersonHasEventItem($avecId, $eventItemId, $eventItemAmount, $eventItemDescription, $personId);
@@ -289,7 +299,7 @@ class Events extends CI_Controller {
 		$data['updateRegistration']	= $updateRegistration;
 		$data['event'] 				= $this->event->getEvent($eventId);
 		$data['personHasEvent']		= $this->event->getPersonHasEvent($eventId, $personId, TRUE);
-		$data['eventItems'] 		= $this->eventitem->getEventItems($eventId, $personId);
+		$data['eventItems'] 		= $this->eventitem->getEventItems($eventId, $personId, TRUE);
 		$data['person']				= $this->person->getPerson($personId);
 
 		$personAvecId = isset($data['personHasEvent']->{DB_PERSONHASEVENT_AVECPERSONID}) ? $data['personHasEvent']->{DB_PERSONHASEVENT_AVECPERSONID} : NULL;
