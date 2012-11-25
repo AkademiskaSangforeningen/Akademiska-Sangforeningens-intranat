@@ -35,6 +35,7 @@ define('LANG_KEY_BUTTON_EDIT_TRANSACTION',			'button_edit_transaction');
 define('LANG_KEY_BUTTON_CREATE_NEW_EVENT',			'button_create_new_event');
 define('LANG_KEY_BUTTON_EDIT_EVENT',				'button_edit_event');
 define('LANG_KEY_BUTTON_DELETE_EVENT',				'button_delete_event');
+define('LANG_KEY_BUTTON_VIEW_EVENT',				'button_view_event');
 
 //Fields
 define('LANG_KEY_FIELD_EMAIL',						'field_email');

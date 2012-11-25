@@ -27,6 +27,7 @@ $lang[LANG_KEY_BUTTON_EDIT_TRANSACTION]			= "Redigera transaktion";
 $lang[LANG_KEY_BUTTON_CREATE_NEW_EVENT]			= "Skapa nytt evenemang";
 $lang[LANG_KEY_BUTTON_EDIT_EVENT]				= "Redigera evenemang";
 $lang[LANG_KEY_BUTTON_DELETE_EVENT]				= "Radera evenemang";
+$lang[LANG_KEY_BUTTON_VIEW_EVENT]				= "Se evenemang";
 
 $lang[LANG_KEY_FIELD_EMAIL]						= "E-postadress";
 $lang[LANG_KEY_FIELD_PASSWORD]					= "Lösenord";
