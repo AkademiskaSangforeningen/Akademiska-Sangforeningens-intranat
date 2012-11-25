@@ -140,7 +140,7 @@
 		}
 	}
 	
-	function addToArrayIfNotFalse($array, $key, $value) {
+	function addToArrayIfNotFalse(&$array, $key, $value) {
 		if ($value !== FALSE) {
 			$array[$key] = $value;
 		}	

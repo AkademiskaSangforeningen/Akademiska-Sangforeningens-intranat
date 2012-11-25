@@ -191,23 +191,25 @@ class Events extends CI_Controller {
 
 			// Save all event items for the person
 			$eventItemIds = $this->input->post(DB_PERSONHASEVENTITEM_EVENTITEMID);
-			foreach ($eventItemIds as $eventItemId) {
-				$eventItemAmount 		= $this->input->post($eventItemId . '_' . DB_PERSONHASEVENTITEM_AMOUNT, 		TRUE);
-				$eventItemDescription 	= $this->input->post($eventItemId . '_' . DB_PERSONHASEVENTITEM_DESCRIPTION, 	TRUE);
-				if ($eventItemAmount === FALSE) {
-					$eventItemAmount = 1;
-				}
-				if ($eventItemDescription === FALSE) {
-					$eventItemDescription = NULL;
-				}
+			if ($eventItemIds !== FALSE) {
+				foreach ($eventItemIds as $eventItemId) {
+					$eventItemAmount 		= $this->input->post($eventItemId . '_' . DB_PERSONHASEVENTITEM_AMOUNT, 		TRUE);
+					$eventItemDescription 	= $this->input->post($eventItemId . '_' . DB_PERSONHASEVENTITEM_DESCRIPTION, 	TRUE);
+					if ($eventItemAmount === FALSE) {
+						$eventItemAmount = 1;
+					}
+					if ($eventItemDescription === FALSE) {
+						$eventItemDescription = NULL;
+					}
 
-				//Don't save not-selected event items or event items with empty (but not NULL) descriptions
-				if ($eventItemAmount == 0 || $eventItemDescription === '') {
-					continue;
-				}
+					//Don't save not-selected event items or event items with empty (but not NULL) descriptions
+					if ($eventItemAmount == 0 || $eventItemDescription === '') {
+						continue;
+					}
 
-				//Save a single person event item link into the database
-				$this->eventitem->savePersonHasEventItem($personId, $eventItemId, $eventItemAmount, $eventItemDescription, $personId);
+					//Save a single person event item link into the database
+					$this->eventitem->savePersonHasEventItem($personId, $eventItemId, $eventItemAmount, $eventItemDescription, $personId);
+				}
 			}
 			// Delete orphan event items for the person
 			$this->eventitem->deleteOrphanPersonHasEventItem($personId, $eventId, $eventItemIds);
@@ -227,25 +229,26 @@ class Events extends CI_Controller {
 
 				// Save all event items for the avec
 				$avecEventItemIds = $this->input->post(DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID);
-				foreach ($avecEventItemIds as $eventItemId) {
-					$eventItemAmount 		= $this->input->post(DB_CUSTOM_AVEC . '_' . $eventItemId . '_' . DB_PERSONHASEVENTITEM_AMOUNT, 		TRUE);
-					$eventItemDescription	= $this->input->post(DB_CUSTOM_AVEC . '_' . $eventItemId . '_' . DB_PERSONHASEVENTITEM_DESCRIPTION, TRUE);
-					if ($eventItemAmount === FALSE) {
-						$eventItemAmount = 1;
-					}
-					if ($eventItemDescription === FALSE) {
-						$eventItemDescription = NULL;
-					}
-					
-					//Don't save not-selected event items or event items with empty (but not NULL) descriptions
-					if ($eventItemAmount == 0 || $eventItemDescription === '') {
-						continue;
-					}					
+				if ($avecEventItemIds !== FALSE) {
+					foreach ($avecEventItemIds as $eventItemId) {
+						$eventItemAmount 		= $this->input->post(DB_CUSTOM_AVEC . '_' . $eventItemId . '_' . DB_PERSONHASEVENTITEM_AMOUNT, 		TRUE);
+						$eventItemDescription	= $this->input->post(DB_CUSTOM_AVEC . '_' . $eventItemId . '_' . DB_PERSONHASEVENTITEM_DESCRIPTION, TRUE);
+						if ($eventItemAmount === FALSE) {
+							$eventItemAmount = 1;
+						}
+						if ($eventItemDescription === FALSE) {
+							$eventItemDescription = NULL;
+						}
+						
+						//Don't save not-selected event items or event items with empty (but not NULL) descriptions
+						if ($eventItemAmount == 0 || $eventItemDescription === '') {
+							continue;
+						}					
 
-					//Save a single avec event item link into the database
-					$this->eventitem->savePersonHasEventItem($avecId, $eventItemId, $eventItemAmount, $eventItemDescription, $personId);
-				}
-
+						//Save a single avec event item link into the database
+						$this->eventitem->savePersonHasEventItem($avecId, $eventItemId, $eventItemAmount, $eventItemDescription, $personId);
+					}
+				}					
 				// Delete orphan event items for the avec
 				$this->eventitem->deleteOrphanPersonHasEventItem($avecId, $eventId, $avecEventItemIds);
 				
@@ -281,7 +284,7 @@ class Events extends CI_Controller {
 	}
 
 	function _sendSaveRegisterConfirmMail($eventId = NULL, $personId = NULL, $hash = NULL, $updateRegistration = FALSE) {
-//Exit if no eventId or personId is given
+		//Exit if no eventId or personId is given
 		if ($eventId == NULL || $personId == NULL) {
 			return;
 		}
