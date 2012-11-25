@@ -58,10 +58,14 @@
 <script>
 	$('.pagination a')
 		.bind('click', function() {		
-			var selectedTab = $('#header_navitabs').tabs('option', 'selected');			
-			$('#ui-tabs-' + selectedTab).load($(this).attr('href'), function() {
+			var selectedTab = $('#header_navitabs').tabs('option', 'active'),
+				url = $(this).attr('href');
+									
+			$('#ui-tabs-' + selectedTab).load(url, function() {				
 				AKADEMEN.initializeButtons();
-			});			
+				//Change tab-link to point to selected page
+				$('.ui-tabs-active a').attr('href', url);
+			});
 			return false;
 		});
 </script>
