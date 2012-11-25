@@ -17,6 +17,8 @@ class Event extends CI_Model {
 	function getAllEvents($limit = FALSE, $offset = FALSE) {
 		$this->db->select('*');
 		$this->db->select('(SELECT COUNT(*) FROM ' . DB_TABLE_EVENT . ') AS ' . DB_TOTALCOUNT, FALSE);
+		$this->db->select('(SELECT COUNT(*) FROM ' . DB_TABLE_PERSONHASEVENT . ' WHERE ' . DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_EVENTID . ' = ' . DB_TABLE_EVENT . '.' . DB_EVENT_ID . ') AS ' . DB_TABLE_PERSONHASEVENT . DB_TOTALCOUNT, FALSE);	
+		$this->db->select('(SELECT COUNT(*) FROM ' . DB_TABLE_PERSONHASEVENT . ' WHERE ' . DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_EVENTID . ' = ' . DB_TABLE_EVENT . '.' . DB_EVENT_ID . ' AND ' . DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_AVECPERSONID . ' IS NOT NULL) AS ' . DB_TABLE_PERSONHASEVENT . DB_CUSTOM_AVEC . DB_TOTALCOUNT, FALSE);	
 		$this->db->from(DB_TABLE_EVENT);
 		$this->db->order_by(DB_EVENT_STARTDATE, "desc");
 		$this->db->order_by(DB_EVENT_ENDDATE, 	"desc");

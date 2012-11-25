@@ -50,7 +50,14 @@
 			<td><?php echo formatDateGerman($event->{DB_EVENT_REGISTRATIONDUEDATE}); ?></td>
 			<td><?php echo formatDateGerman($event->{DB_EVENT_PAYMENTDUEDATE}); ?></td>
 			<td><?php echo $event->{DB_EVENT_LOCATION}; ?></td>		
-			<td><a href="<?php echo CONTROLLER_EVENTS_LIST_ENROLLED . "/" . $event->{DB_EVENT_ID}; ?>"><?php echo $event->{DB_EVENT_NAME}; ?></a></td>				
+			<td><a href="<?php echo CONTROLLER_EVENTS_LIST_ENROLLED . "/" . $event->{DB_EVENT_ID}; ?>" class="button" data-icon="ui-icon-person">
+				<?php echo $event->{DB_TABLE_PERSONHASEVENT . DB_TOTALCOUNT}; ?>
+				+
+				<?php echo $event->{DB_TABLE_PERSONHASEVENT . DB_CUSTOM_AVEC . DB_TOTALCOUNT}; ?>
+				=
+				<?php echo ($event->{DB_TABLE_PERSONHASEVENT . DB_TOTALCOUNT} + $event->{DB_TABLE_PERSONHASEVENT . DB_CUSTOM_AVEC . DB_TOTALCOUNT}); ?>
+				</a>
+			</td>
 		</tr>
 	<?php endforeach; ?>		
 	</tbody>
