@@ -24,3 +24,6 @@ define('PREFIX_MM',							'_mm');
 define('EVENT_TYPE_RADIO',					1);
 define('EVENT_TYPE_CHECKBOX',				2);
 define('EVENT_TYPE_TEXTAREA',				3);
+
+//List views
+define('LIST_DEF_PAGING',					3);

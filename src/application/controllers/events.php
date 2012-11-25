@@ -24,13 +24,26 @@ class Events extends CI_Controller {
 		redirect(CONTROLLER_MY_PAGE, 'refresh');
 	}
 
-	function listAll() {
+	function listAll($page = 1) {
 		$client = CLIENT_DESKTOP;
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));
+		
 		$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
+		$this->load->library('pagination');
+		
+		$eventList = $this->event->getAllEvents(2, $page);				
 
-		// Arbitrary limit in use (50)
-		$data['eventList'] = $this->event->get_closest_future_events(50);
+		$config['base_url'] 	= site_url() . CONTROLLER_EVENTS_LISTALL . '/';
+		$config['total_rows']	= $eventList[0]->{DB_TOTALCOUNT};
+		$config['first_link'] 	= 'Första';
+		$config['last_link'] 	= 'Sista';
+		$config['anchor_class']	= 'class="button" ';
+		$config['per_page'] 	= LIST_DEF_PAGING; 
+		$this->pagination->initialize($config); 
+		
+		$data['eventList'] 	= $eventList;
+		$data['pagination']	= $this->pagination->create_links();
+		
 		$this->load->view($client . VIEW_CONTENT_EVENTS_LISTALL, $data);
 	}
 
@@ -568,8 +581,8 @@ class Events extends CI_Controller {
 														$this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTDUEDATE . PREFIX_MM)),
 				DB_EVENT_DESCRIPTION 			=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_DESCRIPTION),
 				DB_EVENT_RESPONSIBLEID			=> $this->session->userdata(SESSION_PERSONID),
-				DB_EVENT_PAYMENTTYPE			=> array_sum($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTTYPE)),
-				DB_EVENT_PARTICIPANT			=> array_sum($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PARTICIPANT)),
+				DB_EVENT_PAYMENTTYPE			=> array_sum($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTTYPE) ? $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTTYPE) : array()),
+				DB_EVENT_PARTICIPANT			=> array_sum($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PARTICIPANT) ? $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PARTICIPANT) : array()),
 				DB_EVENT_AVECALLOWED			=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED)
 			);
 
@@ -649,6 +662,14 @@ class Events extends CI_Controller {
 			$this->load->view($client . VIEW_GENERIC_BODY_MESSAGE, $data);
 			$this->load->view($client . VIEW_GENERIC_FOOTER);
 			return FALSE;
+		} else if ($event->{DB_EVENT_REGISTRATIONDUEDATE} != null && isDateInPast($event->{DB_EVENT_REGISTRATIONDUEDATE}, TRUE)) {
+			$data['header']	= lang(LANG_KEY_HEADER_EVENT_REGISTRATION_DUE_DATE_PASSED);
+			$data['body']	= lang(LANG_KEY_BODY_EVENT_REGISTRATION_DUE_DATE_PASSED);
+			
+			$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
+			$this->load->view($client . VIEW_GENERIC_BODY_MESSAGE, $data);
+			$this->load->view($client . VIEW_GENERIC_FOOTER);
+			return FALSE;					
 		} else if ($personId != NULL && $personHasEvent === FALSE) {
 			$data['header']	= lang(LANG_KEY_HEADER_EVENT_REGISTRATION_NOT_FOUND);
 			$data['body']	= lang(LANG_KEY_BODY_EVENT_CHECK_CORRECT_ADDRESS);

@@ -145,3 +145,11 @@
 			$array[$key] = $value;
 		}	
 	}
+	
+	function isDateInPast($time, $addDayIfAtMidnight = FALSE) {	
+		if ($addDayIfAtMidnight && (strtotime('today') === strtotime($time))) {
+			return (strtotime($time . ' + 1 day') < time());
+		} else {
+			return (strtotime($time) < time());
+		}			
+	}

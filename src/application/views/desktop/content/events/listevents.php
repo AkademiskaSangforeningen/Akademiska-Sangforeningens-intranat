@@ -1,7 +1,9 @@
 <div class="tools">
 <a href="<?php echo CONTROLLER_EVENTS_EDITSINGLE ?>" class="button" data-icon="ui-icon-calendar" data-formdialog="true"><?php echo lang(LANG_KEY_BUTTON_CREATE_NEW_EVENT); ?></a>
 </div>
-
+<div class="pagination">
+	<?php echo $pagination; ?>
+</div>
 <table>
 	<colgroup>
 		<col style="width: 25px" />
@@ -11,7 +13,6 @@
 		<col />
 		<col />
 		<col />
-		<col style="text-align: right" />
 		<col />
 		<col />				
 	</colgroup>
@@ -25,7 +26,6 @@
 			<th><?php echo lang(LANG_KEY_FIELD_DATE); ?></th>
 			<th><?php echo lang(LANG_KEY_FIELD_PAYMENT_DUEDATE); ?></th>
 			<th><?php echo lang(LANG_KEY_FIELD_ENROLLMENT_DUEDATE); ?></th>
-			<th style="text-align: right"><?php echo lang(LANG_KEY_FIELD_PRICE); ?></th>
 			<th><?php echo lang(LANG_KEY_FIELD_LOCATION); ?></th>
 			<th><?php echo lang(LANG_KEY_FIELD_ENROLLED); ?></th>
 		</tr>
@@ -49,11 +49,20 @@
 			?></td>
 			<td><?php echo formatDateGerman($event->{DB_EVENT_REGISTRATIONDUEDATE}); ?></td>
 			<td><?php echo formatDateGerman($event->{DB_EVENT_PAYMENTDUEDATE}); ?></td>
-			<td class="alignright"><?php echo formatCurrency($event->{DB_EVENT_PRICE}); ?></td>
 			<td><?php echo $event->{DB_EVENT_LOCATION}; ?></td>		
 			<td><a href="<?php echo CONTROLLER_EVENTS_LIST_ENROLLED . "/" . $event->{DB_EVENT_ID}; ?>"><?php echo $event->{DB_EVENT_NAME}; ?></a></td>				
 		</tr>
 	<?php endforeach; ?>		
 	</tbody>
-</table>	
+</table>
+<script>
+	$('.pagination a')
+		.bind('click', function() {		
+			var selectedTab = $('#header_navitabs').tabs('option', 'selected');			
+			$('#ui-tabs-' + selectedTab).load($(this).attr('href'), function() {
+				AKADEMEN.initializeButtons();
+			});			
+			return false;
+		});
+</script>
 

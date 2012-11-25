@@ -115,5 +115,6 @@ define('DB_TRANSACTION_CREATEDBY',			'CreatedBy');
 define('DB_TRANSACTION_MODIFIED',			'Modified');
 define('DB_TRANSACTION_MODIFIEDBY',			'ModifiedBy');
 
-//Temporary tables and views
+//Temporary tables, views and columns
 define('DB_CUSTOM_AVEC',					'Avec');
+define('DB_TOTALCOUNT',						'TotalCount');

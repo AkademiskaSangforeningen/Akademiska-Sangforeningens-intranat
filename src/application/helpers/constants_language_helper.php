@@ -13,11 +13,12 @@ define('LANG_FILE',									'Text');
 define('LANG_LANGUAGE_SV',							'sv');	
 
 //Headers
-define('LANG_KEY_HEADER_LOGIN',							'header_login');
-define('LANG_KEY_HEADER_EVENT_REGISTRATION_SUCCEEDED',	'header_event_registration_succeeded');
-define('LANG_KEY_HEADER_EVENT_REGISTRATION_CANCELLED',	'header_event_registration_cancelled');
-define('LANG_KEY_HEADER_EVENT_NOT_FOUND',				'header_event_not_found');
-define('LANG_KEY_HEADER_EVENT_REGISTRATION_NOT_FOUND',	'header_event_registration_not_found');
+define('LANG_KEY_HEADER_LOGIN',									'header_login');
+define('LANG_KEY_HEADER_EVENT_REGISTRATION_SUCCEEDED',			'header_event_registration_succeeded');
+define('LANG_KEY_HEADER_EVENT_REGISTRATION_CANCELLED',			'header_event_registration_cancelled');
+define('LANG_KEY_HEADER_EVENT_NOT_FOUND',						'header_event_not_found');
+define('LANG_KEY_HEADER_EVENT_REGISTRATION_NOT_FOUND',			'header_event_registration_not_found');
+define('LANG_KEY_HEADER_EVENT_REGISTRATION_DUE_DATE_PASSED',	'header_event_due_date_passed');
 
 //Buttons
 define('LANG_KEY_BUTTON_LOG_IN',					'button_log_in');
@@ -36,6 +37,8 @@ define('LANG_KEY_BUTTON_CREATE_NEW_EVENT',			'button_create_new_event');
 define('LANG_KEY_BUTTON_EDIT_EVENT',				'button_edit_event');
 define('LANG_KEY_BUTTON_DELETE_EVENT',				'button_delete_event');
 define('LANG_KEY_BUTTON_VIEW_EVENT',				'button_view_event');
+define('LANG_KEY_BUTTON_PAGING_FIRST',				'button_paging_first');
+define('LANG_KEY_BUTTON_PAGING_LAST',				'button_paging_last');
 
 //Fields
 define('LANG_KEY_FIELD_EMAIL',						'field_email');
@@ -94,8 +97,9 @@ define('LANG_KEY_ERROR_INVALID_GUID',				'error_invalid_GUID');
 define('LANG_KEY_MISC_REQUIRED_FIELD',				'misc_required_field');
 
 //Event registration
-define('LANG_KEY_BODY_EVENT_REGISTRATION_SUCCEEDED',	'body_event_registration_succeeded');
-define('LANG_KEY_BODY_EVENT_YOU_CAN_REREGISTER',		'body_event_registration_you_can_reregister');
-define('LANG_KEY_BODY_EVENT_CHECK_CORRECT_ADDRESS',		'body_event_check_correct_address');
-define('LANG_KEY_BODY_EVENT_EMAIL_ALREADY_REGISTERED',	'body_event_email_already_registered');
-define('LANG_KEY_LINK_REREGISTER',						'link_reregister');
+define('LANG_KEY_BODY_EVENT_REGISTRATION_SUCCEEDED',		'body_event_registration_succeeded');
+define('LANG_KEY_BODY_EVENT_YOU_CAN_REREGISTER',			'body_event_registration_you_can_reregister');
+define('LANG_KEY_BODY_EVENT_CHECK_CORRECT_ADDRESS',			'body_event_check_correct_address');
+define('LANG_KEY_BODY_EVENT_EMAIL_ALREADY_REGISTERED',		'body_event_email_already_registered');
+define('LANG_KEY_BODY_EVENT_REGISTRATION_DUE_DATE_PASSED',	'body_event_registration_due_date_passed');
+define('LANG_KEY_LINK_REREGISTER',							'link_reregister');

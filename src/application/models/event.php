@@ -14,19 +14,20 @@ class Event extends CI_Model {
         parent::__construct();
     }
     
-    //May be called without limit to get all future events.
-    //NOTE: Uses StartDate, so does not return ongoing events!
-    function get_closest_future_events($limit = NULL)
-    {
-        // TODO: Make StartDate a bit smarter, so you can see 'Today' events even
-        // if the event has no time, which would mean it would be equal to midnight,
-        // and would not be shown in the morning of the same day.
-        $query = $this->db->query('SELECT * FROM event WHERE StartDate>='.time().
-                                  ' ORDER BY StartDate ASC'.
-                                  ($limit ? ' LIMIT '.$this->db->escape($limit) : '')
-								  );
-        return $query->result();
-    }
+	function getAllEvents($limit = FALSE, $offset = FALSE) {
+		$this->db->select('*');
+		$this->db->select('(SELECT COUNT(*) FROM ' . DB_TABLE_EVENT . ') AS ' . DB_TOTALCOUNT, FALSE);
+		$this->db->from(DB_TABLE_EVENT);
+		$this->db->order_by(DB_EVENT_STARTDATE, "desc");
+		$this->db->order_by(DB_EVENT_ENDDATE, 	"desc");
+		$this->db->order_by(DB_EVENT_NAME, 		"asc");
+		if ($limit !== FALSE && $offset !== FALSE) {
+			$this->db->limit($limit, $offset);
+		}
+		
+		$query = $this->db->get();
+		return $query->result();
+	}
 	
 	function getEvent($eventId) {
 		$this->db->select('*');

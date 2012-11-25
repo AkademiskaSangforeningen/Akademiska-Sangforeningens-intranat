@@ -6,11 +6,12 @@
  *
 */
 
-$lang[LANG_KEY_HEADER_LOGIN]						= "Akademiska Sångföreningens intranät";
-$lang[LANG_KEY_HEADER_EVENT_REGISTRATION_SUCCEEDED]	= "Anmälningen lyckades";
-$lang[LANG_KEY_HEADER_EVENT_REGISTRATION_CANCELLED] = "Din anmälan är nu annulerad";
-$lang[LANG_KEY_HEADER_EVENT_NOT_FOUND]				= "Evenemanget kunde inte hittas";
-$lang[LANG_KEY_HEADER_EVENT_REGISTRATION_NOT_FOUND]	= "Din anmälan till evenemanget kunde inte hittas";
+$lang[LANG_KEY_HEADER_LOGIN]								= "Akademiska Sångföreningens intranät";
+$lang[LANG_KEY_HEADER_EVENT_REGISTRATION_SUCCEEDED]			= "Anmälningen lyckades";
+$lang[LANG_KEY_HEADER_EVENT_REGISTRATION_CANCELLED] 		= "Din anmälan är nu annulerad";
+$lang[LANG_KEY_HEADER_EVENT_NOT_FOUND]						= "Evenemanget kunde inte hittas";
+$lang[LANG_KEY_HEADER_EVENT_REGISTRATION_NOT_FOUND]			= "Din anmälan till evenemanget kunde inte hittas";
+$lang[LANG_KEY_HEADER_EVENT_REGISTRATION_DUE_DATE_PASSED]	= "Anmälningsdeadlinen har gått";
 
 $lang[LANG_KEY_BUTTON_LOG_IN]					= "Logga in";
 $lang[LANG_KEY_BUTTON_LOGGING_IN]				= "Loggar in dig";
@@ -28,6 +29,8 @@ $lang[LANG_KEY_BUTTON_CREATE_NEW_EVENT]			= "Skapa nytt evenemang";
 $lang[LANG_KEY_BUTTON_EDIT_EVENT]				= "Redigera evenemang";
 $lang[LANG_KEY_BUTTON_DELETE_EVENT]				= "Radera evenemang";
 $lang[LANG_KEY_BUTTON_VIEW_EVENT]				= "Se evenemang";
+$lang[LANG_KEY_BUTTON_PAGING_FIRST]				= "Första";
+$lang[LANG_KEY_BUTTON_PAGING_LAST]				= "Sista";
 
 $lang[LANG_KEY_FIELD_EMAIL]						= "E-postadress";
 $lang[LANG_KEY_FIELD_PASSWORD]					= "Lösenord";
@@ -94,4 +97,5 @@ $lang[LANG_KEY_BODY_EVENT_REGISTRATION_SUCCEEDED]		= "Du är nu anmäld, ett e-p
 $lang[LANG_KEY_BODY_EVENT_YOU_CAN_REREGISTER]			= "Du kan anmäla dig på nytt genom att klicka på länken nedan.";
 $lang[LANG_KEY_BODY_EVENT_CHECK_CORRECT_ADDRESS]		= "Kontrollera att du har angett en korrekt address.";
 $lang[LANG_KEY_BODY_EVENT_EMAIL_ALREADY_REGISTERED]		= "En person med den angivna e-postadressen är redan anmäld till evenemanget, kontrollera din angivna e-postadress.<br/>Om du vill ändra på din anmälan, använd länken i det e-postmeddelande som skickades åt dig då du första gången anmälde dig.";
+$lang[LANG_KEY_BODY_EVENT_REGISTRATION_DUE_DATE_PASSED]	= "Tyvärr går det inte att anmäla sig eller ändra sin anmälan till detta evenemang mera.";
 $lang[LANG_KEY_LINK_REREGISTER]							= "Anmäl dig på nytt";
