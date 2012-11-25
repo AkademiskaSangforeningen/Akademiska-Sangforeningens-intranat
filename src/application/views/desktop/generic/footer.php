@@ -1,5 +1,5 @@
 		</div>
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 		<script>
 			//Fallback to local jQuery-copy if CDN is down
 			window.jQuery || document.write('\x3Cscript src="<?php echo base_url()?>js/desktop/libraries/jquery.min.js">\x3C/script>');		
