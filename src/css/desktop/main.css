@@ -122,7 +122,8 @@ table {
 	width: 100%;
 }
 
-tr {
+tr:nth-child(2n) {
+  background-color: #f1f1f1;
 }
 
 th {
