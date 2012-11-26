@@ -24,14 +24,14 @@ class Events extends CI_Controller {
 		redirect(CONTROLLER_MY_PAGE, 'refresh');
 	}
 
-	function listAll($page = 1) {
+	function listAll($offset = 0) {
 		$client = CLIENT_DESKTOP;
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));
 		
 		$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
 		$this->load->library('pagination');
 		
-		$eventList = $this->event->getAllEvents(2, $page);				
+		$eventList = $this->event->getAllEvents(LIST_DEF_PAGING, $offset);				
 
 		$config['base_url'] 	= site_url() . CONTROLLER_EVENTS_LISTALL . '/';
 		$config['total_rows']	= $eventList[0]->{DB_TOTALCOUNT};

@@ -47,10 +47,28 @@
 			<th><span class="ui-icon ui-icon-pencil" title="<?php echo lang(LANG_KEY_BUTTON_EDIT_MEMBER); ?>"></span></th>
 			<th><span class="ui-icon ui-icon-trash" title="<?php echo lang(LANG_KEY_BUTTON_DELETE_MEMBER); ?>"></span></th>		
 			<th><?php echo lang(LANG_KEY_FIELD_NAME); ?></th>
-			<th><?php echo lang(LANG_KEY_FIELD_ALLERGIES); ?></th>
-			<?php foreach($eventItems as $key => $eventItem) { ?>
-				<th><?php echo $eventItem->{DB_EVENTITEM_DESCRIPTION}; ?> - pris: <?php echo formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}); ?></th>
-			<?php } ?>		
+			<th><?php echo lang(LANG_KEY_FIELD_ALLERGIES); ?></th>			
+			<?php
+				foreach($eventItems as $key => $eventItem) {
+					echo "<th>";
+					switch ($eventItem->{DB_EVENTITEM_TYPE}) {
+							case EVENT_TYPE_RADIO:
+							case EVENT_TYPE_CHECKBOX:					
+								echo $eventItem->{DB_EVENTITEM_DESCRIPTION} . '<br/>pris: ' . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT});
+								break;
+							case EVENT_TYPE_TEXTAREA:
+								if ($eventItem->{DB_EVENTITEM_DESCRIPTION} == '') {
+									echo $eventItem->{DB_EVENTITEM_CAPTION};
+								} else {
+									echo $eventItem->{DB_EVENTITEM_DESCRIPTION};
+								}
+								break;
+							default:
+								break;
+					}
+					echo "</th>";
+				}
+			?>
 		</tr>
 	</thead>
 	<tfoot>
@@ -71,7 +89,7 @@
 							switch ($eventItem->{DB_EVENTITEM_TYPE}) {
 								case EVENT_TYPE_RADIO:
 								case EVENT_TYPE_CHECKBOX:
-									echo '<td style="text-align: middle">X</td>';
+									echo '<td style="text-align: center;"><input type="checkbox" checked="checked" disabled="disabled"/></td>';
 									break;
 								case EVENT_TYPE_TEXTAREA:
 									echo "<td>";
@@ -82,7 +100,9 @@
 									break;
 							}							
 						} else {
+							echo "<td>";
 							echo $personHasEventItems[$person->{DB_PERSON_ID}][$eventItem->{DB_EVENTITEM_ID}][DB_PERSONHASEVENTITEM_AMOUNT] . " st.";	
+							echo "</td>";
 						}																												
 					} else {						
 						echo "<td></td>";
@@ -101,7 +121,7 @@
 								switch ($eventItem->{DB_EVENTITEM_TYPE}) {
 									case EVENT_TYPE_RADIO:
 									case EVENT_TYPE_CHECKBOX:
-										echo '<td style="text-align: middle">X</td>';
+										echo '<td style="text-align: center;"><input type="checkbox" checked="checked" disabled="disabled"/></td>';
 										break;
 									case EVENT_TYPE_TEXTAREA:
 										echo "<td>";
@@ -112,7 +132,9 @@
 										break;
 								}							
 							} else {
+								echo "<td>";
 								echo $personHasEventItems[$person->{DB_CUSTOM_AVEC . DB_PERSON_ID}][$eventItem->{DB_EVENTITEM_ID}][DB_PERSONHASEVENTITEM_AMOUNT] . " st.";	
+								echo "</td>";
 							}																												
 						} else {
 							echo "<td></td>";
