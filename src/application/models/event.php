@@ -45,6 +45,26 @@ class Event extends CI_Model {
 		}		
 	}
 	
+	function getPersonsForEvent($eventId) {
+		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_ID);
+		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_FIRSTNAME);
+		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_LASTNAME);
+		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_ALLERGIES);
+		$this->db->select(DB_CUSTOM_AVEC . DB_TABLE_PERSON . '.' . DB_PERSON_ID . ' AS ' . DB_CUSTOM_AVEC . DB_PERSON_ID, 				FALSE);
+		$this->db->select(DB_CUSTOM_AVEC . DB_TABLE_PERSON . '.' . DB_PERSON_FIRSTNAME . ' AS ' . DB_CUSTOM_AVEC . DB_PERSON_FIRSTNAME, FALSE);
+		$this->db->select(DB_CUSTOM_AVEC . DB_TABLE_PERSON . '.' . DB_PERSON_LASTNAME . ' AS ' . DB_CUSTOM_AVEC . DB_PERSON_LASTNAME, 	FALSE);
+		$this->db->select(DB_CUSTOM_AVEC . DB_TABLE_PERSON . '.' . DB_PERSON_ALLERGIES . ' AS ' . DB_CUSTOM_AVEC . DB_PERSON_ALLERGIES, FALSE);		
+		$this->db->from(DB_TABLE_PERSONHASEVENT);
+		$this->db->join(DB_TABLE_PERSON, DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_PERSONID . ' = ' . DB_TABLE_PERSON . '.' . DB_PERSON_ID, 'inner');
+		$this->db->join(DB_TABLE_PERSON . ' AS ' . DB_CUSTOM_AVEC . DB_TABLE_PERSON, DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_AVECPERSONID . ' = ' . DB_CUSTOM_AVEC . DB_TABLE_PERSON . '.' . DB_PERSON_ID, 'left');
+		$this->db->where(DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_EVENTID, $eventId);
+		$this->db->order_by(DB_TABLE_PERSON . '.' . DB_PERSON_FIRSTNAME);
+		$this->db->order_by(DB_TABLE_PERSON . '.' . DB_PERSON_LASTNAME);
+		
+		$query = $this->db->get();		
+		return $query->result();
+	}
+	
 	/**
 	* Function used for saving a single event
 	*

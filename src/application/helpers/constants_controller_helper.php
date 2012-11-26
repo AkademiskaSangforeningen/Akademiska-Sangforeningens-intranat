@@ -52,5 +52,6 @@ define('CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY',  			'events/editregisterdirec
 define('CONTROLLER_EVENTS_SAVE_REGISTER_DIRECTLY',  			'events/saveregisterdirectly');
 define('CONTROLLER_EVENTS_CONFIRM_SAVE_REGISTER_DIRECTLY',		'events/confirmsaveregisterdirectly');
 define('CONTROLLER_EVENTS_CANCEL_REGISTER_DIRECTLY',  			'events/cancelregisterdirectly');
+define('CONTROLLER_EVENTS_LIST_SINGLE_EVENT_REGISTRATIONS',		'events/listsingleeventregistrations');
 define('CONTROLLER_SAVE_CANCEL_REGISTER_DIRECTLY',  			'events/savecancelregisterdirectly');
 define('CONTROLLER_EVENTS_CONFIRM_CANCEL_REGISTER_DIRECTLY',	'events/confirmcancelregisterdirectly');

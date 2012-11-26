@@ -34,7 +34,7 @@
 
 	</tfoot>
 	<tbody>
-	<?php foreach($eventList as $key => $event): ?>
+	<?php foreach($eventList as $key => $event) { ?>
 		<tr>
 			<td><a href="<?php echo site_url() . CONTROLLER_EVENTS_EDITSINGLE . '/' . $event->{DB_EVENT_ID}; ?>" class="button" data-icon="ui-icon-pencil" data-text="false" data-formdialog="true"><?php echo lang(LANG_KEY_BUTTON_EDIT_EVENT); ?></a></td>
 			<td><a href="<?php echo site_url() . CONTROLLER_EVENTS_DELETESINGLE . '/' . $event->{DB_EVENT_ID}; ?>" class="button" data-icon="ui-icon-trash" data-text="false" data-confirmdialog="true"><?php echo lang(LANG_KEY_BUTTON_DELETE_EVENT); ?></a></td>		
@@ -50,7 +50,7 @@
 			<td><?php echo formatDateGerman($event->{DB_EVENT_REGISTRATIONDUEDATE}); ?></td>
 			<td><?php echo formatDateGerman($event->{DB_EVENT_PAYMENTDUEDATE}); ?></td>
 			<td><?php echo $event->{DB_EVENT_LOCATION}; ?></td>		
-			<td><a href="<?php echo CONTROLLER_EVENTS_LIST_ENROLLED . "/" . $event->{DB_EVENT_ID}; ?>" class="button" data-icon="ui-icon-person">
+			<td><a href="<?php echo site_url() . CONTROLLER_EVENTS_LIST_SINGLE_EVENT_REGISTRATIONS . '/' . $event->{DB_EVENT_ID}; ?>" class="button" data-icon="ui-icon-person" data-formdialog="true">
 				<?php echo $event->{DB_TABLE_PERSONHASEVENT . DB_TOTALCOUNT}; ?>
 				+
 				<?php echo $event->{DB_TABLE_PERSONHASEVENT . DB_CUSTOM_AVEC . DB_TOTALCOUNT}; ?>
@@ -59,7 +59,7 @@
 				</a>
 			</td>
 		</tr>
-	<?php endforeach; ?>		
+	<?php } ?>		
 	</tbody>
 </table>
 <script>

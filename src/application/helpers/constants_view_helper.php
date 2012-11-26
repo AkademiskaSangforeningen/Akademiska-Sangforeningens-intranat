@@ -33,6 +33,7 @@ define('VIEW_CONTENT_EVENTS_EDIT_REGISTER_DIRECTLY',			'/content/events/editregi
 define('VIEW_CONTENT_EVENTS_CANCEL_REGISTER_DIRECTLY',			'/content/events/cancelregisterdirectly');
 define('VIEW_CONTENT_EVENTS_CONFIRM_SAVE_REGISTER_MAIL',		'/content/events/confirmsaveregistermail');
 define('VIEW_CONTENT_EVENTS_CONFIRM_CANCEL_REGISTER_MAIL',		'/content/events/confirmcancelregistermail');
+define('VIEW_CONTENT_EVENTS_LIST_SINGLE_EVENT_REGISTRATIONS',	'/content/events/listsingleeventregistrations');
 
 define('VIEW_CONTENT_USERMANAGER_LISTUSERS',    				'/content/usermanager/listusers');
 

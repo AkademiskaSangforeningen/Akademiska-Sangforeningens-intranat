@@ -46,6 +46,33 @@ class Events extends CI_Controller {
 		
 		$this->load->view($client . VIEW_CONTENT_EVENTS_LISTALL, $data);
 	}
+	
+	function listSingleEventRegistrations($eventId) {
+		$client = CLIENT_DESKTOP;
+		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));
+
+		$this->load->model(MODEL_EVENT, 	strtolower(MODEL_EVENT), 		TRUE);
+		$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), 	TRUE);		
+				
+		$personHasEventItems = array();
+		foreach($this->eventitem->getPersonHasEventItems($eventId) as $key => $personHasEventItem) {
+			$innerArray[$personHasEventItem->{DB_PERSONHASEVENTITEM_EVENTITEMID}] = array(
+				DB_PERSONHASEVENTITEM_DESCRIPTION => $personHasEventItem->{DB_PERSONHASEVENTITEM_DESCRIPTION},
+				DB_PERSONHASEVENTITEM_AMOUNT => $personHasEventItem->{DB_PERSONHASEVENTITEM_AMOUNT}
+			);
+			$personHasEventItems[$personHasEventItem->{DB_PERSONHASEVENTITEM_PERSONID}] = $innerArray;
+		}
+		
+		$data = array();
+		$data['eventId'] 				= $eventId;
+		$data['event'] 					= $this->event->getEvent($eventId);
+		$data['eventItems'] 			= $this->eventitem->getEventItems($eventId);
+		$data['persons']				= $this->event->getPersonsForEvent($eventId);
+		$data['personHasEventItems']	= $personHasEventItems;
+		$data['pagination']	= NULL;				
+		
+		$this->load->view($client . VIEW_CONTENT_EVENTS_LIST_SINGLE_EVENT_REGISTRATIONS, $data);
+	}
 
 	/**
 	*	Used for editing a single event

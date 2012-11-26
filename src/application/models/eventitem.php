@@ -13,7 +13,7 @@ class EventItem extends CI_Model {
         parent::__construct();
     }
 
-	function getEventItems($eventId, $personId, $onlyShowRegistered = FALSE) {
+	function getEventItems($eventId, $personId = NULL, $onlyShowRegistered = FALSE) {
 		$this->db->select(DB_TABLE_EVENTITEM . '.*');
 		$this->db->select(DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_EVENTITEMID . ' AS ' . DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_EVENTITEMID, FALSE);
 		$this->db->select(DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_DESCRIPTION . ' AS ' . DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_DESCRIPTION, FALSE);
@@ -24,12 +24,28 @@ class EventItem extends CI_Model {
 		if ($onlyShowRegistered	== TRUE) {
 			$this->db->where(DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_PERSONID, $personId);
 		}
-		$this->db->order_by(DB_EVENTITEM_ROWORDER);
-		$this->db->order_by(DB_EVENTITEM_TYPE);
-		$this->db->order_by(DB_EVENTITEM_CAPTION);
-		$this->db->order_by(DB_EVENTITEM_DESCRIPTION);
+		$this->db->order_by(DB_TABLE_EVENTITEM . '.' . DB_EVENTITEM_ROWORDER);
+		$this->db->order_by(DB_TABLE_EVENTITEM . '.' . DB_EVENTITEM_TYPE);
+		$this->db->order_by(DB_TABLE_EVENTITEM . '.' . DB_EVENTITEM_CAPTION);
+		$this->db->order_by(DB_TABLE_EVENTITEM . '.' . DB_EVENTITEM_DESCRIPTION);
 		$query = $this->db->get();
 		return $query->result();
+	}
+	
+	function getPersonHasEventItems($eventId) {			
+		$this->db->select(DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_PERSONID);
+		$this->db->select(DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_EVENTITEMID);
+		$this->db->select(DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_DESCRIPTION);
+		$this->db->select(DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_AMOUNT);
+		$this->db->from(DB_TABLE_EVENTITEM);	
+		$this->db->join(DB_TABLE_PERSONHASEVENTITEM, DB_TABLE_EVENTITEM . "." . DB_EVENTITEM_ID . ' = ' . DB_TABLE_PERSONHASEVENTITEM . "." . DB_PERSONHASEVENTITEM_EVENTITEMID, 'inner');
+		$this->db->where(DB_EVENTITEM_EVENTID,	$eventId);
+		$this->db->order_by(DB_TABLE_EVENTITEM . '.' . DB_EVENTITEM_ROWORDER);
+		$this->db->order_by(DB_TABLE_EVENTITEM . '.' . DB_EVENTITEM_TYPE);
+		$this->db->order_by(DB_TABLE_EVENTITEM . '.' . DB_EVENTITEM_CAPTION);
+		$this->db->order_by(DB_TABLE_EVENTITEM . '.' . DB_EVENTITEM_DESCRIPTION);
+		$query = $this->db->get();
+		return $query->result();		
 	}
 
 	/**
