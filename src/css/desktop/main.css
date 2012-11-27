@@ -48,6 +48,7 @@ legend {
 .tools {
 	margin-bottom: 1em;
 	float: left;
+	clear: both;
 }
 
 .pagination {
@@ -142,6 +143,7 @@ tfoot td {
 	padding: 0.5em 1.5em 0.5em 0;
 	border-top: 1px solid gray;
 	border-bottom: 1px solid gray;
+	font-weight: bold;
 }
 
 td {

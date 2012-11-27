@@ -31,25 +31,26 @@ class Events extends CI_Controller {
 		$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
 		$this->load->library('pagination');
 		
-		$eventList = $this->event->getAllEvents(LIST_DEF_PAGING, $offset);				
+		$eventList = $this->event->getAllEvents(LIST_DEF_PAGING, $offset);
 
 		$config['base_url'] 	= site_url() . CONTROLLER_EVENTS_LISTALL . '/';
 		$config['total_rows']	= $eventList[0]->{DB_TOTALCOUNT};
-		$config['first_link'] 	= 'Första';
-		$config['last_link'] 	= 'Sista';
+		$config['first_link'] 	= lang(LANG_KEY_BUTTON_PAGING_FIRST);
+		$config['last_link'] 	= lang(LANG_KEY_BUTTON_PAGING_LAST);
 		$config['anchor_class']	= 'class="button" ';
 		$config['per_page'] 	= LIST_DEF_PAGING; 
 		$this->pagination->initialize($config); 
-		
+
 		$data['eventList'] 	= $eventList;
 		$data['pagination']	= $this->pagination->create_links();
 		
 		$this->load->view($client . VIEW_CONTENT_EVENTS_LISTALL, $data);
 	}
 	
-	function listSingleEventRegistrations($eventId) {
+	function listSingleEventRegistrations($eventId, $offset = 0) {
 		$client = CLIENT_DESKTOP;
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));
+		$this->load->library('pagination');
 
 		$this->load->model(MODEL_EVENT, 	strtolower(MODEL_EVENT), 		TRUE);
 		$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), 	TRUE);		
@@ -63,14 +64,29 @@ class Events extends CI_Controller {
 			$personHasEventItems[$personHasEventItem->{DB_PERSONHASEVENTITEM_PERSONID}] = $innerArray;
 		}
 		
+		$eventItemSums = array();
+		foreach($this->eventitem->getEventItemSums($eventId) as $key => $eventItemSum) {
+			$eventItemSums[$eventItemSum->{DB_PERSONHASEVENTITEM_EVENTITEMID}] = $eventItemSum->{DB_TOTALCOUNT};				
+		}
+		
 		$data = array();
 		$data['eventId'] 				= $eventId;
+		$data['personHasEventItems']	= $personHasEventItems;		
 		$data['event'] 					= $this->event->getEvent($eventId);
+		$data['persons']				= $this->event->getPersonsForEvent($eventId, LIST_DEF_PAGING, $offset);
 		$data['eventItems'] 			= $this->eventitem->getEventItems($eventId);
-		$data['persons']				= $this->event->getPersonsForEvent($eventId);
-		$data['personHasEventItems']	= $personHasEventItems;
-		$data['pagination']	= NULL;				
+		$data['eventItemSums']			= $eventItemSums;	
 		
+		$config['base_url'] 	= site_url() . CONTROLLER_EVENTS_LIST_SINGLE_EVENT_REGISTRATIONS . '/' . $eventId . '/';
+		$config['total_rows']	= $data['persons'][0]->{DB_TOTALCOUNT};
+		$config['first_link'] 	= lang(LANG_KEY_BUTTON_PAGING_FIRST);
+		$config['last_link'] 	= lang(LANG_KEY_BUTTON_PAGING_LAST);
+		$config['anchor_class']	= 'class="button" ';
+		$config['per_page'] 	= LIST_DEF_PAGING; 
+		$config['uri_segment'] 	= 4;
+		$this->pagination->initialize($config); 
+		$data['pagination']	= $this->pagination->create_links();
+				
 		$this->load->view($client . VIEW_CONTENT_EVENTS_LIST_SINGLE_EVENT_REGISTRATIONS, $data);
 	}
 

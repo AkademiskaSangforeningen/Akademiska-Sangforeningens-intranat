@@ -28,8 +28,21 @@ class EventItem extends CI_Model {
 		$this->db->order_by(DB_TABLE_EVENTITEM . '.' . DB_EVENTITEM_TYPE);
 		$this->db->order_by(DB_TABLE_EVENTITEM . '.' . DB_EVENTITEM_CAPTION);
 		$this->db->order_by(DB_TABLE_EVENTITEM . '.' . DB_EVENTITEM_DESCRIPTION);
+		
 		$query = $this->db->get();
 		return $query->result();
+	}
+	
+	function getEventItemSums($eventId) {
+		$this->db->select(DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_EVENTITEMID);
+		$this->db->select('COUNT(*) AS ' . DB_TOTALCOUNT, FALSE);
+		$this->db->from(DB_TABLE_EVENTITEM);	
+		$this->db->join(DB_TABLE_PERSONHASEVENTITEM, DB_TABLE_EVENTITEM . "." . DB_EVENTITEM_ID . ' = ' . DB_TABLE_PERSONHASEVENTITEM . "." . DB_PERSONHASEVENTITEM_EVENTITEMID, 'inner');
+		$this->db->where(DB_EVENTITEM_EVENTID,	$eventId);
+		$this->db->group_by(DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_EVENTITEMID);
+		
+		$query = $this->db->get();
+		return $query->result();		
 	}
 	
 	function getPersonHasEventItems($eventId) {			
@@ -44,6 +57,7 @@ class EventItem extends CI_Model {
 		$this->db->order_by(DB_TABLE_EVENTITEM . '.' . DB_EVENTITEM_TYPE);
 		$this->db->order_by(DB_TABLE_EVENTITEM . '.' . DB_EVENTITEM_CAPTION);
 		$this->db->order_by(DB_TABLE_EVENTITEM . '.' . DB_EVENTITEM_DESCRIPTION);
+		
 		$query = $this->db->get();
 		return $query->result();		
 	}

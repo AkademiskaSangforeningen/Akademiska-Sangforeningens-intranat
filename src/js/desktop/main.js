@@ -74,7 +74,20 @@ var AKADEMEN = (function(){
 						
 						}
 				});
-		},		
+		},
+
+		/**
+		*	Initialize dialog for confirmation
+		*/		
+		initializeListDialog: function() {
+			$('<div id="dialog_list"></div>')						
+				.dialog({
+					autoOpen: false,
+					height: ($(window).height() * 0.9),
+					width: ($(window).width() * 0.9),
+					modal: true
+				});
+		},	
 	
 		/**
 		*	Initialize buttons
@@ -145,7 +158,41 @@ var AKADEMEN = (function(){
 										return false;
 									});						
 						return false;			
-					});					
+					})
+					.end()
+				//Special handling for those buttons that open a list dialog
+				.filter('[data-listdialog="true"]')
+					.on('click.openListDialog', function (event) {			
+						var title = $(this).text();
+						$.ajax({
+							url: $(this).attr("href"),				  
+							dataType: "html",
+							cache: false,
+							//on success, set the data to the dialog and open it
+							success: function(data) {
+								$('#dialog_list')
+									.html(data)																											
+									.dialog("option", "title", title)								
+									.dialog('open')
+									.find('.pagination a')
+										.bind('click', function() {		
+												url = $(this).attr('href');
+																	
+											$('#dialog_list').load(url, function() {				
+												AKADEMEN.initializeButtons();
+											});
+											return false;
+										});									
+									
+									AKADEMEN.initializeButtons(); 																			
+							},
+							error: function(jqXHR, textStatus, errorThrown) {
+								alert(errorThrown);
+							}
+						});											
+						return false;			
+					})
+					.end()					
 		},
 		
 		/**

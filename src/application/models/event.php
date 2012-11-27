@@ -45,7 +45,8 @@ class Event extends CI_Model {
 		}		
 	}
 	
-	function getPersonsForEvent($eventId) {
+	function getPersonsForEvent($eventId, $limit = FALSE, $offset = FALSE) {
+		$this->db->select('(SELECT COUNT(*) FROM ' . DB_TABLE_PERSONHASEVENT . ' AS A WHERE A.' . DB_PERSONHASEVENT_EVENTID . ' = ' . DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_EVENTID . ') AS '. DB_TOTALCOUNT, FALSE);	
 		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_ID);
 		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_FIRSTNAME);
 		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_LASTNAME);
@@ -60,6 +61,9 @@ class Event extends CI_Model {
 		$this->db->where(DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_EVENTID, $eventId);
 		$this->db->order_by(DB_TABLE_PERSON . '.' . DB_PERSON_FIRSTNAME);
 		$this->db->order_by(DB_TABLE_PERSON . '.' . DB_PERSON_LASTNAME);
+		if ($limit !== FALSE && $offset !== FALSE) {
+			$this->db->limit($limit, $offset);
+		}
 		
 		$query = $this->db->get();		
 		return $query->result();

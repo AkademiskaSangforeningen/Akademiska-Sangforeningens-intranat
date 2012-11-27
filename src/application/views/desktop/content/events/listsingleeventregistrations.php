@@ -20,11 +20,12 @@
 			<?php echo $event->{DB_EVENT_DESCRIPTION}; ?>
 		</div>
 	</div>	
+	<!--
 	<div class="registerdirectly-map">
 		<img src="https://maps.googleapis.com/maps/api/staticmap?center=<?php echo urlencode(str_replace(',', ' ', $event->{DB_EVENT_LOCATION})); ?>&zoom=14&size=250x250&sensor=false&markers=mid%7<?php echo urlencode(str_replace(',', ' ', $event->{DB_EVENT_LOCATION})); ?>" />
 	</div>
+	-->
 </div>
-
 <div class="tools">
 <a href="<?php echo CONTROLLER_EVENTS_EDITSINGLE ?>" class="button" data-icon="ui-icon-calendar" data-formdialog="true"><?php echo lang(LANG_KEY_BUTTON_CREATE_NEW_EVENT); ?></a>
 </div>
@@ -72,7 +73,33 @@
 		</tr>
 	</thead>
 	<tfoot>
-
+		<tr>
+			<td colspan="2">Totalt:</td>
+			<td></td>
+			<td></td>
+			<?php
+				foreach($eventItems as $key => $eventItem) {
+					if ($eventItem->{DB_EVENTITEM_MAXPCS} == 0) {
+						echo '<td style="text-align: center">';						
+					} else {
+						echo "<td>";
+					}
+					switch ($eventItem->{DB_EVENTITEM_TYPE}) {
+							case EVENT_TYPE_RADIO:
+							case EVENT_TYPE_CHECKBOX:
+								if (isset($eventItemSums[$eventItem->{DB_EVENTITEM_ID}])) {
+									echo $eventItemSums[$eventItem->{DB_EVENTITEM_ID}] . ' st.';
+								}
+								break;
+							case EVENT_TYPE_TEXTAREA:
+								break;
+							default:
+								break;
+					}
+					echo "</td>";
+				}
+			?>		
+		</tr>
 	</tfoot>
 	<tbody>		
 		<?php
@@ -148,17 +175,13 @@
 </table>
 
 <script>
-	$('.pagination a')
-		.bind('click', function() {		
-			var selectedTab = $('#header_navitabs').tabs('option', 'active'),
-				url = $(this).attr('href');
-									
-			$('#ui-tabs-' + selectedTab).load(url, function() {				
-				AKADEMEN.initializeButtons();
-				//Change tab-link to point to selected page
-				$('.ui-tabs-active a').attr('href', url);
+	$('#dialog_list')
+		.find('.pagination a')
+			.bind('click', function() {		
+				$('#dialog_list').load($(this).attr('href'), function() {				
+					AKADEMEN.initializeButtons();
+				});
+				return false;
 			});
-			return false;
-		});
 </script>
 
