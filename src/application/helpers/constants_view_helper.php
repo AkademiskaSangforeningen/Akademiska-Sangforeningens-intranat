@@ -35,6 +35,12 @@ define('VIEW_CONTENT_EVENTS_CONFIRM_SAVE_REGISTER_MAIL',		'/content/events/confi
 define('VIEW_CONTENT_EVENTS_CONFIRM_CANCEL_REGISTER_MAIL',		'/content/events/confirmcancelregistermail');
 define('VIEW_CONTENT_EVENTS_LIST_SINGLE_EVENT_REGISTRATIONS',	'/content/events/listsingleeventregistrations');
 
+define('VIEW_CONTENT_EVENTS_PART_INFO_EVENT',					'/content/events/parts/info_event.php');
+define('VIEW_CONTENT_EVENTS_PART_FORM_PERSON',					'/content/events/parts/form_person.php');
+define('VIEW_CONTENT_EVENTS_PART_FORM_PAYMENT',					'/content/events/parts/form_payment.php');
+define('VIEW_CONTENT_EVENTS_PART_FORM_EVENTITEMS',				'/content/events/parts/form_eventitems.php');
+define('VIEW_CONTENT_EVENTS_PART_FORM_AVEC_ALLOWED',			'/content/events/parts/form_avecallowed.php');
+
 define('VIEW_CONTENT_USERMANAGER_LISTUSERS',    				'/content/usermanager/listusers');
 
 define('VIEW_CONTENT_TRANSACTIONS_LISTALL',						'/content/transactions/listall');

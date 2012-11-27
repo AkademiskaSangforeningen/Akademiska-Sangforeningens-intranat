@@ -86,6 +86,9 @@ class Events extends CI_Controller {
 		$config['uri_segment'] 	= 4;
 		$this->pagination->initialize($config); 
 		$data['pagination']	= $this->pagination->create_links();
+		
+		//Load parts
+		$data['part_eventInfo']		= $this->load->view($client . VIEW_CONTENT_EVENTS_PART_INFO_EVENT, $data, TRUE);		
 				
 		$this->load->view($client . VIEW_CONTENT_EVENTS_LIST_SINGLE_EVENT_REGISTRATIONS, $data);
 	}
@@ -131,24 +134,62 @@ class Events extends CI_Controller {
 		if ($this->_validateEditDirectlyVariables($client, $eventId, $personId, $hash, $event, $personHasEvent) === FALSE) {
 			return;
 		}
-
-		//Load edit items, add them to $data-object
-		$data = array();
-		$data['eventItems'] = array();
 		
-		$data['eventId'] 			= $eventId;
-		$data['personId'] 			= $personId;
-		$data['hash'] 				= $hash;
-		$data['updateRegistration'] = ($personId != NULL);
-		$data['event'] 				= $event;
-		$data['personHasEvent']		= $this->event->getPersonHasEvent($eventId, $personId);
-		$data['eventItems'] 		= $this->eventitem->getEventItems($eventId, $personId);
-		$data['person']				= $this->person->getPerson($personId);
+		//Add parameters to view $data-object
+		$data = array();	
+		$data['eventId']	= $eventId;
+		$data['personId'] 	= $personId;
+		$data['hash'] 		= $hash;
+		
+		$personHasEvent = $this->event->getPersonHasEvent($eventId, $personId);
+		$personAvecId	= isset($personHasEvent->{DB_PERSONHASEVENT_AVECPERSONID}) ? $personHasEvent->{DB_PERSONHASEVENT_AVECPERSONID} : NULL;
+						
+		/*	Load different dynamic parts of the page */
+		//Event info
+		$data_part_info_event['eventId']	= $eventId;
+		$data_part_info_event['event'] 		= $event;			
+		$data['part_info_event'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_INFO_EVENT,	$data_part_info_event, TRUE);	
+		
+		//Person form
+		$data_part_form_person['person']		= $this->person->getPerson($personId);
+		$data_part_form_person['fieldPrefix']	= '';
+		$data_part_form_person['showFields']	= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_PHONE, DB_PERSON_ALLERGIES) 
+														: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_EMAIL, DB_PERSON_PHONE, DB_PERSON_ALLERGIES);
+		$data['part_form_person'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_person, TRUE);
+		
+		//Payment form
+		$data_part_form_payment['personHasEvent'] = $personHasEvent;
+		$data['part_form_payment'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PAYMENT, $data_part_form_payment, TRUE);
 
-		$personAvecId 				= isset($data['personHasEvent']->{DB_PERSONHASEVENT_AVECPERSONID}) ? $data['personHasEvent']->{DB_PERSONHASEVENT_AVECPERSONID} : NULL;
-		$data['avecEventItems']		= $this->eventitem->getEventItems($eventId, $personAvecId);
-		$data['personAvec'] 		= $this->person->getPerson($personAvecId);
+		//Event items form
+		$part_form_eventItems['eventItems']		= $this->eventitem->getEventItems($eventId, $personId);
+		$part_form_eventItems['currentIsAvec']	= FALSE;
+		$part_form_eventItems['fieldPrefix']	= '';
+		$part_form_eventItems['personId']		= $personId;
+		$data['part_form_eventitems'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_EVENTITEMS,	$part_form_eventItems, TRUE);		
+		
+		if ($event->{DB_EVENT_AVECALLOWED} == 1) {
+			//Avec allowed form
+			$data_part_form_avecAllowed['personHasEvent'] = $personHasEvent;
+			$data['part_form_avecallowed'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_AVEC_ALLOWED,	$data_part_form_avecAllowed, TRUE);	
 
+			//Person avec form
+			$data_part_form_personAvec['updateRegistration']	= ($personId != NULL);
+			$data_part_form_personAvec['person']				= $this->person->getPerson($personAvecId);
+			$data_part_form_personAvec['fieldPrefix']			= DB_CUSTOM_AVEC . '_';
+			$data_part_form_personAvec['showFields']			= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_ALLERGIES) 
+																		: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_EMAIL, DB_PERSON_ALLERGIES);		
+			$data['part_form_personAvec'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_personAvec, TRUE);
+
+			//Event items avec form
+			$data_part_form_eventItemsAvec['eventItems'] 	= $this->eventitem->getEventItems($eventId, $personAvecId);
+			$data_part_form_eventItemsAvec['currentIsAvec']	= TRUE;
+			$data_part_form_eventItemsAvec['fieldPrefix']	= DB_CUSTOM_AVEC . '_';
+			$data_part_form_eventItemsAvec['personId']		= $personId;
+			$data['part_form_eventitemsAvec'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_EVENTITEMS,	$data_part_form_eventItemsAvec, TRUE);		
+		}					
+
+		//Finally load the main views
 		$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
 		$this->load->view($client . VIEW_CONTENT_EVENTS_EDIT_REGISTER_DIRECTLY, $data);
 		$this->load->view($client . VIEW_GENERIC_FOOTER);
@@ -197,9 +238,9 @@ class Events extends CI_Controller {
 
 		//Validate the avec data if user has selected an avec on the form
 		if ($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED) == TRUE) {
-			$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_PERSON_FIRSTNAME,	lang(LANG_KEY_FIELD_FIRSTNAME),			'trim|max_length[50]|required|xss_clean');
-			$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_PERSON_LASTNAME, 	lang(LANG_KEY_FIELD_LASTNAME), 			'trim|max_length[50]|required|xss_clean');
-			$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_PERSON_ALLERGIES, 	lang(LANG_KEY_FIELD_ALLERGIES), 		'trim|max_length[50]|xss_clean');
+			$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME,	lang(LANG_KEY_FIELD_FIRSTNAME),			'trim|max_length[50]|required|xss_clean');
+			$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME, 	lang(LANG_KEY_FIELD_LASTNAME), 			'trim|max_length[50]|required|xss_clean');
+			$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES, 	lang(LANG_KEY_FIELD_ALLERGIES), 		'trim|max_length[50]|xss_clean');
 			$this->form_validation->set_rules(DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID . '[]',	'trim|callback__checkGuidValid');
 		}
 
@@ -215,14 +256,54 @@ class Events extends CI_Controller {
 		//If errors found, redraw the login form to the user
 		if($this->form_validation->run() === FALSE) {
 			$client = CLIENT_DESKTOP;
-			$data['eventId'] 			= $eventId;
-			$data['personId'] 			= $personId;
-			$data['hash'] 				= $hash;
-			$data['updateRegistration'] = ($personId != NULL);
-			$data['event'] 				= $this->event->getEvent($eventId);
-			$data['eventItems'] 		= $eventItems;
-			$data['avecEventItems']		= $eventItems;
+			$data = array();
+			$data['eventId']	= $eventId;
+			$data['personId'] 	= $personId;
+			$data['hash'] 		= $hash;
+			
+			/*	Load different dynamic parts of the page */
+			//Event info
+			$data_part_info_event['eventId']	= $eventId;
+			$data_part_info_event['event'] 		= $this->event->getEvent($eventId);			
+			$data['part_info_event'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_INFO_EVENT,	$data_part_info_event, TRUE);	
+			
+			//Person form
+			$data_part_form_person['fieldPrefix']	= '';
+			$data_part_form_person['showFields']	= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_PHONE, DB_PERSON_ALLERGIES) 
+															: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_EMAIL, DB_PERSON_PHONE, DB_PERSON_ALLERGIES);
+			$data['part_form_person'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_person, TRUE);
+			
+			//Payment form
+			$data['part_form_payment']		= $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PAYMENT, array(), TRUE);
+			
+			//Event items form
+			$part_form_eventItems['eventItems']		= $eventItems;
+			$part_form_eventItems['currentIsAvec']	= FALSE;
+			$part_form_eventItems['fieldPrefix']	= '';
+			$part_form_eventItems['personId']		= $personId;
+			$data['part_form_eventitems']	= $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_EVENTITEMS,	$part_form_eventItems, TRUE);		
+			
+			if ($event->{DB_EVENT_AVECALLOWED} == 1) {
+				//Avec allowed form
+				$data_part_form_avecAllowed['personHasEvent'] = $personHasEvent;
+				$data['part_form_avecallowed']	= $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_AVEC_ALLOWED,	$data_part_form_avecAllowed, TRUE);	
 
+				//Person avec form
+				$data_part_form_personAvec['updateRegistration']	= ($personId != NULL);
+				$data_part_form_personAvec['fieldPrefix']			= DB_CUSTOM_AVEC . '_';
+				$data_part_form_personAvec['showFields']			= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_ALLERGIES) 
+																			: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_EMAIL, DB_PERSON_ALLERGIES);		
+				$data['part_form_personAvec'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_personAvec, TRUE);
+
+				//Event items avec form
+				$data_part_form_eventItemsAvec['eventItems'] 	= $eventItems;
+				$data_part_form_eventItemsAvec['currentIsAvec']	= TRUE;
+				$data_part_form_eventItemsAvec['fieldPrefix']	= DB_CUSTOM_AVEC . '_';
+				$data_part_form_eventItemsAvec['personId']		= $personId;
+				$data['part_form_eventitemsAvec']	= $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_EVENTITEMS,	$data_part_form_eventItemsAvec, TRUE);		
+			}			
+			
+			//Finally load the main views
 			$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
 			$this->load->view($client . VIEW_CONTENT_EVENTS_EDIT_REGISTER_DIRECTLY, $data);
 			$this->load->view($client . VIEW_GENERIC_FOOTER);
@@ -276,10 +357,10 @@ class Events extends CI_Controller {
 			if ($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED) == TRUE) {
 			
 				$avecData = array();
-				addToArrayIfNotFalse($avecData, DB_PERSON_FIRSTNAME, 	$this->input->post(DB_CUSTOM_AVEC . '_' . DB_PERSON_FIRSTNAME));
-				addToArrayIfNotFalse($avecData, DB_PERSON_LASTNAME, 	$this->input->post(DB_CUSTOM_AVEC . '_' . DB_PERSON_LASTNAME));
-				addToArrayIfNotFalse($avecData, DB_PERSON_EMAIL, 		$this->input->post(DB_CUSTOM_AVEC . '_' . DB_PERSON_EMAIL));
-				addToArrayIfNotFalse($avecData, DB_PERSON_ALLERGIES, 	$this->input->post(DB_CUSTOM_AVEC . '_' . DB_PERSON_ALLERGIES));
+				addToArrayIfNotFalse($avecData, DB_PERSON_FIRSTNAME, 	$this->input->post(DB_CUSTOM_AVEC . '_' . DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME));
+				addToArrayIfNotFalse($avecData, DB_PERSON_LASTNAME, 	$this->input->post(DB_CUSTOM_AVEC . '_' . DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME));
+				addToArrayIfNotFalse($avecData, DB_PERSON_EMAIL, 		$this->input->post(DB_CUSTOM_AVEC . '_' . DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL));
+				addToArrayIfNotFalse($avecData, DB_PERSON_ALLERGIES, 	$this->input->post(DB_CUSTOM_AVEC . '_' . DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES));
 
 				//Save the avec, if a new avec the GUID of the new avec is returned
 				$avecId = $this->person->savePerson($avecData, $avecId, $personId);
