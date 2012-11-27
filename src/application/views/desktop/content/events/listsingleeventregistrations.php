@@ -79,8 +79,8 @@
 			$previousPersonId = NULL;
 			foreach($persons as $key => $person) {
 				echo "<tr>";
-				echo '<td><a href="' . site_url() . CONTROLLER_EVENTS_EDITSINGLE . '/' . $event->{DB_EVENT_ID} . '" class="button" data-icon="ui-icon-pencil" data-text="false" data-formdialog="true">' . lang(LANG_KEY_BUTTON_EDIT_EVENT) . '</a></td>';
-				echo '<td><a href="' . site_url() . CONTROLLER_EVENTS_DELETESINGLE . '/' . $event->{DB_EVENT_ID} . '" class="button" data-icon="ui-icon-trash" data-text="false" data-confirmdialog="true">' . lang(LANG_KEY_BUTTON_DELETE_EVENT) . '</a></td>';
+				echo '<td><a href="' . site_url() . CONTROLLER_EVENTS_EDIT_REGISTER . '/' . $event->{DB_EVENT_ID} . '/' . $person->{DB_PERSON_ID} . '/' . md5($event->{DB_EVENT_ID} . $this->config->item('encryption_key') . $person->{DB_PERSON_ID}) .'" class="button" data-icon="ui-icon-pencil" data-text="false" data-formdialog="true">' . lang(LANG_KEY_BUTTON_EDIT_EVENT_REGISTRATION) . '</a></td>';
+				echo '<td><a href="' . site_url() . CONTROLLER_EVENTS_DELETESINGLE . '/' . $event->{DB_EVENT_ID} . '" class="button" data-icon="ui-icon-trash" data-text="false" data-confirmdialog="true">' . lang(LANG_KEY_BUTTON_DELETE_EVENT_REGISTRATION) . '</a></td>';
 				echo "<td>" . $person->{DB_PERSON_FIRSTNAME} . " " . $person->{DB_PERSON_LASTNAME} . "</td>";
 				echo "<td>" . $person->{DB_PERSON_ALLERGIES} . "</td>";
 				foreach($eventItems as $key => $eventItem) {					
@@ -149,12 +149,16 @@
 
 <script>
 	$('#dialog_list')
+		.bind('updateList', function() {
+			$(this).load($(this).data("url"), function() {
+				AKADEMEN.initializeButtons();
+			});
+		})	
 		.find('.pagination a')
 			.bind('click', function() {		
-				$('#dialog_list').load($(this).attr('href'), function() {				
-					AKADEMEN.initializeButtons();
-				});
+				$('#dialog_list')
+					.data("url", $(this).attr('href'))
+					.trigger('updateList');
 				return false;
 			});
 </script>
-

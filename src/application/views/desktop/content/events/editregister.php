@@ -8,8 +8,8 @@
 			<legend><span class="requiredsymbol">*</span> <?php echo lang(LANG_KEY_MISC_REQUIRED_FIELD); ?></legend> 
 		</p>	
 	</div>
-	<?php echo form_open(CONTROLLER_EVENTS_SAVE_REGISTER_DIRECTLY . (isset($eventId) ? "/" . $eventId : "") . (isset($personId) ? "/" . $personId : "") . (isset($hash) ? "/" . $hash : ""), array('id' => 'form_editobject')); ?>
-		<fieldset class="ui-corner-all">
+	<?php echo form_open(CONTROLLER_EVENTS_SAVE_REGISTER_DIRECTLY . (isset($eventId) ? "/" . $eventId : "") . (isset($personId) ? "/" . $personId : "") . (isset($hash) ? "/" . $hash : "") . (isset($dialog) ? "/" . $dialog : ""), array('id' => 'form_editobject')); ?>
+		<fieldset class="ui-corner-all" id="registerperson">
 			<legend>Mina anmälningsuppgifter</legend>
 			
 			<?php if (isset($part_form_person)) { echo $part_form_person; } ?>				
@@ -34,14 +34,16 @@
 		<div style="font-weight: bold">
 			Totalt: <span id="totalprice"></span> euro
 		</div>
-		<button type="submit" class="button">Anmäl mig</button>
+		<?php if ($dialog == FALSE) { ?>
+			<button type="submit" class="button">Anmäl mig</button>
+		<?php } ?>
 	</form>
 </div>
 	
 <script>
 	var executeOnStart = function ($) {		
 		AKADEMEN.initializeButtons();		
-		AKADEMEN.initializeFormValidation(true);
+		AKADEMEN.initializeFormValidation(<?php if ($dialog == FALSE) { ?>true<?php } ?>);
 		
 		$('#<?php echo DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED; ?>').on('change.toggleRegisterAvec', function() {
 			var val = $(this).val(),
@@ -69,12 +71,21 @@
 		$('input[data-price], select[data-price]')
 			.on('change.calculateTotalPrice', function () {
 				var totalPrice = 0;
-				$('input[data-price]:checked:visible').each(function() {
+				$('#registerperson input[data-price]:checked').each(function() {
 					totalPrice += parseFloat($(this).data('price'));
 				});
-				$('select[data-price]:visible').each(function() {
+				$('#registerperson select[data-price]:visible').each(function() {
 					totalPrice += (parseFloat($(this).data('price')) * $(this).val());
-				});
+				});				
+				if ($('#<?php echo DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED; ?>').val() === "1") {
+					$('#registeravec input[data-price]:checked').each(function() {
+						totalPrice += parseFloat($(this).data('price'));
+					});				
+					$('#registeravec select[data-price]:visible').each(function() {
+						totalPrice += (parseFloat($(this).data('price')) * $(this).val());
+					});					
+				}
+
 				$('#totalprice').text(totalPrice);
 			})
 			.eq(0)
@@ -82,4 +93,7 @@
 				
 		$('input:first').focus();
 	};
+	<?php if ($dialog == TRUE) { ?>
+		executeOnStart($);
+	<?php } ?>
 </script>

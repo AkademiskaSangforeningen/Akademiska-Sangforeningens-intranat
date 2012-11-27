@@ -55,3 +55,4 @@ define('CONTROLLER_EVENTS_CANCEL_REGISTER_DIRECTLY',  			'events/cancelregisterd
 define('CONTROLLER_EVENTS_LIST_SINGLE_EVENT_REGISTRATIONS',		'events/listsingleeventregistrations');
 define('CONTROLLER_SAVE_CANCEL_REGISTER_DIRECTLY',  			'events/savecancelregisterdirectly');
 define('CONTROLLER_EVENTS_CONFIRM_CANCEL_REGISTER_DIRECTLY',	'events/confirmcancelregisterdirectly');
+define('CONTROLLER_EVENTS_EDIT_REGISTER',  						'events/editregister');

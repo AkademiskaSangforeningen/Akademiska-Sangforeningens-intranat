@@ -36,7 +36,7 @@
 	<tbody>
 	<?php foreach($eventList as $key => $event) { ?>
 		<tr>
-			<td><a href="<?php echo site_url() . CONTROLLER_EVENTS_EDITSINGLE . '/' . $event->{DB_EVENT_ID}; ?>" class="button" data-icon="ui-icon-pencil" data-text="false" data-formdialog="true"><?php echo lang(LANG_KEY_BUTTON_EDIT_EVENT); ?></a></td>
+			<td><a href="<?php echo site_url() . CONTROLLER_EVENTS_EDITSINGLE . '/' . $event->{DB_EVENT_ID}; ?>" class="button" data-icon="ui-icon-pencil" data-text="false" data-formdialog="true"><?php echo lang(LANG_KEY_BUTTON_EDIT_EVENT_REGISTRATION); ?></a></td>
 			<td><a href="<?php echo site_url() . CONTROLLER_EVENTS_DELETESINGLE . '/' . $event->{DB_EVENT_ID}; ?>" class="button" data-icon="ui-icon-trash" data-text="false" data-confirmdialog="true"><?php echo lang(LANG_KEY_BUTTON_DELETE_EVENT); ?></a></td>		
 			<td><a href="<?php echo site_url() . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $event->{DB_EVENT_ID}; ?>" target="_blank" class="button" data-icon="ui-icon-extlink" data-text="false"><?php echo lang(LANG_KEY_BUTTON_VIEW_EVENT); ?></a></td>
 			<td><?php echo $event->{DB_EVENT_NAME}; ?></td>	

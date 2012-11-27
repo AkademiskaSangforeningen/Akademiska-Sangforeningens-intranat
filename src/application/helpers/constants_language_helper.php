@@ -39,6 +39,8 @@ define('LANG_KEY_BUTTON_DELETE_EVENT',				'button_delete_event');
 define('LANG_KEY_BUTTON_VIEW_EVENT',				'button_view_event');
 define('LANG_KEY_BUTTON_PAGING_FIRST',				'button_paging_first');
 define('LANG_KEY_BUTTON_PAGING_LAST',				'button_paging_last');
+define('LANG_KEY_BUTTON_EDIT_EVENT_REGISTRATION',	'button_edit_event_registration');
+define('LANG_KEY_BUTTON_DELETE_EVENT_REGISTRATION',	'button_delete_event_registration');
 
 //Fields
 define('LANG_KEY_FIELD_EMAIL',						'field_email');

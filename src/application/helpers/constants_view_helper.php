@@ -29,7 +29,7 @@ define('VIEW_CONTENT_PERSONS_EDITSINGLE',						'/content/persons/editperson');
 define('VIEW_CONTENT_EVENTS_LISTALL',							'/content/events/listevents');
 define('VIEW_CONTENT_EVENTS_EDITSINGLE',						'/content/events/editevent');
 define('VIEW_CONTENT_EVENTS_MY_UPCOMING',						'/content/events/myupcoming');
-define('VIEW_CONTENT_EVENTS_EDIT_REGISTER_DIRECTLY',			'/content/events/editregisterdirectly');
+define('VIEW_CONTENT_EVENTS_EDIT_REGISTER',						'/content/events/editregister');
 define('VIEW_CONTENT_EVENTS_CANCEL_REGISTER_DIRECTLY',			'/content/events/cancelregisterdirectly');
 define('VIEW_CONTENT_EVENTS_CONFIRM_SAVE_REGISTER_MAIL',		'/content/events/confirmsaveregistermail');
 define('VIEW_CONTENT_EVENTS_CONFIRM_CANCEL_REGISTER_MAIL',		'/content/events/confirmcancelregistermail');

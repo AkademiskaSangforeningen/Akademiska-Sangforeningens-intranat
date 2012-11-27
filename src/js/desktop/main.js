@@ -60,7 +60,7 @@ var AKADEMEN = (function(){
 							text: langCancel,							
 							click: function () {
 								$( this ).dialog( "close" );
-							},
+							}
 						}
 					],
 					open: function() {
@@ -73,6 +73,26 @@ var AKADEMEN = (function(){
 									});			
 						
 						}
+				});
+		},
+		
+		/**
+		*	Initialize dialog for alert
+		*/		
+		initializeAlertDialog: function(langOK) {
+			$('<div id="dialog_alert"></div>')
+				.dialog({
+					autoOpen: false,
+					modal: true,
+					resizable: false,
+					buttons: [
+						{
+							text: langOK,
+							click: function () {
+								$( this ).dialog( "close" );
+							}
+						}
+					]
 				});
 		},
 
@@ -163,28 +183,21 @@ var AKADEMEN = (function(){
 				//Special handling for those buttons that open a list dialog
 				.filter('[data-listdialog="true"]')
 					.on('click.openListDialog', function (event) {			
-						var title = $(this).text();
+						var title = $(this).text(),
+							url = $(this).attr("href");
+							
 						$.ajax({
-							url: $(this).attr("href"),				  
+							url: url,				  
 							dataType: "html",
 							cache: false,
 							//on success, set the data to the dialog and open it
 							success: function(data) {
 								$('#dialog_list')
-									.html(data)																											
+									.data("url", url)
+									.html(data)
 									.dialog("option", "title", title)								
-									.dialog('open')
-									.find('.pagination a')
-										.bind('click', function() {		
-												url = $(this).attr('href');
-																	
-											$('#dialog_list').load(url, function() {				
-												AKADEMEN.initializeButtons();
-											});
-											return false;
-										});									
-									
-									AKADEMEN.initializeButtons(); 																			
+									.dialog('open');
+								AKADEMEN.initializeButtons(); 									
 							},
 							error: function(jqXHR, textStatus, errorThrown) {
 								alert(errorThrown);
