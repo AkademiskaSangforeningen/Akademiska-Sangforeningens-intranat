@@ -45,6 +45,18 @@ legend {
 	min-height: 400px;
 }
 
+#ajaxloading {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.2);
+	width: 100%;
+	height: 100%;
+	z-index: 99999;
+	cursor: wait;
+}
+
 .tools {
 	margin-bottom: 1em;
 	float: left;

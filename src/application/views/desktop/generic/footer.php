@@ -1,4 +1,5 @@
 		</div>
+		<div id="ajaxloading"></div>		
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 		<script>
 			//Fallback to local jQuery-copy if CDN is down
@@ -23,7 +24,8 @@
 				AKADEMEN.initializeButtons();
 				AKADEMEN.initializeTabs();	
 				AKADEMEN.initializeDatepicker();
-			});			
+				AKADEMEN.initializeAjaxLoading();				
+			});				
 		
 			//Check and execute executeOnStart if found
 			if (typeof window.executeOnStart === 'function') {

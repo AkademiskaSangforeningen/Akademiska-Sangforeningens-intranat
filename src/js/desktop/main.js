@@ -262,6 +262,19 @@ var AKADEMEN = (function(){
 						firstDay: 1,
 						dateFormat: 'dd.mm.yy'			
 			});
+		},
+
+		/**
+		*	Initialize overlay shown when ajax-calls are being made
+		*/		
+		initializeAjaxLoading: function() {
+			$('#ajaxloading')
+				.ajaxStart(function() {
+					$(this).show();
+				})
+				.ajaxStop(function() {
+					$(this).hide();
+				});
 		}
     };
 })();
