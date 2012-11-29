@@ -35,7 +35,7 @@ class EventItem extends CI_Model {
 	
 	function getEventItemSums($eventId) {
 		$this->db->select(DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_EVENTITEMID);
-		$this->db->select('COUNT(*) AS ' . DB_TOTALCOUNT, FALSE);
+		$this->db->select('SUM(' . DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_AMOUNT . ') AS ' . DB_TOTALCOUNT, FALSE);
 		$this->db->from(DB_TABLE_EVENTITEM);	
 		$this->db->join(DB_TABLE_PERSONHASEVENTITEM, DB_TABLE_EVENTITEM . "." . DB_EVENTITEM_ID . ' = ' . DB_TABLE_PERSONHASEVENTITEM . "." . DB_PERSONHASEVENTITEM_EVENTITEMID, 'inner');
 		$this->db->where(DB_EVENTITEM_EVENTID,	$eventId);

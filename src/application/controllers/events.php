@@ -56,12 +56,11 @@ class Events extends CI_Controller {
 		$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), 	TRUE);		
 				
 		$personHasEventItems = array();
-		foreach($this->eventitem->getPersonHasEventItems($eventId) as $key => $personHasEventItem) {
-			$innerArray[$personHasEventItem->{DB_PERSONHASEVENTITEM_EVENTITEMID}] = array(
-				DB_PERSONHASEVENTITEM_DESCRIPTION => $personHasEventItem->{DB_PERSONHASEVENTITEM_DESCRIPTION},
-				DB_PERSONHASEVENTITEM_AMOUNT => $personHasEventItem->{DB_PERSONHASEVENTITEM_AMOUNT}
-			);
-			$personHasEventItems[$personHasEventItem->{DB_PERSONHASEVENTITEM_PERSONID}] = $innerArray;
+		foreach($this->eventitem->getPersonHasEventItems($eventId) as $key => $personHasEventItem) {			
+			$personHasEventItems[$personHasEventItem->{DB_PERSONHASEVENTITEM_PERSONID}][$personHasEventItem->{DB_PERSONHASEVENTITEM_EVENTITEMID}] = array(
+					DB_PERSONHASEVENTITEM_DESCRIPTION => $personHasEventItem->{DB_PERSONHASEVENTITEM_DESCRIPTION},
+					DB_PERSONHASEVENTITEM_AMOUNT => $personHasEventItem->{DB_PERSONHASEVENTITEM_AMOUNT}
+				);
 		}
 		
 		$eventItemSums = array();
