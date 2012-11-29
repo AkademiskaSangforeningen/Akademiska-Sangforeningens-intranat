@@ -8,7 +8,8 @@
 			<legend><span class="requiredsymbol">*</span> <?php echo lang(LANG_KEY_MISC_REQUIRED_FIELD); ?></legend> 
 		</p>	
 	</div>
-	<?php echo form_open(CONTROLLER_EVENTS_SAVE_REGISTER_DIRECTLY . (isset($eventId) ? "/" . $eventId : "") . (isset($personId) ? "/" . $personId : "") . (isset($hash) ? "/" . $hash : "") . (isset($dialog) ? "/" . $dialog : ""), array('id' => 'form_editobject')); ?>
+	
+	<?php echo form_open(CONTROLLER_EVENTS_SAVE_REGISTER_DIRECTLY . (isset($eventId) ? "/" . $eventId : "") . (isset($personId) ? "/" . $personId : "") . (isset($hash) ? "/" . $hash : ""), array('id' => 'form_editobject')); ?>	
 		<fieldset class="ui-corner-all" id="registerperson">
 			<legend>Mina anmälningsuppgifter</legend>
 			
@@ -31,12 +32,16 @@
 			
 			</fieldset>			
 		<?php } ?>
+		
 		<div style="font-weight: bold">
 			Totalt: <span id="totalprice"></span> euro
 		</div>
+		
 		<?php if ($dialog == FALSE) { ?>
 			<button type="submit" class="button">Anmäl mig</button>
 		<?php } ?>
+		
+		<input type="hidden" name="<?php echo HTTP_DIALOG; ?>" value="<?php echo set_value(HTTP_DIALOG, (isset($dialog) ? $dialog : '')); ?>" />
 	</form>
 </div>
 	

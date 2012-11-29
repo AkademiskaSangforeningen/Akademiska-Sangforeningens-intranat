@@ -1,11 +1,13 @@
-<?php if ($closeFormDialog == TRUE) { ?>
+<?php if (isset($closeFormDialog) && $closeFormDialog == TRUE) { ?>
 	<script>		
 		$('#dialog_form, #dialog_confirm, #dialog_alert').dialog('close');
 		
-		$('#dialog_alert')
-			.html("<?php if (isset($body)) { ?><p><?php echo $body; ?></p><?php } ?>")
-			.dialog("option", "title", "<?php if (isset($header)) { ?><?php echo $header; ?><?php } ?>")								
-			.dialog('open');
+		<?php if (isset($body)) { ?>
+			$('#dialog_alert')
+				.html("<p><?php echo $body; ?></p>")
+				.dialog("option", "title", "<?php if (isset($header)) { ?><?php echo $header; ?><?php } ?>")								
+				.dialog('open');
+		<?php } ?>
 			
 		//Reload the open tab
 		$("#header_navitabs").tabs("load", $("#header_navitabs").tabs("option", "selected"));
@@ -38,4 +40,4 @@
 				AKADEMEN.initializeButtons();			
 			};		
 	</script>
-<?php } ?>	
+<?php } ?>

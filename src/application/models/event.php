@@ -31,10 +31,20 @@ class Event extends CI_Model {
 		return $query->result();
 	}
 	
-	function getEvent($eventId) {
-		$this->db->select('*');
+	function getEvent($eventId, $columns = FALSE) {
+		if ($eventId == NULL) {
+			return FALSE;
+		}	
+	
+		if ($columns === FALSE) {
+			$this->db->select('*');
+		} else { 
+			foreach($columns as $column) {
+				$this->db->select($column);
+			}
+		}
 		$this->db->from(DB_TABLE_EVENT);
-		$this->db->where(DB_EVENT_ID,	$eventId);
+		$this->db->where(DB_EVENT_ID, $eventId);
 		
 		$query = $this->db->get();
 

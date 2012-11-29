@@ -21,26 +21,27 @@ define('LANG_KEY_HEADER_EVENT_REGISTRATION_NOT_FOUND',			'header_event_registrat
 define('LANG_KEY_HEADER_EVENT_REGISTRATION_DUE_DATE_PASSED',	'header_event_due_date_passed');
 
 //Buttons
-define('LANG_KEY_BUTTON_LOG_IN',					'button_log_in');
-define('LANG_KEY_BUTTON_LOGGING_IN',				'button_logging_in');
-define('LANG_KEY_BUTTON_LOG_OUT',					'button_log_out');
-define('LANG_KEY_BUTTON_CREATE_NEW_MEMBER',			'button_create_new_member');
-define('LANG_KEY_BUTTON_EDIT_MEMBER',				'button_edit_member');
-define('LANG_KEY_BUTTON_DELETE_MEMBER',				'button_delete_member');
-define('LANG_KEY_BUTTON_CONFIRM',					'button_confirm');
-define('LANG_KEY_BUTTON_SAVE',						'button_save');
-define('LANG_KEY_BUTTON_OK',						'button_ok');
-define('LANG_KEY_BUTTON_CANCEL',					'button_cancel');
-define('LANG_KEY_BUTTON_CREATE_NEW_TRANSACTION',	'button_create_new_transaction');
-define('LANG_KEY_BUTTON_EDIT_TRANSACTION',			'button_edit_transaction');
-define('LANG_KEY_BUTTON_CREATE_NEW_EVENT',			'button_create_new_event');
-define('LANG_KEY_BUTTON_EDIT_EVENT',				'button_edit_event');
-define('LANG_KEY_BUTTON_DELETE_EVENT',				'button_delete_event');
-define('LANG_KEY_BUTTON_VIEW_EVENT',				'button_view_event');
-define('LANG_KEY_BUTTON_PAGING_FIRST',				'button_paging_first');
-define('LANG_KEY_BUTTON_PAGING_LAST',				'button_paging_last');
-define('LANG_KEY_BUTTON_EDIT_EVENT_REGISTRATION',	'button_edit_event_registration');
-define('LANG_KEY_BUTTON_DELETE_EVENT_REGISTRATION',	'button_delete_event_registration');
+define('LANG_KEY_BUTTON_LOG_IN',						'button_log_in');
+define('LANG_KEY_BUTTON_LOGGING_IN',					'button_logging_in');
+define('LANG_KEY_BUTTON_LOG_OUT',						'button_log_out');
+define('LANG_KEY_BUTTON_CREATE_NEW_MEMBER',				'button_create_new_member');
+define('LANG_KEY_BUTTON_EDIT_MEMBER',					'button_edit_member');
+define('LANG_KEY_BUTTON_DELETE_MEMBER',					'button_delete_member');
+define('LANG_KEY_BUTTON_CONFIRM',						'button_confirm');
+define('LANG_KEY_BUTTON_SAVE',							'button_save');
+define('LANG_KEY_BUTTON_OK',							'button_ok');
+define('LANG_KEY_BUTTON_CANCEL',						'button_cancel');
+define('LANG_KEY_BUTTON_CREATE_NEW_TRANSACTION',		'button_create_new_transaction');
+define('LANG_KEY_BUTTON_EDIT_TRANSACTION',				'button_edit_transaction');
+define('LANG_KEY_BUTTON_CREATE_NEW_EVENT',				'button_create_new_event');
+define('LANG_KEY_BUTTON_EDIT_EVENT',					'button_edit_event');
+define('LANG_KEY_BUTTON_DELETE_EVENT',					'button_delete_event');
+define('LANG_KEY_BUTTON_VIEW_EVENT',					'button_view_event');
+define('LANG_KEY_BUTTON_PAGING_FIRST',					'button_paging_first');
+define('LANG_KEY_BUTTON_PAGING_LAST',					'button_paging_last');
+define('LANG_KEY_BUTTON_EDIT_EVENT_REGISTRATION',		'button_edit_event_registration');
+define('LANG_KEY_BUTTON_DELETE_EVENT_REGISTRATION',		'button_delete_event_registration');
+define('LANG_KEY_BUTTON_CREATE_NEW_EVENT_REGISTRATION',	'button_create_new_event_registration');
 
 //Fields
 define('LANG_KEY_FIELD_EMAIL',						'field_email');
@@ -100,7 +101,9 @@ define('LANG_KEY_MISC_REQUIRED_FIELD',				'misc_required_field');
 
 //Event registration
 define('LANG_KEY_BODY_EVENT_REGISTRATION_SUCCEEDED',		'body_event_registration_succeeded');
+define('LANG_KEY_BODY_EVENT_REGISTRATION_SUCCEEDED_ADMIN',	'body_event_registration_succeeded_admin');
 define('LANG_KEY_BODY_EVENT_YOU_CAN_REREGISTER',			'body_event_registration_you_can_reregister');
+define('LANG_KEY_BODY_EVENT_YOU_CAN_REREGISTER_ADMIN',		'body_event_registration_you_can_reregister_admin');
 define('LANG_KEY_BODY_EVENT_CHECK_CORRECT_ADDRESS',			'body_event_check_correct_address');
 define('LANG_KEY_BODY_EVENT_EMAIL_ALREADY_REGISTERED',		'body_event_email_already_registered');
 define('LANG_KEY_BODY_EVENT_REGISTRATION_DUE_DATE_PASSED',	'body_event_registration_due_date_passed');

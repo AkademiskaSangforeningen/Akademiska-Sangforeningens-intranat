@@ -10,6 +10,12 @@
 define('CLIENT_DESKTOP',					'desktop');
 define('CLIENT_MOBILE',						'mobile');
 
+//HTTP params
+define('HTTP_DIALOG',						'dialog');
+
+//Placeholders
+define('PLACEHOLDER_PERSON',				'[person]');
+
 //Session
 define('SESSION_LOGGEDIN',					'LoggedIn');
 define('SESSION_PERSONID',					'PersonId');

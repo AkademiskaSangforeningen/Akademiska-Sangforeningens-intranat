@@ -41,6 +41,7 @@ class Events extends CI_Controller {
 		$config['per_page'] 	= LIST_DEF_PAGING; 
 		$this->pagination->initialize($config); 
 
+		$data = array();
 		$data['eventList'] 	= $eventList;
 		$data['pagination']	= $this->pagination->create_links();
 		
@@ -112,93 +113,17 @@ class Events extends CI_Controller {
 		}
 		$this->load->view($client . VIEW_CONTENT_EVENTS_EDITSINGLE, $data);
 	}
-
-	function editRegister($eventId = NULL, $personId = NULL, $hash = NULL) {
-		//Default to desktop client
-		$client = CLIENT_DESKTOP;
-		
-		//Load languages. As we don't yet know the user's language, we default to swedish
-		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);					
-		
-		//Load models
-		$this->load->model(MODEL_EVENT, 	strtolower(MODEL_EVENT), 		TRUE);
-		$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), 	TRUE);
-		$this->load->model(MODEL_PERSON, 	strtolower(MODEL_PERSON), 		TRUE);	
-
-		//Load event and person has event bind
-		$event = $this->event->getEvent($eventId);
-		$personHasEvent = $this->event->getPersonHasEvent($eventId, $personId);
-		
-		//Show error message and return if person has event bind is not found
-		if ($this->_validateEditDirectlyVariables($client, $eventId, $personId, $hash, $event, $personHasEvent) === FALSE) {
-			return;
-		}
-		
-		//Add parameters to view $data-object
-		$data = array();	
-		$data['eventId']	= $eventId;
-		$data['personId'] 	= $personId;
-		$data['hash'] 		= $hash;
-		$data['dialog']		= TRUE;
-		
-		$personHasEvent = $this->event->getPersonHasEvent($eventId, $personId);
-		$personAvecId	= isset($personHasEvent->{DB_PERSONHASEVENT_AVECPERSONID}) ? $personHasEvent->{DB_PERSONHASEVENT_AVECPERSONID} : NULL;
-						
-		/*	Load different dynamic parts of the page */
-		//Event info
-		$data_part_info_event['eventId']	= $eventId;
-		$data_part_info_event['event'] 		= $event;			
-		$data['part_info_event'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_INFO_EVENT,	$data_part_info_event, TRUE);	
-		
-		//Person form
-		if ($personId != $this->session->userdata(SESSION_PERSONID)) {		
-			$data_part_form_person['person']		= $this->person->getPerson($personId);
-			$data_part_form_person['fieldPrefix']	= '';
-			$data_part_form_person['showFields']	= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_PHONE, DB_PERSON_ALLERGIES) 
-															: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_EMAIL, DB_PERSON_PHONE, DB_PERSON_ALLERGIES);
-			$data['part_form_person'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_person, TRUE);
-		}
-			
-		//Payment form
-		$data_part_form_payment['personHasEvent'] = $personHasEvent;
-		$data['part_form_payment'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PAYMENT, $data_part_form_payment, TRUE);
-
-		//Event items form
-		$part_form_eventItems['eventItems']		= $this->eventitem->getEventItems($eventId, $personId);
-		$part_form_eventItems['currentIsAvec']	= FALSE;
-		$part_form_eventItems['fieldPrefix']	= '';
-		$part_form_eventItems['personId']		= $personId;
-		$data['part_form_eventitems'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_EVENTITEMS,	$part_form_eventItems, TRUE);		
-		
-		if ($event->{DB_EVENT_AVECALLOWED} == 1) {
-			//Avec allowed form
-			$data_part_form_avecAllowed['personHasEvent'] = $personHasEvent;
-			$data['part_form_avecallowed'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_AVEC_ALLOWED,	$data_part_form_avecAllowed, TRUE);	
-
-			//Person avec form
-			$data_part_form_personAvec['updateRegistration']	= ($personId != NULL);
-			$data_part_form_personAvec['person']				= $this->person->getPerson($personAvecId);
-			$data_part_form_personAvec['fieldPrefix']			= DB_CUSTOM_AVEC . '_';
-			$data_part_form_personAvec['showFields']			= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_ALLERGIES) 
-																		: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_EMAIL, DB_PERSON_ALLERGIES);		
-			$data['part_form_personAvec'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_personAvec, TRUE);
-
-			//Event items avec form
-			$data_part_form_eventItemsAvec['eventItems'] 	= $this->eventitem->getEventItems($eventId, $personAvecId);
-			$data_part_form_eventItemsAvec['currentIsAvec']	= TRUE;
-			$data_part_form_eventItemsAvec['fieldPrefix']	= DB_CUSTOM_AVEC . '_';
-			$data_part_form_eventItemsAvec['personId']		= $personId;
-			$data['part_form_eventitemsAvec'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_EVENTITEMS,	$data_part_form_eventItemsAvec, TRUE);		
-		}					
-
-		//Finally load the main views
-		$this->load->view($client . VIEW_CONTENT_EVENTS_EDIT_REGISTER, $data);
-	}	
 	
+	/**
+	*	Used for editing a single event registration directly or via the intranet-GUI
+	*/	
 	function editRegisterDirectly($eventId = NULL, $personId = NULL, $hash = NULL) {
 		//Default to desktop client
 		$client = CLIENT_DESKTOP;
 		
+		//Check if the page should be loaded as a dialog
+		$loadAsDialog = filter_var($this->input->get_post(HTTP_DIALOG), FILTER_VALIDATE_BOOLEAN);
+		
 		//Load languages. As we don't yet know the user's language, we default to swedish
 		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);					
 		
@@ -221,18 +146,20 @@ class Events extends CI_Controller {
 		$data['eventId']	= $eventId;
 		$data['personId'] 	= $personId;
 		$data['hash'] 		= $hash;
-		$data['dialog']		= FALSE;
+		$data['dialog']		= $loadAsDialog;
 		
 		$personHasEvent = $this->event->getPersonHasEvent($eventId, $personId);
 		$personAvecId	= isset($personHasEvent->{DB_PERSONHASEVENT_AVECPERSONID}) ? $personHasEvent->{DB_PERSONHASEVENT_AVECPERSONID} : NULL;
 						
 		/*	Load different dynamic parts of the page */
 		//Event info
+		$data_part_info_event = array();
 		$data_part_info_event['eventId']	= $eventId;
 		$data_part_info_event['event'] 		= $event;			
 		$data['part_info_event'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_INFO_EVENT,	$data_part_info_event, TRUE);	
 		
 		//Person form
+		$data_part_form_person = array();
 		$data_part_form_person['person']		= $this->person->getPerson($personId);
 		$data_part_form_person['fieldPrefix']	= '';
 		$data_part_form_person['showFields']	= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_PHONE, DB_PERSON_ALLERGIES) 
@@ -240,10 +167,12 @@ class Events extends CI_Controller {
 		$data['part_form_person'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_person, TRUE);
 		
 		//Payment form
+		$data_part_form_payment = array();
 		$data_part_form_payment['personHasEvent'] = $personHasEvent;
 		$data['part_form_payment'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PAYMENT, $data_part_form_payment, TRUE);
 
 		//Event items form
+		$part_form_eventItems = array();
 		$part_form_eventItems['eventItems']		= $this->eventitem->getEventItems($eventId, $personId);
 		$part_form_eventItems['currentIsAvec']	= FALSE;
 		$part_form_eventItems['fieldPrefix']	= '';
@@ -252,10 +181,12 @@ class Events extends CI_Controller {
 		
 		if ($event->{DB_EVENT_AVECALLOWED} == 1) {
 			//Avec allowed form
+			$data_part_form_avecAllowed = array();
 			$data_part_form_avecAllowed['personHasEvent'] = $personHasEvent;
 			$data['part_form_avecallowed'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_AVEC_ALLOWED,	$data_part_form_avecAllowed, TRUE);	
 
 			//Person avec form
+			$data_part_form_personAvec = array();
 			$data_part_form_personAvec['updateRegistration']	= ($personId != NULL);
 			$data_part_form_personAvec['person']				= $this->person->getPerson($personAvecId);
 			$data_part_form_personAvec['fieldPrefix']			= DB_CUSTOM_AVEC . '_';
@@ -264,6 +195,7 @@ class Events extends CI_Controller {
 			$data['part_form_personAvec'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_personAvec, TRUE);
 
 			//Event items avec form
+			$data_part_form_eventItemsAvec = array();
 			$data_part_form_eventItemsAvec['eventItems'] 	= $this->eventitem->getEventItems($eventId, $personAvecId);
 			$data_part_form_eventItemsAvec['currentIsAvec']	= TRUE;
 			$data_part_form_eventItemsAvec['fieldPrefix']	= DB_CUSTOM_AVEC . '_';
@@ -272,14 +204,21 @@ class Events extends CI_Controller {
 		}					
 
 		//Finally load the main views
-		$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
+		if ($loadAsDialog == FALSE) {
+			$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
+		}
 		$this->load->view($client . VIEW_CONTENT_EVENTS_EDIT_REGISTER, $data);
-		$this->load->view($client . VIEW_GENERIC_FOOTER);
+		if ($loadAsDialog == FALSE) {
+			$this->load->view($client . VIEW_GENERIC_FOOTER);
+		}
 	}
 
-	function saveRegisterDirectly($eventId = NULL, $personId = NULL, $hash = NULL, $dialog = FALSE) {
+	function saveRegisterDirectly($eventId = NULL, $personId = NULL, $hash = NULL) {
 		//Default to desktop client
 		$client = CLIENT_DESKTOP;
+		
+		//Check if the page should be loaded as a dialog
+		$loadAsDialog = filter_var($this->input->get_post(HTTP_DIALOG), FILTER_VALIDATE_BOOLEAN);		
 		
 		//Load languages. As we don't yet know the user's language, we default to swedish
 		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);					
@@ -338,28 +277,32 @@ class Events extends CI_Controller {
 		//If errors found, redraw the login form to the user
 		if($this->form_validation->run() === FALSE) {
 			$client = CLIENT_DESKTOP;
+			
 			$data = array();
 			$data['eventId']	= $eventId;
 			$data['personId'] 	= $personId;
 			$data['hash'] 		= $hash;
-			$data['dialog']		= $dialog;
 			
 			/*	Load different dynamic parts of the page */
 			//Event info
+			$data_part_info_event = array();
 			$data_part_info_event['eventId']	= $eventId;
 			$data_part_info_event['event'] 		= $this->event->getEvent($eventId);			
 			$data['part_info_event'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_INFO_EVENT,	$data_part_info_event, TRUE);	
 			
 			//Person form
+			$data_part_form_person = array();
 			$data_part_form_person['fieldPrefix']	= '';
 			$data_part_form_person['showFields']	= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_PHONE, DB_PERSON_ALLERGIES) 
 															: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_EMAIL, DB_PERSON_PHONE, DB_PERSON_ALLERGIES);
 			$data['part_form_person'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_person, TRUE);
 			
 			//Payment form
+			$part_form_payment = array();
 			$data['part_form_payment']		= $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PAYMENT, array(), TRUE);
 			
 			//Event items form
+			$part_form_eventItems = array();
 			$part_form_eventItems['eventItems']		= $eventItems;
 			$part_form_eventItems['currentIsAvec']	= FALSE;
 			$part_form_eventItems['fieldPrefix']	= '';
@@ -368,10 +311,12 @@ class Events extends CI_Controller {
 			
 			if ($event->{DB_EVENT_AVECALLOWED} == 1) {
 				//Avec allowed form
+				$data_part_form_avecAllowed = array();
 				$data_part_form_avecAllowed['personHasEvent'] = $personHasEvent;
 				$data['part_form_avecallowed']	= $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_AVEC_ALLOWED,	$data_part_form_avecAllowed, TRUE);	
 
 				//Person avec form
+				$data_part_form_personAvec = array();
 				$data_part_form_personAvec['updateRegistration']	= ($personId != NULL);
 				$data_part_form_personAvec['fieldPrefix']			= DB_CUSTOM_AVEC . '_';
 				$data_part_form_personAvec['showFields']			= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_ALLERGIES) 
@@ -379,6 +324,7 @@ class Events extends CI_Controller {
 				$data['part_form_personAvec'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_personAvec, TRUE);
 
 				//Event items avec form
+				$data_part_form_eventItemsAvec = array();
 				$data_part_form_eventItemsAvec['eventItems'] 	= $eventItems;
 				$data_part_form_eventItemsAvec['currentIsAvec']	= TRUE;
 				$data_part_form_eventItemsAvec['fieldPrefix']	= DB_CUSTOM_AVEC . '_';
@@ -387,11 +333,11 @@ class Events extends CI_Controller {
 			}			
 			
 			//Finally load the main views
-			if ($dialog == FALSE) {
+			if ($loadAsDialog == FALSE) {
 				$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
 			}
 			$this->load->view($client . VIEW_CONTENT_EVENTS_EDIT_REGISTER, $data);
-			if ($dialog == FALSE) {
+			if ($loadAsDialog == FALSE) {
 				$this->load->view($client . VIEW_GENERIC_FOOTER);
 			}
 			
@@ -504,11 +450,28 @@ class Events extends CI_Controller {
 			$this->_sendSaveRegisterConfirmMail($eventId, $personId, $hash, $updateRegistration);
 
 			//Everything ok, redirect the user to the confirmation page (or show message directly if dialog)
-			if ($dialog == FALSE) {
-				redirect(CONTROLLER_EVENTS_CONFIRM_SAVE_REGISTER_DIRECTLY . '/' . $eventId . '/' . $personId . '/' . $hash . '/' . $dialog, 'refresh');
+			if ($loadAsDialog == FALSE) {
+				redirect(CONTROLLER_EVENTS_CONFIRM_SAVE_REGISTER_DIRECTLY . '/' . $eventId . '/' . $personId . '/' . $hash . '/' . updateRegistration, 'refresh');
 			} else {
-				$dataSucceeded['body'] 				= lang(LANG_KEY_BODY_EVENT_REGISTRATION_SUCCEEDED);
-				$dataSucceeded['closeFormDialog']	= $dialog;
+				$dataSucceeded = array();
+				$dataSucceeded['closeFormDialog']	= $loadAsDialog;
+				
+				$event = $this->event->getEvent($eventId, array(DB_EVENT_NAME));
+				$eventName = $event->{DB_EVENT_NAME};
+				
+				if ($personId != $this->session->userdata(SESSION_PERSONID)) {
+					$person = $this->person->getPerson($personId, array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME));
+					$personName = $person->{DB_PERSON_FIRSTNAME} . ' ' . $person->{DB_PERSON_LASTNAME};
+
+					$messageSubject = ($updateRegistration) ? ($personName . 's anmälan till ' . $eventName . ' är nu uppdaterad') : ($personName . ' är nu anmäld till ' . $eventName);
+					$dataSucceeded['header'] 	= $messageSubject;					
+					$dataSucceeded['body'] 		= str_replace(PLACEHOLDER_PERSON, $personName, lang(LANG_KEY_BODY_EVENT_REGISTRATION_SUCCEEDED_ADMIN));
+				} else {
+					$messageSubject = ($updateRegistration) ? ('Din anmälan till ' . $eventName . ' är nu uppdaterad') : ('Du är nu anmäld till ' . $eventName);
+					$dataSucceeded['header'] 	= $messageSubject;
+					$dataSucceeded['body'] 		= lang(LANG_KEY_BODY_EVENT_REGISTRATION_SUCCEEDED);
+				}
+				
 				$this->load->view($client . VIEW_GENERIC_BODY_MESSAGE, $dataSucceeded);
 			}
 		}
@@ -527,6 +490,7 @@ class Events extends CI_Controller {
 		$this->load->model(MODEL_PERSON, 	strtolower(MODEL_PERSON), 		TRUE);
 		$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), 	TRUE);
 
+		$data = array();
 		$data['eventId'] 			= $eventId;
 		$data['personId'] 			= $personId;
 		$data['hash']				= $hash;
@@ -557,7 +521,7 @@ class Events extends CI_Controller {
 		$this->email->send();
 	}
 
-	function confirmSaveRegisterDirectly($eventId = NULL, $personId = NULL, $hash = NULL, $dialog = FALSE) {
+	function confirmSaveRegisterDirectly($eventId = NULL, $personId = NULL, $hash = NULL, $updateRegistration = FALSE) {
 		//Exit if no eventId or personId is given
 		if ($eventId == NULL || $personId == NULL || $hash == NULL) {
 			return;
@@ -569,20 +533,23 @@ class Events extends CI_Controller {
 		}
 
 		$client = CLIENT_DESKTOP;
+		
+		//Load module
+		$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);		
 
 		//Load languages. As we don't yet know the user's language, we default to swedish
 		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);		
+
+		$event = $this->event->getEvent($eventId, array(DB_EVENT_NAME));
+		$eventName = $event->{DB_EVENT_NAME};
 		
-		$data['header']	= lang(LANG_KEY_HEADER_LOGIN);
+		$data = array();
+		$data['header']	= ($updateRegistration) ? ('Din anmälan till ' . $eventName . ' är nu uppdaterad') : ('Du är nu anmäld till ' . $eventName);
 		$data['body']	= lang(LANG_KEY_BODY_EVENT_REGISTRATION_SUCCEEDED);
 		
-		if ($dialog == FALSE) {
-			$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
-		}
+		$this->load->view($client . VIEW_GENERIC_HEADER_NOTEXT);
 		$this->load->view($client . VIEW_GENERIC_BODY_MESSAGE, $data);
-		if ($dialog == FALSE) {
-			$this->load->view($client . VIEW_GENERIC_FOOTER);		
-		}
+		$this->load->view($client . VIEW_GENERIC_FOOTER);		
 	}
 
 	function cancelRegisterDirectly($eventId = NULL, $personId = NULL, $hash = NULL) {
@@ -605,6 +572,7 @@ class Events extends CI_Controller {
 			return;
 		}
 
+		$data = array();
 		$data['eventId'] 	= $eventId;
 		$data['personId']	= $personId;
 		$data['hash']		= $hash;
@@ -618,6 +586,9 @@ class Events extends CI_Controller {
 	function saveCancelRegisterDirectly($eventId = NULL, $personId = NULL, $hash = NULL) {
 		//Default to desktop client
 		$client = CLIENT_DESKTOP;
+		
+		//Check if the page should be loaded as a dialog
+		$loadAsDialog = filter_var($this->input->get_post(HTTP_DIALOG), FILTER_VALIDATE_BOOLEAN);
 		
 		//Load languages. As we don't yet know the user's language, we default to swedish
 		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);			
@@ -662,7 +633,28 @@ class Events extends CI_Controller {
 		// Send an email to the person
 		$this->_sendCancelRegisterConfirmMail($eventId, $personId);		
 
-		redirect(CONTROLLER_EVENTS_CONFIRM_CANCEL_REGISTER_DIRECTLY . '/' . $eventId . '/' . $personId . '/' . $hash, 'refresh');
+		if ($loadAsDialog == FALSE) {
+			redirect(CONTROLLER_EVENTS_CONFIRM_CANCEL_REGISTER_DIRECTLY . '/' . $eventId . '/' . $personId . '/' . $hash, 'refresh');		
+		} else {
+			$dataSucceeded = array();
+			$dataSucceeded['closeFormDialog']	= $loadAsDialog;
+			
+			$event = $this->event->getEvent($eventId, array(DB_EVENT_NAME));
+			$eventName = $event->{DB_EVENT_NAME};
+			
+			if ($personId != $this->session->userdata(SESSION_PERSONID)) {
+				$person = $this->person->getPerson($personId, array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME));
+				$personName = $person->{DB_PERSON_FIRSTNAME} . ' ' . $person->{DB_PERSON_LASTNAME};
+				
+				$dataSucceeded['header'] 	= $personName . 's anmälan till ' . $eventName . ' är nu annulerad';
+				$dataSucceeded['body'] 		= str_replace(PLACEHOLDER_PERSON, $personName, lang(LANG_KEY_BODY_EVENT_YOU_CAN_REREGISTER_ADMIN));
+			} else {
+				$dataSucceeded['header'] 	= 'Din anmälan till ' . $eventName . ' är nu annulerad.';
+				$dataSucceeded['body'] 		= lang(LANG_KEY_BODY_EVENT_REGISTRATION_SUCCEEDED);
+			}
+			
+			$this->load->view($client . VIEW_GENERIC_BODY_MESSAGE, $dataSucceeded);			
+		}
 	}
 
 	function _sendCancelRegisterConfirmMail($eventId = NULL, $personId = NULL) {
@@ -677,9 +669,10 @@ class Events extends CI_Controller {
 		$this->load->model(MODEL_EVENT, 	strtolower(MODEL_EVENT), 		TRUE);
 		$this->load->model(MODEL_PERSON, 	strtolower(MODEL_PERSON), 		TRUE);
 
-		$data['eventId'] 			= $eventId;
-		$data['event'] 				= $this->event->getEvent($eventId);
-		$data['person']				= $this->person->getPerson($personId);
+		$data = array();
+		$data['eventId'] 	= $eventId;
+		$data['event'] 		= $this->event->getEvent($eventId);
+		$data['person']		= $this->person->getPerson($personId);
 		
 		$messageSubject = 'Din anmälan till ' . $data['event']->{DB_EVENT_NAME} . ' är nu annulerad';
 		$data['header'] = $messageSubject;
@@ -714,6 +707,7 @@ class Events extends CI_Controller {
 		//Load languages. As we don't yet know the user's language, we default to swedish
 		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);
 
+		$data = array();
 		$data['header']	= lang(LANG_KEY_HEADER_EVENT_REGISTRATION_CANCELLED);
 		$data['body']	= lang(LANG_KEY_BODY_EVENT_YOU_CAN_REREGISTER);
 		
@@ -781,10 +775,12 @@ class Events extends CI_Controller {
 		//If errors found, redraw the login form to the user
 		if($this->form_validation->run() === FALSE) {
 			$client = CLIENT_DESKTOP;
+			
+			$data = array();			
 			$data['eventId'] = $eventId;
 			$this->load->view($client . VIEW_CONTENT_EVENTS_EDITSINGLE, $data);
 		} else {
-			$data = array(
+			$dataEvent = array(
 				DB_EVENT_NAME 					=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_NAME),
 				DB_EVENT_LOCATION 				=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_LOCATION),
 				DB_EVENT_PRICE 					=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PRICE),
@@ -811,14 +807,14 @@ class Events extends CI_Controller {
 			$this->db->trans_start();
 
 			// Save the event
-			$eventId = $this->event->saveEvent($data, $eventId);
+			$eventId = $this->event->saveEvent($dataEvent, $eventId);
 
 			// Make an array of all event item IDs not to delete
 			$eventItemIdsNotToDelete = array();
 
 			//Go through all event items and save them
 			foreach ($itemRows as $rowNumber) {
-				$data = array(
+				$dataEventItem = array(
 					DB_EVENTITEM_EVENTID		=> $eventId,
 					DB_EVENTITEM_TYPE			=> $this->input->post(DB_TABLE_EVENTITEM . '_' . DB_EVENTITEM_TYPE . $rowNumber),
 					DB_EVENTITEM_CAPTION		=> $this->input->post(DB_TABLE_EVENTITEM . '_' . DB_EVENTITEM_CAPTION . $rowNumber),
@@ -834,7 +830,7 @@ class Events extends CI_Controller {
 				if ($eventItemId == "") {
 					$eventItemId = NULL;
 				}
-				$eventItemIdsNotToDelete[] = $this->eventitem->saveEventItem($data, $eventItemId);
+				$eventItemIdsNotToDelete[] = $this->eventitem->saveEventItem($dataEventItem, $eventItemId);
 			}
 
 			// Delete event items not saved
@@ -854,6 +850,7 @@ class Events extends CI_Controller {
 		$event = $this->event->getEvent($eventId);
 
 		if($event){
+			$data = array();
 			$data['event'] = $event;
 			$this->load->view(CLIENT_DESKTOP . VIEW_GENERIC_HEADER);
 			$this->load->view(CLIENT_DESKTOP . '/content/events/showevent', $data);
@@ -876,6 +873,7 @@ class Events extends CI_Controller {
 		
 		//Show error message and return if event is not found
 		if ($event === FALSE) {
+			$data = array();
 			$data['header']	= lang(LANG_KEY_HEADER_EVENT_NOT_FOUND);
 			$data['body']	= lang(LANG_KEY_BODY_EVENT_CHECK_CORRECT_ADDRESS);
 			
@@ -884,6 +882,7 @@ class Events extends CI_Controller {
 			$this->load->view($client . VIEW_GENERIC_FOOTER);
 			return FALSE;
 		} else if ($event->{DB_EVENT_REGISTRATIONDUEDATE} != null && isDateInPast($event->{DB_EVENT_REGISTRATIONDUEDATE}, TRUE)) {
+			$data = array();
 			$data['header']	= lang(LANG_KEY_HEADER_EVENT_REGISTRATION_DUE_DATE_PASSED);
 			$data['body']	= lang(LANG_KEY_BODY_EVENT_REGISTRATION_DUE_DATE_PASSED);
 			
@@ -892,6 +891,7 @@ class Events extends CI_Controller {
 			$this->load->view($client . VIEW_GENERIC_FOOTER);
 			return FALSE;					
 		} else if ($personId != NULL && $personHasEvent === FALSE) {
+			$data = array();
 			$data['header']	= lang(LANG_KEY_HEADER_EVENT_REGISTRATION_NOT_FOUND);
 			$data['body']	= lang(LANG_KEY_BODY_EVENT_CHECK_CORRECT_ADDRESS);
 			
