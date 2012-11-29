@@ -117,13 +117,13 @@ class Events extends CI_Controller {
 	/**
 	*	Used for editing a single event registration directly or via the intranet-GUI
 	*/	
-	function editRegisterDirectly($eventId = NULL, $personId = NULL, $hash = NULL) {
+	function editRegisterDirectly($eventId = NULL, $personId = NULL, $hash = NULL, $internalRegistration = FALSE) {
 		//Default to desktop client
 		$client = CLIENT_DESKTOP;
 		
 		//Check if the page should be loaded as a dialog
-		$loadAsDialog = filter_var($this->input->get_post(HTTP_DIALOG), FILTER_VALIDATE_BOOLEAN);
-		
+		$loadAsDialog 	= filter_var($this->input->get_post(HTTP_DIALOG), FILTER_VALIDATE_BOOLEAN);
+
 		//Load languages. As we don't yet know the user's language, we default to swedish
 		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);					
 		
@@ -137,16 +137,17 @@ class Events extends CI_Controller {
 		$personHasEvent = $this->event->getPersonHasEvent($eventId, $personId);
 		
 		//Show error message and return if person has event bind is not found
-		if ($this->_validateEditDirectlyVariables($client, $eventId, $personId, $hash, $event, $personHasEvent) === FALSE) {
+		if ($this->_validateEditDirectlyVariables($client, $eventId, $personId, $hash, $event, $personHasEvent, $internalRegistration) === FALSE) {
 			return;
 		}
 		
 		//Add parameters to view $data-object
 		$data = array();	
-		$data['eventId']	= $eventId;
-		$data['personId'] 	= $personId;
-		$data['hash'] 		= $hash;
-		$data['dialog']		= $loadAsDialog;
+		$data['eventId']				= $eventId;
+		$data['personId'] 				= $personId;
+		$data['hash'] 					= $hash;
+		$data['dialog']					= $loadAsDialog;
+		$data['internalRegistration']	= $internalRegistration;
 		
 		$personHasEvent = $this->event->getPersonHasEvent($eventId, $personId);
 		$personAvecId	= isset($personHasEvent->{DB_PERSONHASEVENT_AVECPERSONID}) ? $personHasEvent->{DB_PERSONHASEVENT_AVECPERSONID} : NULL;
@@ -159,13 +160,15 @@ class Events extends CI_Controller {
 		$data['part_info_event'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_INFO_EVENT,	$data_part_info_event, TRUE);	
 		
 		//Person form
-		$data_part_form_person = array();
-		$data_part_form_person['person']		= $this->person->getPerson($personId);
-		$data_part_form_person['fieldPrefix']	= '';
-		$data_part_form_person['showFields']	= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_PHONE, DB_PERSON_ALLERGIES) 
-														: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_EMAIL, DB_PERSON_PHONE, DB_PERSON_ALLERGIES);
-		$data['part_form_person'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_person, TRUE);
-		
+		if (!$internalRegistration) {
+			$data_part_form_person = array();
+			$data_part_form_person['person']		= $this->person->getPerson($personId);
+			$data_part_form_person['fieldPrefix']	= '';
+			$data_part_form_person['showFields']	= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_PHONE, DB_PERSON_ALLERGIES) 
+															: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_EMAIL, DB_PERSON_PHONE, DB_PERSON_ALLERGIES);
+			$data['part_form_person'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_person, TRUE);
+		}
+			
 		//Payment form
 		$data_part_form_payment = array();
 		$data_part_form_payment['personHasEvent'] = $personHasEvent;
@@ -173,10 +176,11 @@ class Events extends CI_Controller {
 
 		//Event items form
 		$part_form_eventItems = array();
-		$part_form_eventItems['eventItems']		= $this->eventitem->getEventItems($eventId, $personId);
-		$part_form_eventItems['currentIsAvec']	= FALSE;
-		$part_form_eventItems['fieldPrefix']	= '';
-		$part_form_eventItems['personId']		= $personId;
+		$part_form_eventItems['eventItems']				= $this->eventitem->getEventItems($eventId, $personId);
+		$part_form_eventItems['currentIsAvec']			= FALSE;
+		$part_form_eventItems['fieldPrefix']			= '';
+		$part_form_eventItems['personId']				= $personId;
+		$part_form_eventItems['internalRegistration']	= $internalRegistration;
 		$data['part_form_eventitems'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_EVENTITEMS,	$part_form_eventItems, TRUE);		
 		
 		if ($event->{DB_EVENT_AVECALLOWED} == 1) {
@@ -213,7 +217,7 @@ class Events extends CI_Controller {
 		}
 	}
 
-	function saveRegisterDirectly($eventId = NULL, $personId = NULL, $hash = NULL) {
+	function saveRegisterDirectly($eventId = NULL, $personId = NULL, $hash = NULL, $internalRegistration = FALSE) {
 		//Default to desktop client
 		$client = CLIENT_DESKTOP;
 		
@@ -233,7 +237,7 @@ class Events extends CI_Controller {
 		$personHasEvent = $this->event->getPersonHasEvent($eventId, $personId);
 		
 		//Show error message and return if person has event bind is not found
-		if ($this->_validateEditDirectlyVariables($client, $eventId, $personId, $hash, $event, $personHasEvent) === FALSE) {
+		if ($this->_validateEditDirectlyVariables($client, $eventId, $personId, $hash, $event, $personHasEvent, $internalRegistration) === FALSE) {
 			return;
 		}		
 
@@ -243,16 +247,18 @@ class Events extends CI_Controller {
 		$this->load->library('form_validation');
 
 		//Validate the form
-		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME,	lang(LANG_KEY_FIELD_FIRSTNAME),				'trim|max_length[50]|required|xss_clean');
-		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME, 	lang(LANG_KEY_FIELD_LASTNAME), 				'trim|max_length[50]|required|xss_clean');
-		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES, 	lang(LANG_KEY_FIELD_ALLERGIES), 			'trim|max_length[50]|xss_clean');
-		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PHONE, 		lang(LANG_KEY_FIELD_PHONE), 				'trim|max_length[50]|xss_clean');
+		if (!$internalRegistration) {
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME,	lang(LANG_KEY_FIELD_FIRSTNAME),				'trim|max_length[50]|required|xss_clean');
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME, 	lang(LANG_KEY_FIELD_LASTNAME), 				'trim|max_length[50]|required|xss_clean');
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES, 	lang(LANG_KEY_FIELD_ALLERGIES), 			'trim|max_length[50]|xss_clean');
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PHONE, 		lang(LANG_KEY_FIELD_PHONE), 				'trim|max_length[50]|xss_clean');
+		}
 		$this->form_validation->set_rules(DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', 	DB_PERSONHASEVENTITEM_EVENTITEMID . '[]',	'trim|callback__checkGuidValid');
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED, 	lang(LANG_KEY_FIELD_AVEC),					'trim|max_length[1]|xss_clean|numeric');
 		$this->form_validation->set_rules(DB_TABLE_PERSONHASEVENT . '_' . DB_PERSONHASEVENT_PAYMENTTYPE, lang(LANG_KEY_FIELD_PAYMENTTYPE), 'required|trim|max_length[1]|xss_clean');
 		
 		//Only validate the email if it's in the POST
-		if ($this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL) !== FALSE) {
+		if (!$internalRegistration && $this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL) !== FALSE) {
 			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL, 		lang(LANG_KEY_FIELD_EMAIL), 			'trim|max_length[50]|required|valid_email|xss_clean');
 			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL, 	lang(LANG_KEY_FIELD_EMAIL),					'callback__checkAlreadyRegistreredEmail['. $eventId . ']');
 		}
@@ -279,9 +285,11 @@ class Events extends CI_Controller {
 			$client = CLIENT_DESKTOP;
 			
 			$data = array();
-			$data['eventId']	= $eventId;
-			$data['personId'] 	= $personId;
-			$data['hash'] 		= $hash;
+			$data['eventId']				= $eventId;
+			$data['personId'] 				= $personId;
+			$data['hash'] 					= $hash;			
+			$data['dialog']					= $loadAsDialog;			
+			$data['internalRegistration']	= $internalRegistration;
 			
 			/*	Load different dynamic parts of the page */
 			//Event info
@@ -291,12 +299,14 @@ class Events extends CI_Controller {
 			$data['part_info_event'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_INFO_EVENT,	$data_part_info_event, TRUE);	
 			
 			//Person form
-			$data_part_form_person = array();
-			$data_part_form_person['fieldPrefix']	= '';
-			$data_part_form_person['showFields']	= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_PHONE, DB_PERSON_ALLERGIES) 
-															: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_EMAIL, DB_PERSON_PHONE, DB_PERSON_ALLERGIES);
-			$data['part_form_person'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_person, TRUE);
-			
+			if (!$internalRegistration) {
+				$data_part_form_person = array();
+				$data_part_form_person['fieldPrefix']	= '';
+				$data_part_form_person['showFields']	= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_PHONE, DB_PERSON_ALLERGIES) 
+																: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_EMAIL, DB_PERSON_PHONE, DB_PERSON_ALLERGIES);
+				$data['part_form_person'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_person, TRUE);
+			}
+				
 			//Payment form
 			$part_form_payment = array();
 			$data['part_form_payment']		= $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PAYMENT, array(), TRUE);
@@ -307,6 +317,7 @@ class Events extends CI_Controller {
 			$part_form_eventItems['currentIsAvec']	= FALSE;
 			$part_form_eventItems['fieldPrefix']	= '';
 			$part_form_eventItems['personId']		= $personId;
+			$part_form_eventItems['internalRegistration']	= $internalRegistration;
 			$data['part_form_eventitems']	= $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_EVENTITEMS,	$part_form_eventItems, TRUE);		
 			
 			if ($event->{DB_EVENT_AVECALLOWED} == 1) {
@@ -350,15 +361,17 @@ class Events extends CI_Controller {
 				$personId = $this->person->getPersonIdUsingEmail($this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL));
 			}								
 			
-			$personData = array();				
-			addToArrayIfNotFalse($personData, DB_PERSON_FIRSTNAME, 	$this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME));
-			addToArrayIfNotFalse($personData, DB_PERSON_LASTNAME, 	$this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME));
-			addToArrayIfNotFalse($personData, DB_PERSON_EMAIL, 		$this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL));
-			addToArrayIfNotFalse($personData, DB_PERSON_ALLERGIES, 	$this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES));
-			addToArrayIfNotFalse($personData, DB_PERSON_PHONE, 		$this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_PHONE));
+			if (!$internalRegistration) {
+				$personData = array();				
+				addToArrayIfNotFalse($personData, DB_PERSON_FIRSTNAME, 	$this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME));
+				addToArrayIfNotFalse($personData, DB_PERSON_LASTNAME, 	$this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME));
+				addToArrayIfNotFalse($personData, DB_PERSON_EMAIL, 		$this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL));
+				addToArrayIfNotFalse($personData, DB_PERSON_ALLERGIES, 	$this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES));
+				addToArrayIfNotFalse($personData, DB_PERSON_PHONE, 		$this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_PHONE));
 
-			//Save the person, if a new person the GUID of the new person is returned
-			$personId = $this->person->savePerson($personData, $personId, $personId);
+				//Save the person, if a new person the GUID of the new person is returned
+				$personId = $this->person->savePerson($personData, $personId, $personId);
+			}
 
 			// Save all event items for the person
 			$eventItemIds = $this->input->post(DB_PERSONHASEVENTITEM_EVENTITEMID);
@@ -436,7 +449,7 @@ class Events extends CI_Controller {
 				DB_PERSONHASEVENT_AVECPERSONID	=> $avecId,
 				DB_PERSONHASEVENT_PAYMENTTYPE 	=> $this->input->post(DB_TABLE_PERSONHASEVENT . '_' . DB_PERSONHASEVENT_PAYMENTTYPE)
 			);
-			$this->event->savePersonHasEvent($personHasEventData, $eventId, $personId);
+			$updateRegistration = $this->event->savePersonHasEvent($personHasEventData, $eventId, $personId);
 
 			//Calculate the hash if it isn't already calculated
 			if ($hash == NULL) {
@@ -447,7 +460,7 @@ class Events extends CI_Controller {
 			$this->db->trans_complete();
 			
 			// Send an email to the person
-			$this->_sendSaveRegisterConfirmMail($eventId, $personId, $hash, $updateRegistration);
+			$this->_sendSaveRegisterConfirmMail($eventId, $personId, $updateRegistration);
 
 			//Everything ok, redirect the user to the confirmation page (or show message directly if dialog)
 			if ($loadAsDialog == FALSE) {
@@ -477,7 +490,7 @@ class Events extends CI_Controller {
 		}
 	}
 
-	function _sendSaveRegisterConfirmMail($eventId = NULL, $personId = NULL, $hash = NULL, $updateRegistration = FALSE) {
+	function _sendSaveRegisterConfirmMail($eventId = NULL, $personId = NULL, $updateRegistration = FALSE) {
 		//Exit if no eventId or personId is given
 		if ($eventId == NULL || $personId == NULL) {
 			return;
@@ -493,7 +506,8 @@ class Events extends CI_Controller {
 		$data = array();
 		$data['eventId'] 			= $eventId;
 		$data['personId'] 			= $personId;
-		$data['hash']				= $hash;
+		//The hash needs to be recalculated
+		$data['hash']				= md5($eventId . $this->config->item('encryption_key') . $personId);
 		$data['updateRegistration']	= $updateRegistration;
 		$data['event'] 				= $this->event->getEvent($eventId);
 		$data['personHasEvent']		= $this->event->getPersonHasEvent($eventId, $personId, TRUE);
@@ -650,7 +664,7 @@ class Events extends CI_Controller {
 				$dataSucceeded['body'] 		= str_replace(PLACEHOLDER_PERSON, $personName, lang(LANG_KEY_BODY_EVENT_YOU_CAN_REREGISTER_ADMIN));
 			} else {
 				$dataSucceeded['header'] 	= 'Din anmälan till ' . $eventName . ' är nu annulerad.';
-				$dataSucceeded['body'] 		= lang(LANG_KEY_BODY_EVENT_REGISTRATION_SUCCEEDED);
+				$dataSucceeded['body'] 		= lang(LANG_KEY_BODY_EVENT_YOU_CAN_REREGISTER);
 			}
 			
 			$this->load->view($client . VIEW_GENERIC_BODY_MESSAGE, $dataSucceeded);			
@@ -860,16 +874,21 @@ class Events extends CI_Controller {
 		}
 	}
 
-	function _validateEditDirectlyVariables($client, $eventId, $personId, $hash, $event, $personHasEvent) {
+	function _validateEditDirectlyVariables($client, $eventId, $personId, $hash, $event, $personHasEvent, $internalRegistration = FALSE) {
 		//Return if the event in the URL isn't valid
 		if ($eventId == NULL || !isGuidValid($eventId)) {
 			return FALSE;
 		}	
 		
-		//Exit it the hash in the URL isn't correct
-		if ($personId != NULL && md5($eventId . $this->config->item('encryption_key') . $personId) != $hash) {
+		//Exit if internal registration but no personId is found
+		if ($internalRegistration && $personId == NULL) {
 			return FALSE;
-		}	
+		}
+		
+		//Exit it the hash in the URL isn't correct
+		if ($personId != NULL && md5($eventId . $this->config->item('encryption_key') . $personId . $internalRegistration) != $hash) {			
+			return FALSE;
+		}
 		
 		//Show error message and return if event is not found
 		if ($event === FALSE) {
@@ -890,7 +909,7 @@ class Events extends CI_Controller {
 			$this->load->view($client . VIEW_GENERIC_BODY_MESSAGE, $data);
 			$this->load->view($client . VIEW_GENERIC_FOOTER);
 			return FALSE;					
-		} else if ($personId != NULL && $personHasEvent === FALSE) {
+		} else if ($personId != NULL && $personHasEvent === FALSE && $internalRegistration === FALSE) {
 			$data = array();
 			$data['header']	= lang(LANG_KEY_HEADER_EVENT_REGISTRATION_NOT_FOUND);
 			$data['body']	= lang(LANG_KEY_BODY_EVENT_CHECK_CORRECT_ADDRESS);

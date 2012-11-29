@@ -236,7 +236,7 @@ var AKADEMEN = (function(){
 								type: 'POST',
 								url: $(form).attr("action"),
 								data: $(form).serialize(),
-								success: function(data) {													
+								success: function(data) {
 									$('#dialog_form').html(data);
 								},
 								error:  function(jqXHR, textStatus, errorThrown) {

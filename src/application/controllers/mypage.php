@@ -41,12 +41,17 @@ class MyPage extends CI_Controller {
 		//Load upcoming events. 
 		//TODO: Show if user is already registered to an event
 		$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
-		$data['events'] = $this->event->getAllEvents();
     
 		$this->load->view($client . VIEW_GENERIC_HEADER);
-		$this->load->view($client . VIEW_GENERIC_HEADER_NAVITABS, $data);
-		$this->load->view($client . VIEW_CONTENT_MYPAGE_DASHBOARD);
+		$this->load->view($client . VIEW_GENERIC_HEADER_NAVITABS, $data);		
 		$this->load->view($client . VIEW_GENERIC_FOOTER);					
+	}
+	
+	function dashboard() {
+		//Here we could define a different client type based on user agent-headers
+		$client = CLIENT_DESKTOP;	
+	
+		$this->load->view($client . VIEW_CONTENT_MYPAGE_DASHBOARD);	
 	}
 	
 	function listUpcomingEvents() {
@@ -63,9 +68,33 @@ class MyPage extends CI_Controller {
 		$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);		
 		$personId = $this->session->userdata(SESSION_PERSONID);
 		
-		$data['eventList'] = $this->event->getUpcomingEventsForPerson($personId);				
+		$data = array();
+		$data['eventList'] 	= $this->event->getUpcomingEvents($personId);
+		$data['personId']	= $this->session->userdata(SESSION_PERSONID);
 		
 		//Load default event listing view	
-		$this->load->view($client . VIEW_CONTENT_EVENTS_MY_UPCOMING, $data);		
+		$this->load->view($client . VIEW_CONTENT_EVENTS_LIST_PERSONAL_EVENTS, $data);		
 	}
+	
+	function listRegisteredEvents() {
+		if ($this->session->userdata(SESSION_LOGGEDIN) == false) {
+			return;
+		}
+
+		//Here we could define a different client type based on user agent-headers
+		$client = CLIENT_DESKTOP;
+		
+		//Load languages. As we don't yet know the user's language, we default to swedish
+		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));			
+		// Load event model
+		$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);		
+		$personId = $this->session->userdata(SESSION_PERSONID);
+		
+		$data = array();
+		$data['eventList'] 	= $this->event->getRegisteredEvents($personId);
+		$data['personId']	= $this->session->userdata(SESSION_PERSONID);
+		
+		//Load default event listing view	
+		$this->load->view($client . VIEW_CONTENT_EVENTS_LIST_PERSONAL_EVENTS, $data);		
+	}	
 }

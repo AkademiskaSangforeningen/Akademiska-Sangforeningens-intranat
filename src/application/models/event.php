@@ -119,7 +119,7 @@ class Event extends CI_Model {
 	}
 	
 	/**
-	* Function used for saving a single event
+	* Function used for saving a single event. Return TRUE if an UPDATE is made.
 	*
 	* @param string $eventId GUID of the event, if NULL an INSERT is made, otherwise UPDATE
 	*/		
@@ -139,6 +139,7 @@ class Event extends CI_Model {
 				$this->db->where(DB_PERSONHASEVENT_EVENTID, $eventId);
 				$this->db->where(DB_PERSONHASEVENT_PERSONID, $personId);
 				$this->db->update(DB_TABLE_PERSONHASEVENT, $data);
+				return TRUE;
 			} else {
 				//INSERT
 				$this->db->set(DB_PERSONHASEVENT_CREATED, 'NOW()', FALSE);
@@ -146,6 +147,7 @@ class Event extends CI_Model {
 				$this->db->set(DB_PERSONHASEVENT_EVENTID, $eventId);
 				$this->db->set(DB_PERSONHASEVENT_PERSONID, $personId);
 				$this->db->insert(DB_TABLE_PERSONHASEVENT, $data);
+				return FALSE;
 			}
 		}
 	}
@@ -187,18 +189,17 @@ class Event extends CI_Model {
 		$this->db->delete(DB_TABLE_EVENT);
 	}	
 	
-	function getUpcomingEventsForPerson($personId) {
+	function getUpcomingEvents($personId) {
 		$this->db->select(DB_EVENT_ID);
 		$this->db->select(DB_EVENT_NAME);
 		$this->db->select(DB_EVENT_LOCATION);
 		$this->db->select(DB_EVENT_STARTDATE);
 		$this->db->select(DB_EVENT_ENDDATE);
-		$this->db->select('(SELECT COUNT(*) FROM personHasEvent AS A WHERE A.EventId = Event.Id) AS Enrolled', FALSE);
-		$this->db->select(DB_PERSONHASEVENT_STATUS);
+		$this->db->select(DB_EVENT_REGISTRATIONDUEDATE);
+		$this->db->select('(SELECT COUNT(*) FROM ' . DB_TABLE_PERSONHASEVENT . ' AS A WHERE A.' . DB_PERSONHASEVENT_EVENTID . ' = ' . DB_TABLE_EVENT . '.' . DB_EVENT_ID . ') AS ' . DB_TOTALCOUNT, FALSE);
+		$this->db->select(DB_PERSONHASEVENT_PERSONID);
 		$this->db->from(DB_TABLE_EVENT);
-		$this->db->join(DB_TABLE_PERSONHASEVENT, DB_TABLE_EVENT . '.' . DB_EVENT_ID . ' = ' . DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_EVENTID, 'LEFT OUTER');
-		$this->db->where(DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_PERSONID, $personId);
-		$this->db->or_where(DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_PERSONID . ' IS NULL');
+		$this->db->join(DB_TABLE_PERSONHASEVENT, DB_TABLE_EVENT . '.' . DB_EVENT_ID . ' = ' . DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_EVENTID . ' AND ' .  DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_PERSONID . ' = \'' . $personId . '\'', 'left');
 		$this->db->order_by(DB_EVENT_STARTDATE);
 		$this->db->order_by(DB_EVENT_ENDDATE);
 		$this->db->order_by(DB_EVENT_NAME);			
@@ -206,6 +207,25 @@ class Event extends CI_Model {
 		$query = $this->db->get();	
 		return $query->result();
 	}
+	
+	function getRegisteredEvents($personId) {
+		$this->db->select(DB_EVENT_ID);
+		$this->db->select(DB_EVENT_NAME);
+		$this->db->select(DB_EVENT_LOCATION);
+		$this->db->select(DB_EVENT_STARTDATE);
+		$this->db->select(DB_EVENT_ENDDATE);
+		$this->db->select(DB_EVENT_REGISTRATIONDUEDATE);
+		$this->db->select('(SELECT COUNT(*) FROM ' . DB_TABLE_PERSONHASEVENT . ' AS A WHERE A.' . DB_PERSONHASEVENT_EVENTID . ' = ' . DB_TABLE_EVENT . '.' . DB_EVENT_ID . ') AS ' . DB_TOTALCOUNT, FALSE);
+		$this->db->select(DB_PERSONHASEVENT_PERSONID);
+		$this->db->from(DB_TABLE_EVENT);
+		$this->db->join(DB_TABLE_PERSONHASEVENT, DB_TABLE_EVENT . '.' . DB_EVENT_ID . ' = ' . DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_EVENTID . ' AND ' .  DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_PERSONID . ' = \'' . $personId . '\'', 'inner');
+		$this->db->order_by(DB_EVENT_STARTDATE);
+		$this->db->order_by(DB_EVENT_ENDDATE);
+		$this->db->order_by(DB_EVENT_NAME);			
+	
+		$query = $this->db->get();	
+		return $query->result();
+	}	
 	
 	function isEmailAlreadyRegisteredToEvent($email, $eventId) {
 		$this->db->select(DB_PERSONHASEVENT_EVENTID);

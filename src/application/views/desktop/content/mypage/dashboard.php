@@ -9,7 +9,7 @@
 		<div class="ui-widget-content ui-corner-all" style="width: 48%; float: left">								
 			<div class="ui-widget-header" style="padding: 5px">Evenemang du anmält dig till</div>
 			<div style="padding: 5px" id="mypreviousevents-body">
-				bla bla
+
 			</div>			
 		</div>
 		
@@ -18,9 +18,11 @@
 </div>
 
 <script>
-	var executeOnStart = function ($) {	
-		$('#myupcomingevents-body').load("<?php echo CONTROLLER_MY_PAGE_LIST_UPCOMING_EVENTS ?>", function() {
+		$('#myupcomingevents-body').load("<?php echo CONTROLLER_MY_PAGE_LIST_UPCOMING_EVENTS; ?>", function() {
 			AKADEMEN.initializeButtons();
 		});
-	};
+		$('#mypreviousevents-body').load("<?php echo CONTROLLER_MY_PAGE_LIST_REGISTERED_EVENTS; ?>", function() {
+			AKADEMEN.initializeButtons();
+		});
+		
 </script>

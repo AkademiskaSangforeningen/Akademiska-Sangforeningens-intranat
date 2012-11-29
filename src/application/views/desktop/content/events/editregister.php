@@ -9,7 +9,7 @@
 		</p>	
 	</div>
 	
-	<?php echo form_open(CONTROLLER_EVENTS_SAVE_REGISTER_DIRECTLY . (isset($eventId) ? "/" . $eventId : "") . (isset($personId) ? "/" . $personId : "") . (isset($hash) ? "/" . $hash : ""), array('id' => 'form_editobject')); ?>	
+	<?php echo form_open(CONTROLLER_EVENTS_SAVE_REGISTER_DIRECTLY . (isset($eventId) ? "/" . $eventId : "") . (isset($personId) ? "/" . $personId : "") . (isset($hash) ? "/" . $hash : "") . (isset($internalRegistration) ? "/" . $internalRegistration : ""), array('id' => 'form_editobject')); ?>	
 		<fieldset class="ui-corner-all" id="registerperson">
 			<legend>Mina anmälningsuppgifter</legend>
 			

@@ -19,7 +19,7 @@ class EventItem extends CI_Model {
 		$this->db->select(DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_DESCRIPTION . ' AS ' . DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_DESCRIPTION, FALSE);
 		$this->db->select(DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_AMOUNT . ' AS ' . DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_AMOUNT, FALSE);
 		$this->db->from(DB_TABLE_EVENTITEM);	
-		$this->db->join(DB_TABLE_PERSONHASEVENTITEM, DB_TABLE_EVENTITEM . "." . DB_EVENTITEM_ID . ' = ' . DB_TABLE_PERSONHASEVENTITEM . "." . DB_PERSONHASEVENTITEM_EVENTITEMID . ' AND ' .  DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_PERSONID . ' = \'' . $personId . '\'', 'left');				
+		$this->db->join(DB_TABLE_PERSONHASEVENTITEM, DB_TABLE_EVENTITEM . "." . DB_EVENTITEM_ID . ' = ' . DB_TABLE_PERSONHASEVENTITEM . "." . DB_PERSONHASEVENTITEM_EVENTITEMID . ' AND ' .  DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_PERSONID . ' = \'' . $personId . '\'', 'left');
 		$this->db->where(DB_EVENTITEM_EVENTID,	$eventId);
 		if ($onlyShowRegistered	== TRUE) {
 			$this->db->where(DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_PERSONID, $personId);
@@ -92,7 +92,7 @@ class EventItem extends CI_Model {
 	}
 
 	/**
-	* Function used for saving a single person event item bind
+	* Function used for saving a single person event item bind. Return TRUE if an UPDATE is made.
 	*/
 	function savePersonHasEventItem($personId, $eventItemId, $amount, $description, $modifiedBy) {
 		$this->db->select(DB_PERSONHASEVENTITEM_PERSONID);
@@ -110,6 +110,7 @@ class EventItem extends CI_Model {
 			$this->db->set(DB_PERSONHASEVENTITEM_MODIFIED, 		'NOW()', FALSE);
 			$this->db->set(DB_PERSONHASEVENTITEM_MODIFIEDBY, 	$modifiedBy);
 			$this->db->update(DB_TABLE_PERSONHASEVENTITEM);
+			return TRUE;
 		} else {
 			//INSERT
 			$this->db->set(DB_PERSONHASEVENTITEM_PERSONID, 		$personId);
@@ -119,6 +120,7 @@ class EventItem extends CI_Model {
 			$this->db->set(DB_PERSONHASEVENTITEM_CREATED, 		'NOW()', FALSE);
 			$this->db->set(DB_PERSONHASEVENTITEM_CREATEDBY, 	$modifiedBy);
 			$this->db->insert(DB_TABLE_PERSONHASEVENTITEM);
+			return FALSE;
 		}
 	}
 

@@ -36,12 +36,18 @@ Class Person extends CI_Model {
 	* @param string $personId GUID of the user
 	* @return false if check fails, otherwise returns database result
 	*/	
-	function getPerson($personId) {
+	function getPerson($personId, $columns = FALSE) {
 		if ($personId == NULL) {
 			return FALSE;
 		}
 	
-		$this->db->select('*');
+		if ($columns === FALSE) {
+			$this->db->select('*');
+		} else { 
+			foreach($columns as $column) {
+				$this->db->select($column);
+			}
+		}	
 		$this->db->from(DB_TABLE_PERSON);
 		$this->db->where(DB_PERSON_ID,	$personId);
 

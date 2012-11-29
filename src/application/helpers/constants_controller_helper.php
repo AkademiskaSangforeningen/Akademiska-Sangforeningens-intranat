@@ -27,7 +27,9 @@ define('CONTROLLER_PERSONS_SAVE_MY_INFORMATION',	'persons/savemyinformation');
 
 //My page
 define('CONTROLLER_MY_PAGE',						'mypage');
+define('CONTROLLER_MY_PAGE_DASHBOARD',				'mypage/dashboard');
 define('CONTROLLER_MY_PAGE_LIST_UPCOMING_EVENTS',	'mypage/listupcomingevents');
+define('CONTROLLER_MY_PAGE_LIST_REGISTERED_EVENTS',	'mypage/listregisteredevents');
 
 //User manager
 define('CONTROLLER_USERMANAGER', 					'usermanager');
@@ -55,4 +57,3 @@ define('CONTROLLER_EVENTS_CANCEL_REGISTER_DIRECTLY',  			'events/cancelregisterd
 define('CONTROLLER_EVENTS_LIST_SINGLE_EVENT_REGISTRATIONS',		'events/listsingleeventregistrations');
 define('CONTROLLER_SAVE_CANCEL_REGISTER_DIRECTLY',  			'events/savecancelregisterdirectly');
 define('CONTROLLER_EVENTS_CONFIRM_CANCEL_REGISTER_DIRECTLY',	'events/confirmcancelregisterdirectly');
-define('CONTROLLER_EVENTS_EDIT_REGISTER',  						'events/editregister');
