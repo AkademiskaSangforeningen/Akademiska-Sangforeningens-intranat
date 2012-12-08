@@ -160,14 +160,13 @@ class Events extends CI_Controller {
 		$data['part_info_event'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_INFO_EVENT,	$data_part_info_event, TRUE);	
 		
 		//Person form
-		if (!$internalRegistration) {
-			$data_part_form_person = array();
-			$data_part_form_person['person']		= $this->person->getPerson($personId);
-			$data_part_form_person['fieldPrefix']	= '';
-			$data_part_form_person['showFields']	= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_PHONE, DB_PERSON_ALLERGIES) 
-															: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_EMAIL, DB_PERSON_PHONE, DB_PERSON_ALLERGIES);
-			$data['part_form_person'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_person, TRUE);
-		}
+		$data_part_form_person = array();
+		$data_part_form_person['person']		= $this->person->getPerson($personId);
+		$data_part_form_person['fieldPrefix']	= '';
+		//A user can change everything except his or her e-mail address
+		$data_part_form_person['showFields']	= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_PHONE, DB_PERSON_ALLERGIES) 
+														: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_EMAIL, DB_PERSON_PHONE, DB_PERSON_ALLERGIES);
+		$data['part_form_person'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_person, TRUE);
 			
 		//Payment form
 		$data_part_form_payment = array();
