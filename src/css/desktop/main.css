@@ -87,7 +87,7 @@ input {
 input[type="checkbox"], input[type="radio"]  {
 	width: auto;
 	margin: 3px;
-	border: 0;
+	border: 0;	
 }
 
 select {
@@ -142,9 +142,10 @@ tbody>tr:nth-child(2n + 1) {
 
 th {
 	text-align: left;
-	padding: 0.5em 1.5em 0.5em 0;
+	padding: 0.4em 0.6em 0.4em 0;
 	border-top: 1px solid gray;
 	border-bottom: 1px solid gray;
+	white-space: nowrap;
 }
 
 th .ui-icon {
@@ -153,14 +154,15 @@ th .ui-icon {
 }
 
 tfoot td {
-	padding: 0.5em 1.5em 0.5em 0;
+	padding: 0.4em 0.6em 0.4em 0;
 	border-top: 1px solid gray;
 	border-bottom: 1px solid gray;
 	font-weight: bold;
+	white-space: nowrap;
 }
 
 td {
-	padding: 0.5em 1.5em 0.5em 0;
+	padding: 0.4em 0.6em 0.4em 0;
 }
 
 .alignright {
