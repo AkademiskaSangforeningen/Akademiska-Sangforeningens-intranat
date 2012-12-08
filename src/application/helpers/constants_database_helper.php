@@ -118,3 +118,4 @@ define('DB_TRANSACTION_MODIFIEDBY',			'ModifiedBy');
 //Temporary tables, views and columns
 define('DB_CUSTOM_AVEC',					'Avec');
 define('DB_TOTALCOUNT',						'TotalCount');
+define('DB_TOTALSUM',						'TotalSum');

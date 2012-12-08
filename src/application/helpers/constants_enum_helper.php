@@ -9,6 +9,7 @@
 define('ENUM_VOICES',		'enum_voices');
 define('ENUM_COUNTRIES',	'enum_countries');
 define('ENUM_ENABLED',		'enum_enabled');
+define('ENUM_PAYMENTTYPE',	'enum_paymenttype');
 
 function getEnum($enum) {
 	switch($enum) {
@@ -31,8 +32,18 @@ function getEnum($enum) {
 					0		=> lang(LANG_KEY_ENUM_ENABLED_NO),
 					1		=> lang(LANG_KEY_ENUM_ENABLED_YES)
 				);
-		
+		case ENUM_PAYMENTTYPE:
+			return array(
+					1		=> "KK",
+					2		=> "Kontant",
+					4		=> "Konto"
+				);		
 		default:
 			return;
 	}
+}
+
+function getEnumValue($enum, $value) {
+	$array = getEnum($enum);
+	return $array[$value];
 }

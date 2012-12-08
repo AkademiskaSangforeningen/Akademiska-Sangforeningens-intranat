@@ -7,10 +7,12 @@
 </div>
 <table>
 	<colgroup>
-		<col style="width: 25px" />
-		<col style="width: 25px" />
-		<col /> <!-- Name -->
-		<col /> <!-- Allergies -->
+		<col style="width: 27px" />
+		<col style="width: 27px" />
+		<col style="width: 27px" />
+		<col /> <!-- Name and allergies -->
+		<col />
+		<col />
 		<?php foreach($eventItems as $key => $eventItem) { ?>
 			<col /> <!-- <?php echo $eventItem->{DB_EVENTITEM_CAPTION}; ?>	-->
 		<?php } ?>
@@ -20,15 +22,20 @@
 		<tr>
 			<th><span class="ui-icon ui-icon-pencil" title="<?php echo lang(LANG_KEY_BUTTON_EDIT_MEMBER); ?>"></span></th>
 			<th><span class="ui-icon ui-icon-trash" title="<?php echo lang(LANG_KEY_BUTTON_DELETE_MEMBER); ?>"></span></th>		
-			<th><?php echo lang(LANG_KEY_FIELD_NAME); ?></th>
-			<th><?php echo lang(LANG_KEY_FIELD_ALLERGIES); ?></th>			
+			<th><span class="ui-icon ui-icon-mail-closed"></span></th>		
+			<th><?php echo lang(LANG_KEY_FIELD_NAME); ?> & <?php echo lang(LANG_KEY_FIELD_ALLERGIES); ?></th>
+			<th>Totalt</th>
+			<th><?php echo lang(LANG_KEY_FIELD_PAYMENTTYPE); ?></th>
 			<?php
 				foreach($eventItems as $key => $eventItem) {
 					echo "<th>";
 					switch ($eventItem->{DB_EVENTITEM_TYPE}) {
 							case EVENT_TYPE_RADIO:
 							case EVENT_TYPE_CHECKBOX:					
-								echo $eventItem->{DB_EVENTITEM_DESCRIPTION} . '<br/>pris: ' . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT});
+								echo $eventItem->{DB_EVENTITEM_DESCRIPTION};
+								if ($eventItem->{DB_EVENTITEM_AMOUNT} != 0) {
+									echo ' (' . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}) . ')';
+								}
 								break;
 							case EVENT_TYPE_TEXTAREA:
 								if ($eventItem->{DB_EVENTITEM_DESCRIPTION} == '') {
@@ -47,9 +54,7 @@
 	</thead>
 	<tfoot>
 		<tr>
-			<td colspan="2">Totalt:</td>
-			<td></td>
-			<td></td>
+			<td colspan="6">Totalt:</td>
 			<?php
 				foreach($eventItems as $key => $eventItem) {
 					if ($eventItem->{DB_EVENTITEM_MAXPCS} == 0) {
@@ -81,8 +86,10 @@
 				echo "<tr>";
 				echo '<td><a href="' . site_url() . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $event->{DB_EVENT_ID} . '/' . $person->{DB_PERSON_ID} . '/' . md5($event->{DB_EVENT_ID} . $this->config->item('encryption_key') . $person->{DB_PERSON_ID}) .'?' . HTTP_DIALOG . '=1" class="button" data-icon="ui-icon-pencil" data-text="false" data-formdialog="true">' . lang(LANG_KEY_BUTTON_EDIT_EVENT_REGISTRATION) . '</a></td>';
 				echo '<td><a href="' . site_url() . CONTROLLER_SAVE_CANCEL_REGISTER_DIRECTLY . '/' . $event->{DB_EVENT_ID} . '/' . $person->{DB_PERSON_ID} . '/' . md5($event->{DB_EVENT_ID} . $this->config->item('encryption_key') . $person->{DB_PERSON_ID}) .'?' . HTTP_DIALOG . '=1" class="button" data-icon="ui-icon-trash" data-text="false" data-confirmdialog="true">' . lang(LANG_KEY_BUTTON_DELETE_EVENT_REGISTRATION) . '</a></td>';
-				echo "<td>" . $person->{DB_PERSON_FIRSTNAME} . " " . $person->{DB_PERSON_LASTNAME} . "</td>";
-				echo "<td>" . $person->{DB_PERSON_ALLERGIES} . "</td>";
+				echo '<td><a href="mailto:' . $person->{DB_PERSON_EMAIL} . '" class="button" data-icon="ui-icon-mail-closed" data-text="false">' . $person->{DB_PERSON_EMAIL} . '</a></td>';				
+				echo '<td><span class="bold">' . $person->{DB_PERSON_FIRSTNAME} . ' ' . $person->{DB_PERSON_LASTNAME} . '</span><br/><i>' . $person->{DB_PERSON_ALLERGIES} . '</i></td>';
+				echo '<td class="bold">' . formatCurrency($person->{DB_TOTALSUM} + $person->{DB_CUSTOM_AVEC . DB_TOTALSUM}) . '</td>';
+				echo '<td>' . getEnumValue(ENUM_PAYMENTTYPE, $person->{DB_PERSONHASEVENT_PAYMENTTYPE}) . '</td>';
 				foreach($eventItems as $key => $eventItem) {					
 					if (isset($personHasEventItems[$person->{DB_PERSON_ID}][$eventItem->{DB_EVENTITEM_ID}])) {
 						if ($eventItem->{DB_EVENTITEM_MAXPCS} == 0) {								
@@ -112,9 +119,10 @@
 				
 				if ($event->{DB_EVENT_AVECALLOWED} == TRUE && $person->{DB_CUSTOM_AVEC . DB_PERSON_ID} != NULL) {
 					echo "<tr>";
-					echo "<td colspan=\"2\">Avec:</td>";
-					echo "<td>" . $person->{DB_CUSTOM_AVEC . DB_PERSON_FIRSTNAME} . " " . $person->{DB_CUSTOM_AVEC . DB_PERSON_LASTNAME} . "</td>";
-					echo "<td>" . $person->{DB_CUSTOM_AVEC . DB_PERSON_ALLERGIES} . "</td>";
+					echo "<td colspan=\"3\">Avec:</td>";
+					echo '<td><span class="bold">' . $person->{DB_CUSTOM_AVEC . DB_PERSON_FIRSTNAME} . ' ' . $person->{DB_CUSTOM_AVEC . DB_PERSON_LASTNAME} . '</span><br/><i>' . $person->{DB_CUSTOM_AVEC . DB_PERSON_ALLERGIES} . '</i></td>';
+					echo '<td>(' . formatCurrency($person->{DB_CUSTOM_AVEC . DB_TOTALSUM}) . ')</td>';										
+					echo '<td></td>';					
 					foreach($eventItems as $key => $eventItem) {					
 						if (isset($personHasEventItems[$person->{DB_CUSTOM_AVEC . DB_PERSON_ID}][$eventItem->{DB_EVENTITEM_ID}])) {
 							if ($eventItem->{DB_EVENTITEM_MAXPCS} == 0) {								
