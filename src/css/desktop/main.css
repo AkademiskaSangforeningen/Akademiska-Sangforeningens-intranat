@@ -1,7 +1,7 @@
 body {
 	background-image: url("../../images/backgroundtile.gif");
 	font-family: Helvetica, Verdana, sans-serif !important;
-	font-size: 0.8em;
+	font-size: 0.75em;
 }
 
 fieldset {
@@ -87,6 +87,7 @@ input {
 input[type="checkbox"], input[type="radio"]  {
 	width: auto;
 	margin: 3px;
+	border: 0;
 }
 
 select {
