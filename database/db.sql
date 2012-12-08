@@ -1,6 +1,17 @@
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
+DROP TABLE IF EXISTS ci_sessions;
+CREATE TABLE IF NOT EXISTS  `ci_sessions` (
+	session_id varchar(40) DEFAULT '0' NOT NULL,
+	ip_address varchar(45) DEFAULT '0' NOT NULL,
+	user_agent varchar(120) NOT NULL,
+	last_activity int(10) unsigned DEFAULT 0 NOT NULL,
+	user_data text NOT NULL,
+	PRIMARY KEY (session_id),
+	KEY `last_activity_idx` (`last_activity`)
+);
+
 DROP TABLE IF EXISTS event;
 CREATE TABLE IF NOT EXISTS `event` (
   Id char(36) COLLATE utf8_swedish_ci NOT NULL,
@@ -29,20 +40,6 @@ CREATE TABLE IF NOT EXISTS `event` (
   KEY ResponsibleId (ResponsibleId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
 
-DROP TABLE IF EXISTS eventhaspaymenttype;
-CREATE TABLE IF NOT EXISTS eventhaspaymenttype (
-  EventId char(36) COLLATE utf8_swedish_ci NOT NULL,
-  PaymentTypeId char(36) COLLATE utf8_swedish_ci NOT NULL,
-  Created datetime NOT NULL,
-  CreatedBy char(36) COLLATE utf8_swedish_ci NOT NULL,
-  Modified int(11) DEFAULT NULL,
-  ModifiedBy char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
-  PRIMARY KEY (EventId,PaymentTypeId),
-  KEY CreatedBy (CreatedBy),
-  KEY ModifiedBy (ModifiedBy),
-  KEY PaymentTypeId (PaymentTypeId)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
-
 DROP TABLE IF EXISTS eventitem;
 CREATE TABLE IF NOT EXISTS eventitem (
   Id char(36) COLLATE utf8_swedish_ci NOT NULL,
@@ -63,19 +60,6 @@ CREATE TABLE IF NOT EXISTS eventitem (
   KEY EventId (EventId),
   KEY ModifiedBy (ModifiedBy),
   KEY CreatedBy (CreatedBy)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
-
-DROP TABLE IF EXISTS paymenttype;
-CREATE TABLE IF NOT EXISTS paymenttype (
-  Id char(36) COLLATE utf8_swedish_ci NOT NULL,
-  `Name` varchar(64) COLLATE utf8_swedish_ci NOT NULL,
-  Created datetime NOT NULL,
-  CreatedBy char(36) COLLATE utf8_swedish_ci NOT NULL,
-  Modified datetime DEFAULT NULL,
-  ModifiedBy char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
-  PRIMARY KEY (Id),
-  KEY CreatedBy (CreatedBy),
-  KEY ModifiedBy (ModifiedBy)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
 
 DROP TABLE IF EXISTS person;
