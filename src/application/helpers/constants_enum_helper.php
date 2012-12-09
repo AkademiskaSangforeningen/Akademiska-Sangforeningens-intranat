@@ -34,9 +34,9 @@ function getEnum($enum) {
 				);
 		case ENUM_PAYMENTTYPE:
 			return array(
-					1		=> "KK",
-					2		=> "Kontant",
-					4		=> "Konto"
+					1		=> "Kvartettkonto",
+					2		=> "Kontant vid evenemanget",
+					4		=> "Kontobetalning"
 				);		
 		default:
 			return;

@@ -112,9 +112,9 @@
 			</label>
 			<br/>
 			<select multiple="multiple" name="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTTYPE ?>[]" id="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTTYPE ?>">	
-				<option value="1" <?php echo set_select(DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTTYPE . '[]', 1) ?><?php echo ((isset($event->{DB_EVENT_PAYMENTTYPE}) ? $event->{DB_EVENT_PAYMENTTYPE} : 0 ) & 1) == 1 ? ' selected="selected"' : ''; ?>>KK</option>
-				<option value="2" <?php echo set_select(DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTTYPE . '[]', 2) ?><?php echo ((isset($event->{DB_EVENT_PAYMENTTYPE}) ? $event->{DB_EVENT_PAYMENTTYPE} : 0 ) & 2) == 2 ? ' selected="selected"' : ''; ?>>Cash</option>
-				<option value="4" <?php echo set_select(DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTTYPE . '[]', 4) ?><?php echo ((isset($event->{DB_EVENT_PAYMENTTYPE}) ? $event->{DB_EVENT_PAYMENTTYPE} : 0 ) & 4) == 4 ? ' selected="selected"' : ''; ?>>Konto</option>
+				<option value="1" <?php echo set_select(DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTTYPE . '[]', 1) ?><?php echo ((isset($event->{DB_EVENT_PAYMENTTYPE}) ? $event->{DB_EVENT_PAYMENTTYPE} : 0 ) & 1) == 1 ? ' selected="selected"' : ''; ?>><?php echo getEnumValue(ENUM_PAYMENTTYPE, 1); ?></option>
+				<option value="2" <?php echo set_select(DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTTYPE . '[]', 2) ?><?php echo ((isset($event->{DB_EVENT_PAYMENTTYPE}) ? $event->{DB_EVENT_PAYMENTTYPE} : 0 ) & 2) == 2 ? ' selected="selected"' : ''; ?>><?php echo getEnumValue(ENUM_PAYMENTTYPE, 2); ?></option>
+				<option value="4" <?php echo set_select(DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTTYPE . '[]', 4) ?><?php echo ((isset($event->{DB_EVENT_PAYMENTTYPE}) ? $event->{DB_EVENT_PAYMENTTYPE} : 0 ) & 4) == 4 ? ' selected="selected"' : ''; ?>><?php echo getEnumValue(ENUM_PAYMENTTYPE, 4); ?></option>
 			</select>			
 		</div>	
 
