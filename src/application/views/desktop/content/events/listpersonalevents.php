@@ -28,7 +28,7 @@
 			<td>
 				<?php 
 					if (!isDateInPast($event->{DB_EVENT_REGISTRATIONDUEDATE}, TRUE)) { 
-						if ($event->{DB_PERSONHASEVENT_PERSONID} != NULL) {
+						if (isset($event->{DB_PERSONHASEVENT_PERSONID}) && $event->{DB_PERSONHASEVENT_PERSONID} != NULL) {
 				?>
 						<a href="<?php echo CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $event->{DB_EVENT_ID} . '/' . $event->{DB_PERSONHASEVENT_PERSONID} . '/' . md5($event->{DB_EVENT_ID} . $this->config->item('encryption_key') . $event->{DB_PERSONHASEVENT_PERSONID} . 1); ?>/1?<?php echo HTTP_DIALOG; ?>=1" class="button" data-formdialog="true">Uppdatera min anmälan</a>
 				<?php
@@ -45,7 +45,7 @@
 				?>
 			</td>
 			<td>
-				<?php if ($event->{DB_PERSONHASEVENT_PERSONID} != NULL && !isDateInPast($event->{DB_EVENT_REGISTRATIONDUEDATE}, TRUE)) { ?>			
+				<?php if (isset($event->{DB_PERSONHASEVENT_PERSONID}) && !isDateInPast($event->{DB_EVENT_REGISTRATIONDUEDATE}, TRUE)) { ?>			
 					<a href="<?php echo CONTROLLER_SAVE_CANCEL_REGISTER_DIRECTLY . '/' . $event->{DB_EVENT_ID} . '/' . $event->{DB_PERSONHASEVENT_PERSONID} . '/' . md5($event->{DB_EVENT_ID} . $this->config->item('encryption_key') . $event->{DB_PERSONHASEVENT_PERSONID}); ?>?<?php echo HTTP_DIALOG; ?>=1" class="button" data-icon="ui-icon-trash" data-text="false" data-confirmdialog="true"><?php echo lang(LANG_KEY_BUTTON_DELETE_EVENT_REGISTRATION); ?></a>
 				<?php } ?>			
 			</td>
