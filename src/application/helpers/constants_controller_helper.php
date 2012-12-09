@@ -30,15 +30,13 @@ define('CONTROLLER_MY_PAGE',						'mypage');
 define('CONTROLLER_MY_PAGE_DASHBOARD',				'mypage/dashboard');
 define('CONTROLLER_MY_PAGE_LIST_UPCOMING_EVENTS',	'mypage/listupcomingevents');
 define('CONTROLLER_MY_PAGE_LIST_REGISTERED_EVENTS',	'mypage/listregisteredevents');
-
-//User manager
-define('CONTROLLER_USERMANAGER', 					'usermanager');
+define('CONTROLLER_MY_PAGE_LIST_TRANSACTIONS',		'mypage/listtransactions');
 
 //Transactions
-define('CONTROLLER_TRANSACTIONS', 'transactions');
-define('CONTROLLER_TRANSACTIONS_LISTALL', 'transactions/listall');
+define('CONTROLLER_TRANSACTIONS', 					'transactions');
+define('CONTROLLER_TRANSACTIONS_LISTALL', 			'transactions/listall');
 
-define('CONTROLLER_TRANSACTIONS_ADMIN', 'admin/transactions');
+define('CONTROLLER_TRANSACTIONS_ADMIN', 		'admin/transactions');
 define('CONTROLLER_TRANSACTIONS_ADMIN_LISTALL', CONTROLLER_TRANSACTIONS_ADMIN . '/listall');
 define('CONTROLLER_TRANSACTIONS_ADMIN_EDITSINGLE', CONTROLLER_TRANSACTIONS_ADMIN . '/editsingle');
 define('CONTROLLER_TRANSACTIONS_ADMIN_SAVESINGLE', CONTROLLER_TRANSACTIONS_ADMIN . '/savesingle');

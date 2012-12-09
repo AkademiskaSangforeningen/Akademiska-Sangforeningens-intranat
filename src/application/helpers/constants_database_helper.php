@@ -46,15 +46,6 @@ define('DB_EVENTITEM_CREATEDBY',			'CreatedBy');
 define('DB_EVENTITEM_MODIFIED',				'Modified');
 define('DB_EVENTITEM_MODIFIEDBY',			'ModifiedBy');
 
-//Table PaymentType
-define('DB_TABLE_PAYMENTTYPE',				'paymenttype');
-define('DB_PAYMENTTYPE_ID',					'Id');
-define('DB_PAYMENTTYPE_NAME',				'Name');
-define('DB_PAYMENTTYPE_CREATED',			'Created');
-define('DB_PAYMENTTYPE_CREATEDBY',			'CreatedBy');
-define('DB_PAYMENTTYPE_MODIFIED',			'Modified');
-define('DB_PAYMENTTYPE_MODIFIEDBY',			'ModifiedBy');
-
 //Table Person
 define('DB_TABLE_PERSON',					'person');
 define('DB_PERSON_ID',						'Id');
@@ -109,7 +100,6 @@ define('DB_TRANSACTION_PERSONID',			'PersonId');
 define('DB_TRANSACTION_TRANSACTIONDATE',	'TransactionDate');
 define('DB_TRANSACTION_AMOUNT',				'Amount');
 define('DB_TRANSACTION_DESCRIPTION',		'Description');
-define('DB_TRANSACTION_PAYMENTTYPEID',		'PaymentTypeId');
 define('DB_TRANSACTION_CREATED',			'Created');
 define('DB_TRANSACTION_CREATEDBY',			'CreatedBy');
 define('DB_TRANSACTION_MODIFIED',			'Modified');

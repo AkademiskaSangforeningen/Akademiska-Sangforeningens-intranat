@@ -43,6 +43,7 @@ define('VIEW_CONTENT_EVENTS_PART_FORM_AVEC_ALLOWED',			'/content/events/parts/fo
 
 define('VIEW_CONTENT_USERMANAGER_LISTUSERS',    				'/content/usermanager/listusers');
 
+define('VIEW_CONTENT_TRANSACTIONS_LIST_PERSONAL_TRANSACTIONS',	'/content/transactions/listpersonaltransactions');
 define('VIEW_CONTENT_TRANSACTIONS_LISTALL',						'/content/transactions/listall');
 define('VIEW_CONTENT_TRANSACTIONS_ADMIN_CONTROLS', 				'/content/transactions/admin/admin_controls');
 define('VIEW_CONTENT_TRANSACTIONS_ADMIN_LISTALL',  				'/content/transactions/admin/listall');

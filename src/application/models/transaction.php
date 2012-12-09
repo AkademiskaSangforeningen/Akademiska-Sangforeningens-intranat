@@ -32,36 +32,38 @@ Class Transaction extends CI_Model {
 		$this->db->select(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_TRANSACTIONDATE);
 		$this->db->select(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_AMOUNT);
 		$this->db->select(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_DESCRIPTION);
+		$this->db->select(DB_TABLE_EVENT . '.' . DB_EVENT_NAME);
 		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_FIRSTNAME);
 		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_LASTNAME);
-		$this->db->select(DB_TABLE_PAYMENTTYPE . '.' . DB_PAYMENTTYPE_NAME);
 		$this->db->from(DB_TABLE_TRANSACTION);
-		$this->db->join(DB_TABLE_PERSON, DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_PERSONID . '=' . DB_TABLE_PERSON . '.' . DB_PERSON_ID, 'inner');		
-		$this->db->join(DB_TABLE_PAYMENTTYPE, DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_PAYMENTTYPEID . '=' . DB_TABLE_PAYMENTTYPE . '.' . DB_PAYMENTTYPE_ID, 'left');		
+		$this->db->join(DB_TABLE_PERSON, DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_PERSONID . '=' . DB_TABLE_PERSON . '.' . DB_PERSON_ID, 'inner');
+		$this->db->join(DB_TABLE_PERSONHASEVENT, DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_ID . '=' . DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_TRANSACTIONID, 'left');		
+		$this->db->join(DB_TABLE_EVENT, DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_EVENTID . '=' . DB_TABLE_EVENT . '.' . DB_EVENT_ID, 'left');		
 		
-		if($personId)
+		if($personId) {
 			$this->db->where(DB_TABLE_PERSON . '.' . DB_PERSON_ID, $personId);
+		}
 		
-		$this->db->order_by(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_TRANSACTIONDATE, "asc"); 
+		$this->db->order_by(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_TRANSACTIONDATE, "desc"); 
 
 		$query = $this->db->get();
 		return $query->result();	
 	}
 
 	function getTransactionSum($personId = NULL) {
-		$this->db->select_sum(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_AMOUNT, DB_TRANSACTION_AMOUNT);
+		$this->db->select_sum(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_AMOUNT, DB_TOTALSUM);
 		$this->db->from(DB_TABLE_TRANSACTION);
 		$this->db->join(DB_TABLE_PERSON, DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_PERSONID . '=' . DB_TABLE_PERSON . '.' . DB_PERSON_ID, 'inner');		
-		$this->db->join(DB_TABLE_PAYMENTTYPE, DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_PAYMENTTYPEID . '=' . DB_TABLE_PAYMENTTYPE . '.' . DB_PAYMENTTYPE_ID, 'left');			
 		
-		if($personId)
+		if($personId) {
 			$this->db->where(DB_TABLE_PERSON . '.' . DB_PERSON_ID, $personId);
+		}
 
 		$query = $this->db->get();
 		if ($query->num_rows() == 1) {
 			return $query->row();
 		} else {
-			return false;
+			return FALSE;
 		}						
 	}	
 
