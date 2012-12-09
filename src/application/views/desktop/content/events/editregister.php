@@ -73,8 +73,8 @@
 		}).trigger('change.toggleRegisterAvec');
 		
 		// Calculate the total sum
-		$('input[data-price], select[data-price]')
-			.on('change.calculateTotalPrice', function () {
+		var $priceFields = $('input[data-price], select[data-price]');		
+		$priceFields.on('change.calculateTotalPrice', function () {
 				var totalPrice = 0;
 				$('#registerperson input[data-price]:checked').each(function() {
 					totalPrice += parseFloat($(this).data('price'));
@@ -93,8 +93,13 @@
 
 				$('#totalprice').text(totalPrice);
 			})
-			.eq(0)
-				.trigger('change.calculateTotalPrice');
+			
+			// Remove the total text if no price fields are found
+			if ($priceFields.length === 0) {
+				$('#totalprice').parent().remove();
+			} else {
+				$priceFields.eq(0).trigger('change.calculateTotalPrice');
+			}
 				
 		$('input:first').focus();
 	};

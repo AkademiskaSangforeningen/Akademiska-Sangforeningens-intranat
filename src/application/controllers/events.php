@@ -260,15 +260,18 @@ class Events extends CI_Controller {
 		$this->load->library('form_validation');
 
 		//Validate the form
-		if (!$internalRegistration) {
-			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME,	lang(LANG_KEY_FIELD_FIRSTNAME),				'trim|max_length[50]|required|xss_clean');
-			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME, 	lang(LANG_KEY_FIELD_LASTNAME), 				'trim|max_length[50]|required|xss_clean');
-			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES, 	lang(LANG_KEY_FIELD_ALLERGIES), 			'trim|max_length[50]|xss_clean');
-			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PHONE, 		lang(LANG_KEY_FIELD_PHONE), 				'trim|max_length[50]|xss_clean');
-		}
+		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME,	lang(LANG_KEY_FIELD_FIRSTNAME),				'trim|max_length[50]|required|xss_clean');
+		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME, 	lang(LANG_KEY_FIELD_LASTNAME), 				'trim|max_length[50]|required|xss_clean');
+		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES, 	lang(LANG_KEY_FIELD_ALLERGIES), 			'trim|max_length[50]|xss_clean');
+		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PHONE, 		lang(LANG_KEY_FIELD_PHONE), 				'trim|max_length[50]|xss_clean');
+
 		$this->form_validation->set_rules(DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', 	DB_PERSONHASEVENTITEM_EVENTITEMID . '[]',	'trim|callback__checkGuidValid');
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED, 	lang(LANG_KEY_FIELD_AVEC),					'trim|max_length[1]|xss_clean|numeric');
-		$this->form_validation->set_rules(DB_TABLE_PERSONHASEVENT . '_' . DB_PERSONHASEVENT_PAYMENTTYPE, lang(LANG_KEY_FIELD_PAYMENTTYPE), 'required|trim|max_length[1]|xss_clean');
+		
+		//Only check payment type if it's required for the specific event
+		if ($event->{DB_EVENT_PAYMENTTYPE} > 0) {
+			$this->form_validation->set_rules(DB_TABLE_PERSONHASEVENT . '_' . DB_PERSONHASEVENT_PAYMENTTYPE, lang(LANG_KEY_FIELD_PAYMENTTYPE), 'required|trim|max_length[1]|xss_clean');
+		}
 		
 		//Only validate the email if it's in the POST
 		if (!$internalRegistration && $this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL) !== FALSE) {
@@ -308,17 +311,15 @@ class Events extends CI_Controller {
 			//Event info
 			$data_part_info_event = array();
 			$data_part_info_event['eventId']	= $eventId;
-			$data_part_info_event['event'] 		= $this->event->getEvent($eventId);			
+			$data_part_info_event['event'] 		= $event;
 			$data['part_info_event'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_INFO_EVENT,	$data_part_info_event, TRUE);	
 			
 			//Person form
-			if (!$internalRegistration) {
-				$data_part_form_person = array();
-				$data_part_form_person['fieldPrefix']	= '';
-				$data_part_form_person['showFields']	= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_PHONE, DB_PERSON_ALLERGIES) 
-																: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_EMAIL, DB_PERSON_PHONE, DB_PERSON_ALLERGIES);
-				$data['part_form_person'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_person, TRUE);
-			}
+			$data_part_form_person = array();
+			$data_part_form_person['fieldPrefix']	= '';
+			$data_part_form_person['showFields']	= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_PHONE, DB_PERSON_ALLERGIES) 
+															: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_EMAIL, DB_PERSON_PHONE, DB_PERSON_ALLERGIES);
+			$data['part_form_person'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_person, TRUE);
 				
 			//Payment form
 			$part_form_payment = array();
