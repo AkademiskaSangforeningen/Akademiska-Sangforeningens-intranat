@@ -758,8 +758,16 @@ class Events extends CI_Controller {
 		$client = CLIENT_DESKTOP;
 
 		if (!is_null($eventId)) {
-			$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
-			$this->event->deleteEvent($eventId);
+			$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);			
+			// Only delete events with zero registrations
+			$event = $this->event->getEvent($eventId, array(DB_TABLE_PERSONHASEVENT . DB_TOTALCOUNT, DB_TABLE_PERSONHASEVENT . DB_CUSTOM_AVEC . DB_TOTALCOUNT));
+			if (($event->{DB_TABLE_PERSONHASEVENT . DB_TOTALCOUNT} + $event->{DB_TABLE_PERSONHASEVENT . DB_CUSTOM_AVEC . DB_TOTALCOUNT}) == 0) {			
+				// First delete the event's eventitems
+				$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), TRUE);
+				$this->eventitem->deleteEventItems($eventId, array());
+				// Then delete the event
+				$this->event->deleteEvent($eventId);
+			}
 		}
 
 		$this->load->view($client . VIEW_GENERIC_DIALOG_CLOSE_AND_RELOAD_PARENT);
