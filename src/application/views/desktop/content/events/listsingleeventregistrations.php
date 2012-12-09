@@ -1,14 +1,20 @@
 <?php if (isset($part_eventInfo)) { echo $part_eventInfo; } ?>
 <div class="tools">
-<a href="<?php echo site_url() . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $event->{DB_EVENT_ID} ?>?<?php echo HTTP_DIALOG; ?>=1" class="button" data-icon="ui-icon-calendar" data-formdialog="true"><?php echo lang(LANG_KEY_BUTTON_CREATE_NEW_EVENT_REGISTRATION); ?></a>
+	<?php if ($this->userrights->hasRight(userrights::EVENTS_EDIT_REGISTRATION, $this->session->userdata(SESSION_ACCESSRIGHT))) { ?>
+		<a href="<?php echo site_url() . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $event->{DB_EVENT_ID} ?>?<?php echo HTTP_DIALOG; ?>=1" class="button" data-icon="ui-icon-calendar" data-formdialog="true"><?php echo lang(LANG_KEY_BUTTON_CREATE_NEW_EVENT_REGISTRATION); ?></a>
+	<?php } ?>
 </div>
 <div class="pagination">
 	<?php echo $pagination; ?>
 </div>
 <table>
 	<colgroup>
-		<col style="width: 27px" />
-		<col style="width: 27px" />
+		<?php if ($this->userrights->hasRight(userrights::EVENTS_EDIT_REGISTRATION, $this->session->userdata(SESSION_ACCESSRIGHT))) { ?>
+			<col style="width: 27px" />
+		<?php } ?>
+		<?php if ($this->userrights->hasRight(userrights::EVENTS_DELETE_REGISTRATION, $this->session->userdata(SESSION_ACCESSRIGHT))) { ?>
+			<col style="width: 27px" />
+		<?php } ?>
 		<col style="width: 27px" />
 		<col /> <!-- Name and allergies -->
 		<col />
@@ -20,8 +26,12 @@
 
 	<thead>
 		<tr>
-			<th><span class="ui-icon ui-icon-pencil" title="<?php echo lang(LANG_KEY_BUTTON_EDIT_MEMBER); ?>"></span></th>
-			<th><span class="ui-icon ui-icon-trash" title="<?php echo lang(LANG_KEY_BUTTON_DELETE_MEMBER); ?>"></span></th>		
+			<?php if ($this->userrights->hasRight(userrights::EVENTS_EDIT_REGISTRATION, $this->session->userdata(SESSION_ACCESSRIGHT))) { ?>
+				<th><span class="ui-icon ui-icon-pencil" title="<?php echo lang(LANG_KEY_BUTTON_EDIT_MEMBER); ?>"></span></th>
+			<?php } ?>
+			<?php if ($this->userrights->hasRight(userrights::EVENTS_DELETE_REGISTRATION, $this->session->userdata(SESSION_ACCESSRIGHT))) { ?>				
+				<th><span class="ui-icon ui-icon-trash" title="<?php echo lang(LANG_KEY_BUTTON_DELETE_MEMBER); ?>"></span></th>		
+			<?php } ?>
 			<th><span class="ui-icon ui-icon-mail-closed"></span></th>		
 			<th><?php echo lang(LANG_KEY_FIELD_NAME); ?> & <?php echo lang(LANG_KEY_FIELD_ALLERGIES); ?></th>
 			<th>Totalt</th>
@@ -54,7 +64,13 @@
 	</thead>
 	<tfoot>
 		<tr>
-			<td colspan="6">Totalt:</td>
+			<td colspan="4">Totalt:</td>
+			<?php if ($this->userrights->hasRight(userrights::EVENTS_EDIT_REGISTRATION, $this->session->userdata(SESSION_ACCESSRIGHT))) { ?>
+				<td></td>
+			<?php } ?>
+			<?php if ($this->userrights->hasRight(userrights::EVENTS_DELETE_REGISTRATION, $this->session->userdata(SESSION_ACCESSRIGHT))) { ?>				
+				<td></td>
+			<?php } ?>			
 			<?php
 				foreach($eventItems as $key => $eventItem) {
 					if ($eventItem->{DB_EVENTITEM_MAXPCS} == 0) {
@@ -84,8 +100,12 @@
 			$previousPersonId = NULL;
 			foreach($persons as $key => $person) {
 				echo "<tr>";
-				echo '<td><a href="' . site_url() . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $event->{DB_EVENT_ID} . '/' . $person->{DB_PERSON_ID} . '/' . md5($event->{DB_EVENT_ID} . $this->config->item('encryption_key') . $person->{DB_PERSON_ID}) .'?' . HTTP_DIALOG . '=1" class="button" data-icon="ui-icon-pencil" data-text="false" data-formdialog="true">' . lang(LANG_KEY_BUTTON_EDIT_EVENT_REGISTRATION) . '</a></td>';
-				echo '<td><a href="' . site_url() . CONTROLLER_SAVE_CANCEL_REGISTER_DIRECTLY . '/' . $event->{DB_EVENT_ID} . '/' . $person->{DB_PERSON_ID} . '/' . md5($event->{DB_EVENT_ID} . $this->config->item('encryption_key') . $person->{DB_PERSON_ID}) .'?' . HTTP_DIALOG . '=1" class="button" data-icon="ui-icon-trash" data-text="false" data-confirmdialog="true">' . lang(LANG_KEY_BUTTON_DELETE_EVENT_REGISTRATION) . '</a></td>';
+				if ($this->userrights->hasRight(userrights::EVENTS_EDIT_REGISTRATION, $this->session->userdata(SESSION_ACCESSRIGHT))) {
+					echo '<td><a href="' . site_url() . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $event->{DB_EVENT_ID} . '/' . $person->{DB_PERSON_ID} . '/' . md5($event->{DB_EVENT_ID} . $this->config->item('encryption_key') . $person->{DB_PERSON_ID}) .'?' . HTTP_DIALOG . '=1" class="button" data-icon="ui-icon-pencil" data-text="false" data-formdialog="true">' . lang(LANG_KEY_BUTTON_EDIT_EVENT_REGISTRATION) . '</a></td>';
+				}
+				if ($this->userrights->hasRight(userrights::EVENTS_DELETE_REGISTRATION, $this->session->userdata(SESSION_ACCESSRIGHT))) {
+					echo '<td><a href="' . site_url() . CONTROLLER_SAVE_CANCEL_REGISTER_DIRECTLY . '/' . $event->{DB_EVENT_ID} . '/' . $person->{DB_PERSON_ID} . '/' . md5($event->{DB_EVENT_ID} . $this->config->item('encryption_key') . $person->{DB_PERSON_ID}) .'?' . HTTP_DIALOG . '=1" class="button" data-icon="ui-icon-trash" data-text="false" data-confirmdialog="true">' . lang(LANG_KEY_BUTTON_DELETE_EVENT_REGISTRATION) . '</a></td>';
+				}
 				echo '<td><a href="mailto:' . $person->{DB_PERSON_EMAIL} . '" class="button" data-icon="ui-icon-mail-closed" data-text="false">' . $person->{DB_PERSON_EMAIL} . '</a></td>';				
 				echo '<td><span class="bold">' . $person->{DB_PERSON_FIRSTNAME} . ' ' . $person->{DB_PERSON_LASTNAME} . '</span><br/><i>' . $person->{DB_PERSON_ALLERGIES} . '</i></td>';
 				echo '<td class="bold">' . formatCurrency($person->{DB_TOTALSUM} + $person->{DB_CUSTOM_AVEC . DB_TOTALSUM}) . '</td>';
@@ -119,7 +139,13 @@
 				
 				if ($event->{DB_EVENT_AVECALLOWED} == TRUE && $person->{DB_CUSTOM_AVEC . DB_PERSON_ID} != NULL) {
 					echo "<tr>";
-					echo "<td colspan=\"3\">Avec:</td>";
+					echo "<td>Avec:</td>";
+					if ($this->userrights->hasRight(userrights::EVENTS_EDIT_REGISTRATION, $this->session->userdata(SESSION_ACCESSRIGHT))) {
+						echo '<td></td>';
+					}
+					if ($this->userrights->hasRight(userrights::EVENTS_DELETE_REGISTRATION, $this->session->userdata(SESSION_ACCESSRIGHT))) {
+						echo '<td></td>';
+					}					
 					echo '<td><span class="bold">' . $person->{DB_CUSTOM_AVEC . DB_PERSON_FIRSTNAME} . ' ' . $person->{DB_CUSTOM_AVEC . DB_PERSON_LASTNAME} . '</span><br/><i>' . $person->{DB_CUSTOM_AVEC . DB_PERSON_ALLERGIES} . '</i></td>';
 					echo '<td>(' . formatCurrency($person->{DB_CUSTOM_AVEC . DB_TOTALSUM}) . ')</td>';										
 					echo '<td></td>';					

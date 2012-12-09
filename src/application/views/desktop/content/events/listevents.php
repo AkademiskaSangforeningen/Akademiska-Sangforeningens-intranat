@@ -1,14 +1,20 @@
 <div class="tools">
-<a href="<?php echo CONTROLLER_EVENTS_EDITSINGLE ?>" class="button" data-icon="ui-icon-calendar" data-formdialog="true"><?php echo lang(LANG_KEY_BUTTON_CREATE_NEW_EVENT); ?></a>
+	<?php if ($this->userrights->hasRight(userrights::EVENTS_EDIT, $this->session->userdata(SESSION_ACCESSRIGHT))) { ?>
+		<a href="<?php echo CONTROLLER_EVENTS_EDITSINGLE ?>" class="button" data-icon="ui-icon-calendar" data-formdialog="true"><?php echo lang(LANG_KEY_BUTTON_CREATE_NEW_EVENT); ?></a>
+	<?php } ?>
 </div>
 <div class="pagination">
 	<?php echo $pagination; ?>
 </div>
 <table>
 	<colgroup>
-		<col style="width: 25px" />
-		<col style="width: 25px" />
-		<col style="width: 25px" />
+		<?php if ($this->userrights->hasRight(userrights::EVENTS_EDIT, $this->session->userdata(SESSION_ACCESSRIGHT))) { ?>
+			<col style="width: 27px" />
+		<?php } ?>
+		<?php if ($this->userrights->hasRight(userrights::EVENTS_DELETE, $this->session->userdata(SESSION_ACCESSRIGHT))) { ?>
+			<col style="width: 27px" />
+		<?php } ?>
+		<col style="width: 27px" />
 		<col />
 		<col />
 		<col />
@@ -19,8 +25,12 @@
 
 	<thead>
 		<tr>
-			<th><span class="ui-icon ui-icon-pencil" title="<?php echo lang(LANG_KEY_BUTTON_EDIT_MEMBER); ?>"></span></th>
-			<th><span class="ui-icon ui-icon-trash" title="<?php echo lang(LANG_KEY_BUTTON_DELETE_MEMBER); ?>"></span></th>		
+			<?php if ($this->userrights->hasRight(userrights::EVENTS_EDIT, $this->session->userdata(SESSION_ACCESSRIGHT))) { ?>
+				<th><span class="ui-icon ui-icon-pencil" title="<?php echo lang(LANG_KEY_BUTTON_EDIT_MEMBER); ?>"></span></th>
+			<?php } ?>
+			<?php if ($this->userrights->hasRight(userrights::EVENTS_DELETE, $this->session->userdata(SESSION_ACCESSRIGHT))) { ?>
+				<th><span class="ui-icon ui-icon-trash" title="<?php echo lang(LANG_KEY_BUTTON_DELETE_MEMBER); ?>"></span></th>		
+			<?php } ?>				
 			<th><span class="ui-icon ui-icon-extlink" title="<?php echo lang(LANG_KEY_BUTTON_VIEW_EVENT); ?>"></span></th>
 			<th><?php echo lang(LANG_KEY_FIELD_EVENT); ?></th>
 			<th><?php echo lang(LANG_KEY_FIELD_DATE); ?></th>
@@ -36,8 +46,12 @@
 	<tbody>
 	<?php foreach($eventList as $key => $event) { ?>
 		<tr>
-			<td><a href="<?php echo site_url() . CONTROLLER_EVENTS_EDITSINGLE . '/' . $event->{DB_EVENT_ID}; ?>" class="button" data-icon="ui-icon-pencil" data-text="false" data-formdialog="true"><?php echo lang(LANG_KEY_BUTTON_EDIT_EVENT_REGISTRATION); ?></a></td>
-			<td><a href="<?php echo site_url() . CONTROLLER_EVENTS_DELETESINGLE . '/' . $event->{DB_EVENT_ID}; ?>" class="button" data-icon="ui-icon-trash" data-text="false" data-confirmdialog="true"><?php echo lang(LANG_KEY_BUTTON_DELETE_EVENT); ?></a></td>		
+			<?php if ($this->userrights->hasRight(userrights::EVENTS_EDIT, $this->session->userdata(SESSION_ACCESSRIGHT))) { ?>
+				<td><a href="<?php echo site_url() . CONTROLLER_EVENTS_EDITSINGLE . '/' . $event->{DB_EVENT_ID}; ?>" class="button" data-icon="ui-icon-pencil" data-text="false" data-formdialog="true"><?php echo lang(LANG_KEY_BUTTON_EDIT_EVENT_REGISTRATION); ?></a></td>
+			<?php } ?>
+			<?php if ($this->userrights->hasRight(userrights::EVENTS_DELETE, $this->session->userdata(SESSION_ACCESSRIGHT))) { ?>
+				<td><a href="<?php echo site_url() . CONTROLLER_EVENTS_DELETESINGLE . '/' . $event->{DB_EVENT_ID}; ?>" class="button" data-icon="ui-icon-trash" data-text="false" data-confirmdialog="true"><?php echo lang(LANG_KEY_BUTTON_DELETE_EVENT); ?></a></td>		
+			<?php } ?>
 			<td><a href="<?php echo site_url() . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $event->{DB_EVENT_ID}; ?>" target="_blank" class="button" data-icon="ui-icon-extlink" data-text="false"><?php echo lang(LANG_KEY_BUTTON_VIEW_EVENT); ?></a></td>
 			<td><?php echo $event->{DB_EVENT_NAME}; ?></td>	
 			<td>

@@ -25,6 +25,11 @@ class Events extends CI_Controller {
 	}
 
 	function listAll($offset = 0) {
+	
+		if (!$this->userrights->hasRight(userrights::EVENTS_VIEW, $this->session->userdata(SESSION_ACCESSRIGHT))) {
+			show_error(NULL, 403);
+		}
+	
 		$client = CLIENT_DESKTOP;
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));
 		
@@ -49,6 +54,11 @@ class Events extends CI_Controller {
 	}
 	
 	function listSingleEventRegistrations($eventId, $offset = 0) {
+
+		if (!$this->userrights->hasRight(userrights::EVENTS_VIEW, $this->session->userdata(SESSION_ACCESSRIGHT))) {
+			show_error(NULL, 403);
+		}	
+	
 		$client = CLIENT_DESKTOP;
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));
 		$this->load->library('pagination');
@@ -78,7 +88,7 @@ class Events extends CI_Controller {
 		$data['eventItemSums']			= $eventItemSums;	
 		
 		$config['base_url'] 	= site_url() . CONTROLLER_EVENTS_LIST_SINGLE_EVENT_REGISTRATIONS . '/' . $eventId . '/';
-		$config['total_rows']	= $data['persons'][0]->{DB_TOTALCOUNT};
+		$config['total_rows']	= isset($data['persons'][0]->{DB_TOTALCOUNT}) ? $data['persons'][0]->{DB_TOTALCOUNT} : 0;
 		$config['first_link'] 	= lang(LANG_KEY_BUTTON_PAGING_FIRST);
 		$config['last_link'] 	= lang(LANG_KEY_BUTTON_PAGING_LAST);
 		$config['anchor_class']	= 'class="button" ';
@@ -97,6 +107,11 @@ class Events extends CI_Controller {
 	*	Used for editing a single event
 	*/
 	function editSingle($eventId = NULL) {
+	
+		if (!$this->userrights->hasRight(userrights::EVENTS_EDIT, $this->session->userdata(SESSION_ACCESSRIGHT))) {
+			show_error(NULL, 403);
+		}	
+	
 		$client = CLIENT_DESKTOP;
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));
 
@@ -735,6 +750,11 @@ class Events extends CI_Controller {
 	*	Used for deleting a single event
 	*/
 	function deleteSingle($eventId = NULL) {
+	
+		if (!$this->userrights->hasRight(userrights::EVENTS_DELETE, $this->session->userdata(SESSION_ACCESSRIGHT))) {
+			show_error(NULL, 403);
+		}		
+	
 		$client = CLIENT_DESKTOP;
 
 		if (!is_null($eventId)) {
@@ -749,6 +769,11 @@ class Events extends CI_Controller {
 	*	Used for saving a single event
 	*/
 	function saveSingle($eventId = NULL) {
+	
+		if (!$this->userrights->hasRight(userrights::EVENTS_EDIT, $this->session->userdata(SESSION_ACCESSRIGHT))) {
+			show_error(NULL, 403);
+		}		
+	
 		//Load the validation library
 		$this->load->library('form_validation');
 		//Load languages
@@ -857,21 +882,6 @@ class Events extends CI_Controller {
 		}
 	}
 
-	function showEvent($eventId) {
-		$this->load->model(MODEL_EVENT, strtolower(MODEL_EVENT), TRUE);
-		$event = $this->event->getEvent($eventId);
-
-		if($event){
-			$data = array();
-			$data['event'] = $event;
-			$this->load->view(CLIENT_DESKTOP . VIEW_GENERIC_HEADER);
-			$this->load->view(CLIENT_DESKTOP . '/content/events/showevent', $data);
-			$this->load->view(CLIENT_DESKTOP . VIEW_GENERIC_FOOTER);
-		} else {
-			show_error("Could not find event for id: '" . $eventId . "'");
-		}
-	}
-
 	function _validateEditDirectlyVariables($client, $eventId, $personId, $hash, $event, $personHasEvent, $internalRegistration = FALSE) {
 		//Return if the event in the URL isn't valid
 		if ($eventId == NULL || !isGuidValid($eventId)) {
@@ -898,7 +908,9 @@ class Events extends CI_Controller {
 			$this->load->view($client . VIEW_GENERIC_BODY_MESSAGE, $data);
 			$this->load->view($client . VIEW_GENERIC_FOOTER);
 			return FALSE;
-		} else if ($event->{DB_EVENT_REGISTRATIONDUEDATE} != null && isDateInPast($event->{DB_EVENT_REGISTRATIONDUEDATE}, TRUE)) {
+		} else if ($event->{DB_EVENT_REGISTRATIONDUEDATE} != null && isDateInPast($event->{DB_EVENT_REGISTRATIONDUEDATE}, TRUE)
+						&& !$this->userrights->hasRight(userrights::EVENTS_EDIT_REGISTRATION, $this->session->userdata(SESSION_ACCESSRIGHT))) {
+						
 			$data = array();
 			$data['header']	= lang(LANG_KEY_HEADER_EVENT_REGISTRATION_DUE_DATE_PASSED);
 			$data['body']	= lang(LANG_KEY_BODY_EVENT_REGISTRATION_DUE_DATE_PASSED);

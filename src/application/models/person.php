@@ -15,8 +15,11 @@ Class Person extends CI_Model {
 	* @return false if check fails, otherwise returns database result
 	*/
 	function canUserLogin($email, $password) {
-		$this->db->select(DB_PERSON_ID . ', ' . DB_PERSON_EMAIL . ', ' . DB_PERSON_FIRSTNAME . ', ' . DB_PERSON_LASTNAME);
-		//$this->db->select(DB_PERSON_ID . ', ' . DB_PERSON_ACCESSRIGHT);
+		$this->db->select(DB_PERSON_ID);
+		$this->db->select(DB_PERSON_EMAIL);
+		$this->db->select(DB_PERSON_FIRSTNAME);
+		$this->db->select(DB_PERSON_LASTNAME);
+		$this->db->select(DB_PERSON_USERRIGHTS);
 		$this->db->from(DB_TABLE_PERSON);
 		$this->db->where(DB_PERSON_EMAIL, 		$email);
 		$this->db->where(DB_PERSON_PASSWORD, 	$password);

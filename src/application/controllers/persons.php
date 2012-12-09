@@ -25,6 +25,11 @@ class Persons extends CI_Controller {
 	}
 	
 	function listAll() {
+	
+		if (!$this->userrights->hasRight(userrights::USERS_VIEW, $this->session->userdata(SESSION_ACCESSRIGHT))) {
+			show_error(NULL, 403);
+		}
+	
 		//Here we could define a different client type based on user agent-headers
 		$client = CLIENT_DESKTOP;
 
@@ -41,7 +46,12 @@ class Persons extends CI_Controller {
 	/**
 	*	Used for deleting a single event
 	*/		
-	function deleteSingle($personId = NULL) {	
+	function deleteSingle($personId = NULL) {
+	
+		if (!$this->userrights->hasRight(userrights::USERS_DELETE, $this->session->userdata(SESSION_ACCESSRIGHT))) {
+			show_error(NULL, 403);
+		}
+	
 		//Here we could define a different client type based on user agent-headers
 		$client = CLIENT_DESKTOP;
 		
@@ -76,7 +86,12 @@ class Persons extends CI_Controller {
 	/**
 	*	Used for editing a single person
 	*/		
-	function editSingle($personId = NULL, $controller = NULL) {	
+	function editSingle($personId = NULL, $controller = NULL) {
+	
+		if ($personId != $this->session->userdata(SESSION_PERSONID) && !$this->userrights->hasRight(userrights::USERS_EDIT, $this->session->userdata(SESSION_ACCESSRIGHT))) {
+			show_error(NULL, 403);
+		}
+	
 		//Here we could define a different client type based on user agent-headers
 		$client = CLIENT_DESKTOP;
 
@@ -96,27 +111,36 @@ class Persons extends CI_Controller {
 	*	Used for saving a single person
 	*/	
 	function saveSingle($personId = NULL, $controller = NULL) {
+	
+		if ($personId != $this->session->userdata(SESSION_PERSONID) && !$this->userrights->hasRight(userrights::USERS_EDIT, $this->session->userdata(SESSION_ACCESSRIGHT))) {
+			show_error(NULL, 403);
+		}	
+	
 		//Load the validation library
 		$this->load->library('form_validation');
 		//Load languages
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));			
 		
 		//Validate the fields
-		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME,	lang(LANG_KEY_FIELD_FIRSTNAME),		'trim|max_length[50]|required|xss_clean');
-		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME, 	lang(LANG_KEY_FIELD_LASTNAME), 		'trim|max_length[50]|required|xss_clean');
-		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL, 		lang(LANG_KEY_FIELD_EMAIL), 		'trim|max_length[50]|required|valid_email|xss_clean|callback_checkEmailNotDuplicate');
+		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME,		lang(LANG_KEY_FIELD_FIRSTNAME),		'trim|max_length[50]|required|xss_clean');
+		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME, 		lang(LANG_KEY_FIELD_LASTNAME), 		'trim|max_length[50]|required|xss_clean');
+		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL, 			lang(LANG_KEY_FIELD_EMAIL), 		'trim|max_length[50]|required|valid_email|xss_clean|callback_checkEmailNotDuplicate');
 		if (is_null($personId)) {
-			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PASSWORD,	lang(LANG_KEY_FIELD_PASSWORD), 	'trim|required|max_length[50]|xss_clean|callback__checkPassword');
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PASSWORD,	lang(LANG_KEY_FIELD_PASSWORD), 		'trim|required|max_length[50]|xss_clean|callback__checkPassword');
 		} else {
-			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PASSWORD,	lang(LANG_KEY_FIELD_PASSWORD), 	'trim|max_length[50]|xss_clean|callback__checkPassword');
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PASSWORD,	lang(LANG_KEY_FIELD_PASSWORD), 		'trim|max_length[50]|xss_clean|callback__checkPassword');
 		}		
-		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_VOICE, 		lang(LANG_KEY_FIELD_VOICE), 		'trim|exact_length[2]|required|xss_clean|callback__checkVoiceInEnumList');
-		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES, 	lang(LANG_KEY_FIELD_ALLERGIES), 	'trim|max_length[50]|xss_clean');
-		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PHONE, 		lang(LANG_KEY_FIELD_PHONE), 		'trim|max_length[50]|xss_clean');
-		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_ADDRESS, 	lang(LANG_KEY_FIELD_ADDRESS), 		'trim|max_length[50]|xss_clean');
-		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_POSTALCODE, lang(LANG_KEY_FIELD_POSTALCODE), 	'trim|max_length[50]|xss_clean');
-		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_CITY, 		lang(LANG_KEY_FIELD_CITY), 			'trim|max_length[50]|xss_clean');
-		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_COUNTRYID, 	lang(LANG_KEY_FIELD_COUNTRYID), 	'trim|exact_length[2]|xss_clean|callback__checkCountryIdInEnumList');
+		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_VOICE, 			lang(LANG_KEY_FIELD_VOICE), 		'trim|exact_length[2]|required|xss_clean|callback__checkVoiceInEnumList');
+		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES, 		lang(LANG_KEY_FIELD_ALLERGIES), 	'trim|max_length[50]|xss_clean');
+		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PHONE, 			lang(LANG_KEY_FIELD_PHONE), 		'trim|max_length[50]|xss_clean');
+		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_ADDRESS, 		lang(LANG_KEY_FIELD_ADDRESS), 		'trim|max_length[50]|xss_clean');
+		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_POSTALCODE, 	lang(LANG_KEY_FIELD_POSTALCODE), 	'trim|max_length[50]|xss_clean');
+		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_CITY, 			lang(LANG_KEY_FIELD_CITY), 			'trim|max_length[50]|xss_clean');
+		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_COUNTRYID, 		lang(LANG_KEY_FIELD_COUNTRYID), 	'trim|exact_length[2]|xss_clean|callback__checkCountryIdInEnumList');
+		
+		if ($this->userrights->hasRight(userrights::USERS_EDIT, $this->session->userdata(SESSION_ACCESSRIGHT))) {
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_USERRIGHTS . '[]', 	lang(LANG_KEY_FIELD_PAYMENTTYPE),	'trim|xss_clean|is_natural');
+		}
 
 		//If errors found, redraw the login form to the user
 		if($this->form_validation->run() == FALSE) {
@@ -138,6 +162,10 @@ class Persons extends CI_Controller {
 				DB_PERSON_CITY 			=> $this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_CITY),
 				DB_PERSON_COUNTRYID		=> $this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_COUNTRYID)				
 			);
+			
+			if ($this->userrights->hasRight(userrights::USERS_EDIT_ACCESS_RIGHTS, $this->session->userdata(SESSION_ACCESSRIGHT))) {
+				$data[DB_PERSON_USERRIGHTS] = array_sum($this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_USERRIGHTS) ? $this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_USERRIGHTS) : array());
+			}
 			
 			//Only include the password if it has been given.
 			//For new users it's a required field.

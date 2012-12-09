@@ -1,39 +1,24 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class UserRights {
-  const ViewTransactions = 1;
-  const AddTransactions = 2;
-  const RemoveTransactions = 4;
-  const EditTransactions = 8;
-
-  const ViewUsers = 16;
-  const AddUsers = 32;
-  const RemoveUsers = 64;
-  const EditUsers = 128;
-
-  const ViewEvents = 256;
-  const AddEvents = 512;
-  const RemoveEvents = 1024;
-  const EditEvents = 2048;
-
-  function transactionAdmin(){
-    return UserRights::ViewTransactions | 
-           UserRights::AddTransactions | 
-           UserRights::EditTransactions | 
-           UserRights::RemoveTransactions;
-  }
-
-  function hasRight($right, $toCheck) {
-    return $right & $toCheck;
-  }
-
-  function canAdministrate($module, $rights){
-    if($module == 'transactions'){
-      $required = $this->transactionAdmin();
-      return $required == ($rights & $required);
-    }
-
-    return false;
-  }
+	const FULL_ACCESS_RIGHTS			= 1;
+	
+	const TRANSACTIONS_VIEW				= 2;
+	const TRANSACTIONS_EDIT				= 4;
+	const TRANSACTIONS_DELETE			= 8;
+	
+	const USERS_VIEW					= 16;
+	const USERS_EDIT					= 32;
+	const USERS_EDIT_ACCESS_RIGHTS		= 64;
+	const USERS_DELETE					= 128;
+	
+	const EVENTS_VIEW					= 256;
+	const EVENTS_EDIT					= 512;
+	const EVENTS_DELETE					= 1024;
+	const EVENTS_EDIT_REGISTRATION		= 2048;
+	const EVENTS_DELETE_REGISTRATION	= 4096;			
+	
+	function hasRight($right, $userRight) {
+		return (($right & $userRight) == $right) || ((self::FULL_ACCESS_RIGHTS & $userRight) == self::FULL_ACCESS_RIGHTS);
+	}
 }
-
