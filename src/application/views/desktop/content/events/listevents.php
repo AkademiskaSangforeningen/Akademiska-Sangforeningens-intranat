@@ -88,7 +88,7 @@
 			var selectedTab = $('#header_navitabs').tabs('option', 'active'),
 				url = $(this).attr('href');
 
-			$('#ui-tabs-' + selectedTab).load(url, function() {
+			$('#ui-tabs-' + (selectedTab + 1)).load(url, function() {
 				AKADEMEN.initializeButtons();
 				//Change tab-link to point to selected page
 				$('.ui-tabs-active a').attr('href', url);

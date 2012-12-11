@@ -4,6 +4,9 @@
 		<a href="<?php echo CONTROLLER_PERSONS_EDITSINGLE ?>" class="button" data-icon="ui-icon-person" data-formdialog="true"><?php echo lang(LANG_KEY_BUTTON_CREATE_NEW_MEMBER); ?></a>
 	<?php } ?>
 	</div>
+	<div class="pagination">
+		<?php echo $pagination; ?>
+	</div>	
 
 	<table>
 		<colgroup>
@@ -54,3 +57,18 @@
 		</tbody>
 	</table>
 </div>
+
+<script>
+	$('.pagination a')
+		.bind('click', function() {
+			var selectedTab = $('#header_navitabs').tabs('option', 'active'),
+				url = $(this).attr('href');				
+				
+			$('#ui-tabs-' + (selectedTab + 1)).load(url, function() {
+				AKADEMEN.initializeButtons();
+				//Change tab-link to point to selected page
+				$('.ui-tabs-active a').attr('href', url);
+			});
+			return false;
+		});
+</script>

@@ -90,11 +90,15 @@ Class Person extends CI_Model {
 	*
 	* @return database result
 	*/		
-	function getPersonList() {
+	function getPersonList($limit = FALSE, $offset = FALSE) {		
 		$this->db->select('*');
+		$this->db->select('(SELECT COUNT(*) FROM ' . DB_TABLE_PERSON . ') AS ' . DB_TOTALCOUNT, FALSE);
 		$this->db->from(DB_TABLE_PERSON);
 		$this->db->order_by(DB_PERSON_LASTNAME, "asc"); 
-		$this->db->order_by(DB_PERSON_LASTNAME, "asc"); 
+		$this->db->order_by(DB_PERSON_FIRSTNAME, "asc"); 
+		if ($limit !== FALSE && $offset !== FALSE) {
+			$this->db->limit($limit, $offset);
+		}		
 
 		$query = $this->db->get();		
 		return $query->result();	

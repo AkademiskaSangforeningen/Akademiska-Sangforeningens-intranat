@@ -24,7 +24,7 @@ class Persons extends CI_Controller {
 		redirect(CONTROLLER_MY_PAGE, 'refresh');
 	}
 	
-	function listAll() {
+	function listAll($offset = 0) {
 	
 		if (!$this->userrights->hasRight(userrights::USERS_VIEW, $this->session->userdata(SESSION_ACCESSRIGHT))) {
 			show_error(NULL, 403);
@@ -37,8 +37,21 @@ class Persons extends CI_Controller {
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));
 		
 		$this->load->model(MODEL_PERSON, strtolower(MODEL_PERSON), TRUE);
+		$this->load->library('pagination');
 
-		$data['personList'] = $this->person->getPersonList();				
+		$personList = $this->person->getPersonList(LIST_DEF_PAGING, $offset);
+		
+		$config['base_url'] 	= site_url() . CONTROLLER_PERSONS_LISTALL . '/';
+		$config['total_rows']	= $personList[0]->{DB_TOTALCOUNT};
+		$config['first_link'] 	= lang(LANG_KEY_BUTTON_PAGING_FIRST);
+		$config['last_link'] 	= lang(LANG_KEY_BUTTON_PAGING_LAST);
+		$config['anchor_class']	= 'class="button" ';
+		$config['per_page'] 	= LIST_DEF_PAGING; 
+		$this->pagination->initialize($config); 
+		
+		$data = array();
+		$data['personList'] = $personList;
+		$data['pagination']	= $this->pagination->create_links();
 		
 		$this->load->view($client . VIEW_CONTENT_PERSONS_LISTALL, $data);
 	}
