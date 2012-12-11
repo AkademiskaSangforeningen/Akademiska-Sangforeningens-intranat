@@ -29,6 +29,10 @@ class Persons extends CI_Controller {
 		if (!$this->userrights->hasRight(userrights::USERS_VIEW, $this->session->userdata(SESSION_ACCESSRIGHT))) {
 			show_error(NULL, 403);
 		}
+		
+		if (!is_int($offset)) {
+			$offset = 0;
+		}		
 	
 		//Here we could define a different client type based on user agent-headers
 		$client = CLIENT_DESKTOP;

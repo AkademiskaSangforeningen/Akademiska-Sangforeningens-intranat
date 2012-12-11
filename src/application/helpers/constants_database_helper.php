@@ -98,6 +98,7 @@ define('DB_TABLE_TRANSACTION',				'transaction');
 define('DB_TRANSACTION_ID',					'Id');
 define('DB_TRANSACTION_PERSONID',			'PersonId');
 define('DB_TRANSACTION_TRANSACTIONDATE',	'TransactionDate');
+define('DB_TRANSACTION_EVENTID',			'EventId');
 define('DB_TRANSACTION_AMOUNT',				'Amount');
 define('DB_TRANSACTION_DESCRIPTION',		'Description');
 define('DB_TRANSACTION_CREATED',			'Created');

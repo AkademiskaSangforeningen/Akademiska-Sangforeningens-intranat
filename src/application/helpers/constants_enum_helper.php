@@ -11,6 +11,11 @@ define('ENUM_COUNTRIES',	'enum_countries');
 define('ENUM_ENABLED',		'enum_enabled');
 define('ENUM_PAYMENTTYPE',	'enum_paymenttype');
 
+define('ENUM_PAYMENTTYPE_TRANSACTION', 	1);
+define('ENUM_PAYMENTTYPE_CASH', 		2);
+define('ENUM_PAYMENTTYPE_BANK_ACCOUNT',	4);
+
+
 function getEnum($enum) {
 	switch($enum) {
 		case ENUM_VOICES:
@@ -34,9 +39,9 @@ function getEnum($enum) {
 				);
 		case ENUM_PAYMENTTYPE:
 			return array(
-					1		=> "Kvartettkonto",
-					2		=> "Kontant vid evenemanget",
-					4		=> "Kontobetalning"
+					ENUM_PAYMENTTYPE_TRANSACTION	=> "Kvartettkonto",
+					ENUM_PAYMENTTYPE_CASH			=> "Kontant vid evenemanget",
+					ENUM_PAYMENTTYPE_BANK_ACCOUNT	=> "Kontobetalning"
 				);		
 		default:
 			return;

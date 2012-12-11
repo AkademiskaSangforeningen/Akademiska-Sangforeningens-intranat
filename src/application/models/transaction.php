@@ -27,6 +27,30 @@ Class Transaction extends CI_Model {
 		}		
 	}
 	
+	function getPersonCurrentBalance($personId = NULL, $eventId = FALSE) {
+		if (!$personId) {
+			return 0;
+		}
+		
+		$this->db->select('IFNULL(SUM(' . DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_AMOUNT . '), 0) AS ' . DB_TOTALSUM, FALSE);
+		$this->db->from(DB_TABLE_TRANSACTION);
+		$this->db->where(DB_TRANSACTION_PERSONID, $personId);
+		if ($eventId !== FALSE) { 
+			$this->db->where('NOT EXISTS (SELECT 1 FROM ' . DB_TABLE_PERSONHASEVENT . ' WHERE ' . DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_TRANSACTIONID . ' = ' . DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_ID
+				. ' AND ' . DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_EVENTID . ' = \'' . $eventId . '\''
+				. ' AND ' . DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_PERSONID . ' = \'' . $personId . '\')', NULL, FALSE);			
+		}
+		
+		$query = $this->db->get();
+		if ($query->num_rows() == 1) {
+			$row = $query->row();
+			echo $query->num_rows();
+			return $row->{DB_TOTALSUM};
+		} else {
+			return 0;
+		}		
+	}
+	
 	function getTransactionList($personId = NULL) {
 		$this->db->select(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_ID);
 		$this->db->select(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_TRANSACTIONDATE);

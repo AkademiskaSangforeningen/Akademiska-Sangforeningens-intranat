@@ -13,6 +13,19 @@ class EventItem extends CI_Model {
         parent::__construct();
     }
 
+	function getEventItem($eventItemId) {
+		$this->db->select('*');
+		$this->db->from(DB_TABLE_EVENTITEM);	
+		$this->db->where(DB_EVENTITEM_ID,	$eventItemId);		
+		
+		$query = $this->db->get();
+		if ($query->num_rows() == 1) {
+			return $query->row();
+		} else {
+			return FALSE;
+		}			
+	}
+	
 	function getEventItems($eventId, $personId = NULL, $onlyShowRegistered = FALSE) {
 		$this->db->select(DB_TABLE_EVENTITEM . '.*');
 		$this->db->select(DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_EVENTITEMID . ' AS ' . DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_EVENTITEMID, FALSE);

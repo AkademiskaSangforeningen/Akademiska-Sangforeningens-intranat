@@ -29,6 +29,10 @@ class Events extends CI_Controller {
 		if (!$this->userrights->hasRight(userrights::EVENTS_VIEW, $this->session->userdata(SESSION_ACCESSRIGHT))) {
 			show_error(NULL, 403);
 		}
+		
+		if (!is_int($offset)) {
+			$offset = 0;
+		}		
 	
 		$client = CLIENT_DESKTOP;
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));
@@ -57,7 +61,11 @@ class Events extends CI_Controller {
 
 		if (!$this->userrights->hasRight(userrights::EVENTS_VIEW, $this->session->userdata(SESSION_ACCESSRIGHT))) {
 			show_error(NULL, 403);
-		}	
+		}
+		
+		if (!is_int($offset)) {
+			$offset = 0;
+		}		
 	
 		$client = CLIENT_DESKTOP;
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));
@@ -241,9 +249,10 @@ class Events extends CI_Controller {
 		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);					
 		
 		//Load models
-		$this->load->model(MODEL_EVENT, 	strtolower(MODEL_EVENT), 		TRUE);
-		$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), 	TRUE);
-		$this->load->model(MODEL_PERSON, 	strtolower(MODEL_PERSON), 		TRUE);	
+		$this->load->model(MODEL_EVENT, 		strtolower(MODEL_EVENT), 		TRUE);
+		$this->load->model(MODEL_EVENTITEM, 	strtolower(MODEL_EVENTITEM), 	TRUE);
+		$this->load->model(MODEL_PERSON, 		strtolower(MODEL_PERSON), 		TRUE);	
+		$this->load->model(MODEL_TRANSACTION, 	strtolower(MODEL_TRANSACTION),	TRUE);	
 
 		//Load event and person has event bind
 		$event = $this->event->getEvent($eventId);
@@ -296,6 +305,10 @@ class Events extends CI_Controller {
 			$this->form_validation->set_rules($eventItem->{DB_EVENTITEM_ID} . '_' . DB_PERSONHASEVENTITEM_AMOUNT, 								DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', 							'trim|numeric|xss_clean');
 		}
 
+		$this->form_validation->set_rules(DB_TABLE_PERSONHASEVENT . '_' . DB_PERSONHASEVENT_PAYMENTTYPE, lang(LANG_KEY_FIELD_PAYMENTTYPE), 'callback__checkEnoughTransactionAmount[' . $eventId . ',' . $personId . ']');
+
+		
+		
 		//If errors found, redraw the login form to the user
 		if($this->form_validation->run() === FALSE) {
 			$client = CLIENT_DESKTOP;
@@ -951,6 +964,44 @@ class Events extends CI_Controller {
 			return FALSE;
 		} else {
 			return TRUE;
+		}
+	}
+	
+	function _checkEnoughTransactionAmount($paymentType, $callbackParam) {
+		$callbackParam 	= preg_split('/,/', $callbackParam);
+		$eventId		= $callbackParam[0];
+		$personId 		= $callbackParam[1];		
+	
+		if ($paymentType == ENUM_PAYMENTTYPE_TRANSACTION) {
+			$eventItemsAmountTotal = 0;
+			$eventItemIds = $this->input->post(DB_PERSONHASEVENTITEM_EVENTITEMID);
+			if ($eventItemIds !== FALSE) {
+				foreach ($eventItemIds as $eventItemId) {
+					$eventItemAmount = $this->input->post($eventItemId . '_' . DB_PERSONHASEVENTITEM_AMOUNT, TRUE);
+					if ($eventItemAmount === FALSE) {
+						$eventItemAmount = 1;
+					}
+
+					//Don't save not-selected event items or event items with empty (but not NULL) descriptions
+					if ($eventItemAmount == 0) {
+						continue;
+					}
+					
+					$eventItem = $this->eventitem->getEventItem($eventItemId);
+					if ($eventItem !== FALSE) {
+						$eventItemsAmountTotal += ($eventItemAmount * $eventItem->{DB_EVENTITEM_AMOUNT});
+					}
+				}
+			}
+			
+			$currentBalance = $this->transaction->getPersonCurrentBalance($personId, $eventId); 
+		
+			if ($eventItemsAmountTotal > $currentBalance) {		
+				$this->form_validation->set_message('_checkEnoughTransactionAmount', 'Du har endast ' . formatCurrency($currentBalance) . ' på ditt kvartettkonto');
+				return FALSE;		
+			} else {
+				return TRUE;
+			}
 		}
 	}
 
