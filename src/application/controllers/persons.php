@@ -30,7 +30,7 @@ class Persons extends CI_Controller {
 			show_error(NULL, 403);
 		}
 		
-		if (!is_int($offset)) {
+		if (!ctype_digit($offset)) {
 			$offset = 0;
 		}		
 	
