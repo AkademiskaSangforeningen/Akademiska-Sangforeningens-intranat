@@ -491,7 +491,7 @@ class Events extends CI_Controller {
 
 			//Everything ok, redirect the user to the confirmation page (or show message directly if dialog)
 			if ($loadAsDialog == FALSE) {
-				redirect(CONTROLLER_EVENTS_CONFIRM_SAVE_REGISTER_DIRECTLY . '/' . $eventId . '/' . $personId . '/' . $hash . '/' . updateRegistration, 'refresh');
+				redirect(CONTROLLER_EVENTS_CONFIRM_SAVE_REGISTER_DIRECTLY . '/' . $eventId . '/' . $personId . '/' . $hash . '/' . $updateRegistration, 'refresh');
 			} else {
 				$dataSucceeded = array();
 				$dataSucceeded['closeFormDialog']	= $loadAsDialog;
