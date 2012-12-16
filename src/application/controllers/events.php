@@ -828,10 +828,11 @@ class Events extends CI_Controller {
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTDUEDATE,					lang(LANG_KEY_FIELD_PAYMENT_DUEDATE),		'trim|max_length[10]|callback__checkDateValid');
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTDUEDATE . PREFIX_HH,		lang(LANG_KEY_FIELD_PAYMENT_DUEDATE), 		'trim|max_length[2]|is_natural');
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTDUEDATE . PREFIX_MM,		lang(LANG_KEY_FIELD_PAYMENT_DUEDATE), 		'trim|max_length[2]|is_natural');
-		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_DESCRIPTION, 						lang(LANG_KEY_FIELD_DESCRIPTION),			'trim|xss_clean');
+		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_DESCRIPTION, 						lang(LANG_KEY_FIELD_DESCRIPTION),			'trim|xss_clean');		
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTTYPE . '[]', 				lang(LANG_KEY_FIELD_PAYMENTTYPE),			'trim|xss_clean|is_natural');
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_PARTICIPANT . '[]', 				lang(LANG_KEY_FIELD_PARTICIPANT),			'trim|xss_clean|is_natural');
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED, 						lang(LANG_KEY_FIELD_PARTICIPANT),			'trim|xss_clean|numeric');
+		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTINFO, 						lang(LANG_KEY_FIELD_PAYMENT_INFO),			'trim|xss_clean');
 
 		foreach ($itemRows as $rowNumber) {
 			$this->form_validation->set_rules(DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_CAPTION . $rowNumber, lang(LANG_KEY_FIELD_DESCRIPTION),			'trim|xss_clean');
@@ -865,7 +866,8 @@ class Events extends CI_Controller {
 				DB_EVENT_RESPONSIBLEID			=> $this->session->userdata(SESSION_PERSONID),
 				DB_EVENT_PAYMENTTYPE			=> array_sum($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTTYPE) ? $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTTYPE) : array()),
 				DB_EVENT_PARTICIPANT			=> array_sum($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PARTICIPANT) ? $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PARTICIPANT) : array()),
-				DB_EVENT_AVECALLOWED			=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED)
+				DB_EVENT_AVECALLOWED			=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED),
+				DB_EVENT_PAYMENTINFO 			=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTINFO)
 			);
 
 			// Start a database transaction

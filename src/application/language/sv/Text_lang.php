@@ -71,6 +71,7 @@ $lang[LANG_KEY_FIELD_PAYMENT_DUEDATE]			= "Betalningsdeadline";
 $lang[LANG_KEY_FIELD_ENROLLMENT_DUEDATE]		= "Anmälningsdeadline";
 $lang[LANG_KEY_FIELD_PARTICIPANT]				= "Deltagare";
 $lang[LANG_KEY_FIELD_AVEC]						= "Avec";
+$lang[LANG_KEY_FIELD_PAYMENT_INFO]				= "Betalningsinfo (syns endast i e-post då användaren valt kontobetalning)";
 
 $lang[LANG_KEY_ENUM_VOICE_1_TENOR]				= "1:a tenor";
 $lang[LANG_KEY_ENUM_VOICE_2_TENOR]				= "2:a tenor";

@@ -28,6 +28,7 @@ define('DB_EVENT_MODIFIEDBY',				'ModifiedBy');
 define('DB_EVENT_PAYMENTTYPE',				'PaymentType');
 define('DB_EVENT_PARTICIPANT',				'Participant');
 define('DB_EVENT_AVECALLOWED',				'AvecAllowed');
+define('DB_EVENT_PAYMENTINFO',				'PaymentInfo');
 
 //Table EventItem
 define('DB_TABLE_EVENTITEM',				'eventitem');

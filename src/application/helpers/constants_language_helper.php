@@ -78,6 +78,7 @@ define('LANG_KEY_FIELD_PAYMENT_DUEDATE',			'field_payment_duedate');
 define('LANG_KEY_FIELD_ENROLLMENT_DUEDATE',			'field_enrollment_duedate');
 define('LANG_KEY_FIELD_PARTICIPANT',				'field_participant');
 define('LANG_KEY_FIELD_AVEC',						'field_avec');
+define('LANG_KEY_FIELD_PAYMENT_INFO',				'field_payment_info');
 
 //Enumerations
 define('LANG_KEY_ENUM_VOICE_1_TENOR',				'enum_voice_1st_tenor');

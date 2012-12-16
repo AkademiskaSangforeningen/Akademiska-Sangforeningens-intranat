@@ -314,6 +314,15 @@
 		</div>		
 		
 	</fieldset>
+
+	<fieldset class="ui-corner-all">	
+		<legend><?php echo lang(LANG_KEY_FIELD_PAYMENT_INFO); ?></legend>					
+		
+		<div style="clear: both">
+			<textarea name="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTINFO ?>" id="<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTINFO ?>"><?php echo set_value(DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTINFO, isset($event->{DB_EVENT_PAYMENTINFO}) ? $event->{DB_EVENT_PAYMENTINFO} : "" ); ?></textarea>			
+		</div>		
+		
+	</fieldset>
 	
 </form>
 
@@ -396,7 +405,7 @@
 	$('#<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTDUEDATE ?>').datepicker();
 	$('#<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTTYPE ?>').multiselect({ header: false, selectedList: 10, noneSelectedText: "Välj betalningssätt", height: "auto" });
 	$('#<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PARTICIPANT ?>').multiselect({ header: false, selectedList: 10, noneSelectedText: "Välj deltagare", height: "auto" });
-	$('#<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_DESCRIPTION ?>').tinymce({
+	$('#<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_DESCRIPTION ?>, #<?php echo DB_TABLE_EVENT . "_" . DB_EVENT_PAYMENTINFO ?>').tinymce({
 			// Location of TinyMCE script			
 			script_url : '<?php echo base_url()?>js/desktop/plugins/tiny_mce/tiny_mce.js',
 			// General options

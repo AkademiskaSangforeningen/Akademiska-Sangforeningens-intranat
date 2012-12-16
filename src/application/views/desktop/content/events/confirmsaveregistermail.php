@@ -1,7 +1,7 @@
 <h2><?php echo $header; ?></h2>					
 <table cellpadding="0" cellspacing="0" border="0">
 	<tr>
-		<td width="75">Datum:</td>
+		<td width="100">Datum:</td>
 		<td>
 			<b>
 				<?php 
@@ -14,30 +14,42 @@
 		</td>
 	</tr>
 	<tr>
-		<td width="75">Plats:</td>			
+		<td width="100">Plats:</td>			
 		<td>
 			<b><?php echo $event->{DB_EVENT_LOCATION}; ?></b>		
 		</td>
-	</tr>				
-	<?php
-		$totalSum = 0;
-		if (isset($eventItems)) {		
-			foreach($eventItems as $key => $eventItem) {								
-				$totalSum += ($eventItem->{DB_EVENTITEM_AMOUNT} * $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_AMOUNT});
-			}
-		}
-		if (isset($avecEventItems)) {		
-			foreach($avecEventItems as $key => $eventItem) {								
-				$totalSum += ($eventItem->{DB_EVENTITEM_AMOUNT} * $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_AMOUNT});
-			}
-		}				
-	?>
+	</tr>	
+<?php if ($personHasEvent->{DB_PERSONHASEVENT_PAYMENTTYPE} != NULL) { ?>
 	<tr>
-		<td width="75">Totalt:</td>
+		<td width="100"><?php echo lang(LANG_KEY_FIELD_PAYMENTTYPE); ?>:</td>			
+		<td>
+			<b><?php echo getEnumValue(ENUM_PAYMENTTYPE, $personHasEvent->{DB_PERSONHASEVENT_PAYMENTTYPE}); ?></b>		
+		</td>
+	</tr>	
+<?php } ?>	
+<?php
+	$totalSum = 0;
+	if (isset($eventItems)) {		
+		foreach($eventItems as $key => $eventItem) {								
+			$totalSum += ($eventItem->{DB_EVENTITEM_AMOUNT} * $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_AMOUNT});
+		}
+	}
+	if (isset($avecEventItems)) {		
+		foreach($avecEventItems as $key => $eventItem) {								
+			$totalSum += ($eventItem->{DB_EVENTITEM_AMOUNT} * $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_AMOUNT});
+		}
+	}				
+?>
+<?php if ($totalSum > 0) { ?>
+	<tr>
+		<td width="100">Totalt:</td>
 		<td><b><?php echo formatCurrency($totalSum); ?></b></td>
 	</tr>
+<?php } ?>
 </table>
-<p>Betalning bör ske till Akademiska Sångföreningens konto FI97 4055 1810 0000 87 (BIC: HELSFIHH), ange som meddelande i betalningen "jubileum".</p>			
+<?php if ($personHasEvent->{DB_PERSONHASEVENT_PAYMENTTYPE} == ENUM_PAYMENTTYPE_BANK_ACCOUNT && $totalSum > 0) { ?>
+	<p><?php echo $event->{DB_EVENT_PAYMENTINFO}; ?></p>
+<?php } ?>
 <p><a href="<?php echo site_url() . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY; ?>/<?php echo $eventId; ?>/<?php echo $personId; ?>/<?php echo $hash; ?>"><b>Klicka här</b></a> för att ändra din anmälan.</p>
 <p><a href="<?php echo site_url() . CONTROLLER_EVENTS_CANCEL_REGISTER_DIRECTLY; ?>/<?php echo $eventId; ?>/<?php echo $personId; ?>/<?php echo $hash; ?>"><b>Klicka här</b></a> för att annulera din anmälan.</p>
 <?php if (isset($event->{DB_EVENT_REGISTRATIONDUEDATE})) { ?>
@@ -48,20 +60,20 @@
 	<h3>Mina anmälningsuppgifter</h3>				
 	<table cellpadding="0" cellspacing="0" border="0">
 		<tr>
-			<td width="75">Namn:</td>
+			<td width="100">Namn:</td>
 			<td><b><?php echo $person->{DB_PERSON_FIRSTNAME} . ' ' . $person->{DB_PERSON_LASTNAME}; ?></b></td>
 		</tr>
 		<tr>
-			<td width="75">E-post:</td>
+			<td width="100">E-post:</td>
 			<td><a href="mailto:<?php echo $person->{DB_PERSON_EMAIL}; ?>"><b><?php echo $person->{DB_PERSON_EMAIL}; ?></b></a></td>
 		</tr>
 		<tr>
-			<td width="75">Telefon:</td>
+			<td width="100">Telefon:</td>
 			<td><b><?php echo $person->{DB_PERSON_PHONE}; ?></b></td>
 		</tr>
 		<?php if (isset($person->{DB_PERSON_ALLERGIES}) && $person->{DB_PERSON_ALLERGIES} != '') { ?>
 		<tr>
-			<td width="75">Allergier:</td>
+			<td width="100">Allergier:</td>
 			<td><b><?php echo $person->{DB_PERSON_ALLERGIES}; ?></b></td>
 		</tr>
 		<?php } ?>
@@ -103,12 +115,12 @@
 		<h3>Min avecs anmälningsuppgifter</h3>
 		<table cellpadding="0" cellspacing="0" border="0">
 			<tr>
-				<td width="75">Namn:</td>
+				<td width="100">Namn:</td>
 				<td><b><?php echo $personAvec->{DB_PERSON_FIRSTNAME} . ' ' . $personAvec->{DB_PERSON_LASTNAME}; ?></b></td>
 			</tr>
 			<?php if (isset($personAvec->{DB_PERSON_ALLERGIES}) && $personAvec->{DB_PERSON_ALLERGIES} != '') { ?>
 			<tr>
-				<td width="75">Allergier:</td>
+				<td width="100">Allergier:</td>
 				<td><b><?php echo $personAvec->{DB_PERSON_ALLERGIES}; ?></b></td>
 			</tr>
 			<?php } ?>

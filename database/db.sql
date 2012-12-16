@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS `event` (
   PaymentType tinyint(4) DEFAULT NULL,
   Participant tinyint(4) DEFAULT NULL,
   AvecAllowed tinyint(4) DEFAULT NULL,
+  PaymentInfo text COLLATE utf8_swedish_ci,
   PRIMARY KEY (Id),
   KEY ModifiedBy (ModifiedBy),
   KEY CreatedBy (CreatedBy),

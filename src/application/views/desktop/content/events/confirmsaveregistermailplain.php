@@ -1,100 +1,107 @@
-<?php echo $header; ?>
-<?php echo "\r\n"; ?>
-<?php echo "\r\n"; ?>
-Datum: <?php echo formatDateGerman($event->{DB_EVENT_STARTDATE}); 
-	if (isset($event->{DB_EVENT_ENDDATE}))	{
-		echo " - " . formatDateGerman($event->{DB_EVENT_ENDDATE}); 	
-	}
-	?>
-<?php echo "\r\n"; ?>
-Plats: <?php echo $event->{DB_EVENT_LOCATION}; ?>
-<?php echo "\r\n"; ?>
 <?php
-		$totalSum = 0;
-		if (isset($eventItems)) {		
-			foreach($eventItems as $key => $eventItem) {								
-				$totalSum += ($eventItem->{DB_EVENTITEM_AMOUNT} * $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_AMOUNT});
-			}
-		}
-		if (isset($avecEventItems)) {		
-			foreach($avecEventItems as $key => $eventItem) {								
-				$totalSum += ($eventItem->{DB_EVENTITEM_AMOUNT} * $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_AMOUNT});
-			}
-		}				
-	?>
-Totalt: <?php echo formatCurrency($totalSum); ?>
-<?php echo "\r\n"; ?>
-<?php echo "\r\n"; ?>
-Betalning bör ske till Akademiska Sångföreningens konto FI97 4055 1810 0000 87 (BIC: HELSFIHH), ange som meddelande i betalningen "jubileum".
-<?php echo "\r\n"; ?>
-Klicka på länken nedan för att ändra din amälan
-<?php echo "\r\n"; ?>
-<?php echo site_url() . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY; ?>/<?php echo $eventId; ?>/<?php echo $personId; ?>/<?php echo $hash; ?>
-<?php echo "\r\n"; ?>
-<?php echo "\r\n"; ?>
-Klicka på länken nedan för att annulera din amälan
-<?php echo "\r\n"; ?>
-<?php echo site_url() . CONTROLLER_EVENTS_CANCEL_REGISTER_DIRECTLY; ?>/<?php echo $eventId; ?>/<?php echo $personId; ?>/<?php echo $hash; ?>
-<?php echo "\r\n"; ?>
-<?php echo "\r\n"; ?>
-<?php if (isset($event->{DB_EVENT_REGISTRATIONDUEDATE})) { ?>
-	Det är möjligt att ändra eller annulera anmälningen fram till den <?php echo formatDateGerman($event->{DB_EVENT_REGISTRATIONDUEDATE}); ?>.
-	<?php echo "\r\n"; ?>
-<?php } ?>
-<?php echo "\r\n"; ?>
-<?php echo "\r\n"; ?>
-Mina anmälningsuppgifter
-<?php echo "\r\n"; ?>
-Namn: <?php echo $person->{DB_PERSON_FIRSTNAME} . ' ' . $person->{DB_PERSON_LASTNAME}; ?>
-<?php echo "\r\n"; ?>
-E-post: <?php echo $person->{DB_PERSON_EMAIL}; ?>
-<?php echo "\r\n"; ?>
-Telefon: <?php echo $person->{DB_PERSON_PHONE}; ?>
-<?php echo "\r\n"; ?>
-<?php if (isset($person->{DB_PERSON_ALLERGIES}) && $person->{DB_PERSON_ALLERGIES} != '') { ?>
-	Allergier: <?php echo $person->{DB_PERSON_ALLERGIES}; ?>
-	<?php echo "\r\n"; ?>
-<?php } ?>
-<?php
-	$previousCaption = "";
-	if (isset($eventItems)) {		
-		foreach($eventItems as $key => $eventItem) {					
-			if ($eventItem->{DB_EVENTITEM_CAPTION} != $previousCaption) {
-				echo "\r\n" . $eventItem->{DB_EVENTITEM_CAPTION} . ":";
-				echo "\r\n";
-			}
-			if ($eventItem->{DB_EVENTITEM_MAXPCS} == 0) {
-				if ($eventItem->{DB_EVENTITEM_TYPE} == EVENT_TYPE_TEXTAREA) {
-					echo $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_DESCRIPTION};
-				}								
-				echo $eventItem->{DB_EVENTITEM_DESCRIPTION};
-				if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) {
-					 echo " - pris: " . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT});
-				}
-				echo "\r\n";
-			} else {
-				echo $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_AMOUNT} . " st. ";
-				echo $eventItem->{DB_EVENTITEM_DESCRIPTION};
-				if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) {
-					 echo " - pris: " . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}) . " per styck";
-				}
-				echo "\r\n";
-			}
-			$previousCaption = $eventItem->{DB_EVENTITEM_CAPTION};
-		}
+echo $header;
+echo "\r\n";
+echo "\r\n";
+echo 'Datum: ' . formatDateGerman($event->{DB_EVENT_STARTDATE});
+if (isset($event->{DB_EVENT_ENDDATE}))	{
+	echo " - " . formatDateGerman($event->{DB_EVENT_ENDDATE}); 	
+}
+echo "\r\n";
+echo 'Plats: ' . $event->{DB_EVENT_LOCATION};
+echo "\r\n";
+if ($personHasEvent->{DB_PERSONHASEVENT_PAYMENTTYPE} != NULL) {
+	echo lang(LANG_KEY_FIELD_PAYMENTTYPE) . ': ' . getEnumValue(ENUM_PAYMENTTYPE, $personHasEvent->{DB_PERSONHASEVENT_PAYMENTTYPE});
+	echo "\r\n";
+}
+$totalSum = 0;
+if (isset($eventItems)) {		
+	foreach($eventItems as $key => $eventItem) {								
+		$totalSum += ($eventItem->{DB_EVENTITEM_AMOUNT} * $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_AMOUNT});
 	}
-?>													
-<?php if ($personHasEvent->{DB_PERSONHASEVENT_AVECPERSONID} != NULL) { ?>
-	<?php echo "\r\n"; ?>
-	Min avecs anmälningsuppgifter
-	<?php echo "\r\n"; ?>
-	Namn: <?php echo $personAvec->{DB_PERSON_FIRSTNAME} . ' ' . $personAvec->{DB_PERSON_LASTNAME}; ?>
-	<?php echo "\r\n"; ?>
-	<?php if (isset($personAvec->{DB_PERSON_ALLERGIES}) && $personAvec->{DB_PERSON_ALLERGIES} != '') { ?>
-		Allergier: <?php echo $personAvec->{DB_PERSON_ALLERGIES}; ?>
-		<?php echo "\r\n"; ?>
-	<?php } ?>
-	<?php
+}
+if (isset($avecEventItems)) {		
+	foreach($avecEventItems as $key => $eventItem) {								
+		$totalSum += ($eventItem->{DB_EVENTITEM_AMOUNT} * $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_AMOUNT});
+	}
+}				
+if ($totalSum > 0) {
+	echo 'Totalt: ' . formatCurrency($totalSum);
+	echo "\r\n";
+}
+if ($personHasEvent->{DB_PERSONHASEVENT_PAYMENTTYPE} == ENUM_PAYMENTTYPE_BANK_ACCOUNT && $totalSum > 0) {
+	echo "\r\n";
+	echo strip_tags($event->{DB_EVENT_PAYMENTINFO});
+	echo "\r\n";
+}
+echo "\r\n";
+echo 'Klicka på länken nedan för att ändra din amälan:';
+echo "\r\n";
+echo '{unwrap}' . site_url() . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' .  $eventId . '/' . $personId . '/' . $hash . '{/unwrap}';
+echo "\r\n";
+echo "\r\n";
+echo 'Klicka på länken nedan för att annulera din amälan:';
+echo "\r\n";
+echo '{unwrap}' . site_url() . CONTROLLER_EVENTS_CANCEL_REGISTER_DIRECTLY . '/' .  $eventId . '/' . $personId . '/' . $hash . '{/unwrap}';
+echo "\r\n";
+echo "\r\n";
+if (isset($event->{DB_EVENT_REGISTRATIONDUEDATE})) {
+	echo 'Det är möjligt att ändra eller annulera anmälningen fram till den ' . formatDateGerman($event->{DB_EVENT_REGISTRATIONDUEDATE});
+	echo "\r\n";
+}
+echo "\r\n";
+echo "\r\n";
+echo 'Mina anmälningsuppgifter';
+echo "\r\n";
+echo 'Namn: ' . $person->{DB_PERSON_FIRSTNAME} . ' ' . $person->{DB_PERSON_LASTNAME};
+echo "\r\n";
+echo 'E-post: ' . $person->{DB_PERSON_EMAIL};
+echo "\r\n";
+echo 'Telefon: ' . $person->{DB_PERSON_PHONE};
+echo "\r\n";
+if (isset($person->{DB_PERSON_ALLERGIES}) && $person->{DB_PERSON_ALLERGIES} != '') {
+	echo 'Allergier: ' . $person->{DB_PERSON_ALLERGIES};
+	echo "\r\n";
+}
+
+$previousCaption = "";
+if (isset($eventItems)) {		
+	foreach($eventItems as $key => $eventItem) {					
+		if ($eventItem->{DB_EVENTITEM_CAPTION} != $previousCaption) {
+			echo "\r\n" . $eventItem->{DB_EVENTITEM_CAPTION} . ":";
+			echo "\r\n";
+		}
+		if ($eventItem->{DB_EVENTITEM_MAXPCS} == 0) {
+			if ($eventItem->{DB_EVENTITEM_TYPE} == EVENT_TYPE_TEXTAREA) {
+				echo $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_DESCRIPTION};
+			}								
+			echo $eventItem->{DB_EVENTITEM_DESCRIPTION};
+			if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) {
+				 echo " - pris: " . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT});
+			}
+			echo "\r\n";
+		} else {
+			echo $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_AMOUNT} . " st. ";
+			echo $eventItem->{DB_EVENTITEM_DESCRIPTION};
+			if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) {
+				 echo " - pris: " . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}) . " per styck";
+			}
+			echo "\r\n";
+		}
+		$previousCaption = $eventItem->{DB_EVENTITEM_CAPTION};
+	}
+}
+
+if ($personHasEvent->{DB_PERSONHASEVENT_AVECPERSONID} != NULL) {
+	echo "\r\n";
+	echo 'Min avecs anmälningsuppgifter';
+	echo "\r\n";
+	echo 'Namn: ' . $personAvec->{DB_PERSON_FIRSTNAME} . ' ' . $personAvec->{DB_PERSON_LASTNAME};
+	echo "\r\n";
+	if (isset($personAvec->{DB_PERSON_ALLERGIES}) && $personAvec->{DB_PERSON_ALLERGIES} != '') {
+		echo 'Allergier: ' . $personAvec->{DB_PERSON_ALLERGIES};
+		echo "\r\n";
+	}
+
 	$previousCaption = "";
 	if (isset($avecEventItems)) {		
 		foreach($avecEventItems as $key => $eventItem) {					
@@ -122,5 +129,4 @@ Telefon: <?php echo $person->{DB_PERSON_PHONE}; ?>
 			$previousCaption = $eventItem->{DB_EVENTITEM_CAPTION};
 		}
 	}				
-} 
-?>
+}
