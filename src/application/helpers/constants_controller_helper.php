@@ -47,7 +47,6 @@ define('CONTROLLER_EVENTS_LISTALL',								'events/listall');
 define('CONTROLLER_EVENTS_EDITSINGLE',							'events/editsingle');
 define('CONTROLLER_EVENTS_DELETESINGLE',						'events/deletesingle');
 define('CONTROLLER_EVENTS_SAVESINGLE',							'events/savesingle');
-define('CONTROLLER_EVENTS_LIST_ENROLLED',						'events/listenrolled');
 define('CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY',  			'events/editregisterdirectly');
 define('CONTROLLER_EVENTS_SAVE_REGISTER_DIRECTLY',  			'events/saveregisterdirectly');
 define('CONTROLLER_EVENTS_CONFIRM_SAVE_REGISTER_DIRECTLY',		'events/confirmsaveregisterdirectly');

@@ -59,19 +59,24 @@ class Events extends CI_Controller {
 	
 	function listSingleEventRegistrations($eventId, $offset = 0) {
 
-		if (!$this->userrights->hasRight(userrights::EVENTS_VIEW, $this->session->userdata(SESSION_ACCESSRIGHT))) {
+		if (!ctype_digit($offset)) {
+			$offset = 0;
+		}			
+	
+		$this->load->model(MODEL_EVENT,	strtolower(MODEL_EVENT), TRUE);
+		
+		$event = $this->event->getEvent($eventId);
+	
+		if ($event->{DB_EVENT_CANUSERSVIEWREGISTRATIONS} == FALSE && !$this->userrights->hasRight(userrights::EVENTS_VIEW, $this->session->userdata(SESSION_ACCESSRIGHT))) {
 			show_error(NULL, 403);
 		}
 		
-		if (!ctype_digit($offset)) {
-			$offset = 0;
-		}		
+
 	
 		$client = CLIENT_DESKTOP;
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));
 		$this->load->library('pagination');
-
-		$this->load->model(MODEL_EVENT, 	strtolower(MODEL_EVENT), 		TRUE);
+		
 		$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), 	TRUE);		
 				
 		$personHasEventItems = array();
@@ -90,7 +95,7 @@ class Events extends CI_Controller {
 		$data = array();
 		$data['eventId'] 				= $eventId;
 		$data['personHasEventItems']	= $personHasEventItems;		
-		$data['event'] 					= $this->event->getEvent($eventId);
+		$data['event'] 					= $event;
 		$data['persons']				= $this->event->getPersonsForEvent($eventId, LIST_DEF_PAGING, $offset);
 		$data['eventItems'] 			= $this->eventitem->getEventItems($eventId);
 		$data['eventItemSums']			= $eventItemSums;	
