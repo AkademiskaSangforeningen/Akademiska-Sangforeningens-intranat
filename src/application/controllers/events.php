@@ -554,11 +554,14 @@ class Events extends CI_Controller {
 		$this->email->bcc('anmalningar@akademen.com');
 		$this->email->subject($messageSubject);
 		
-		$messageBody =	$this->load->view($client . VIEW_GENERIC_MAIL_HEADER, $data, TRUE);
-		$messageBody .= $this->load->view($client . VIEW_CONTENT_EVENTS_CONFIRM_SAVE_REGISTER_MAIL, $data, TRUE);
-		$messageBody .= $this->load->view($client . VIEW_GENERIC_MAIL_FOOTER, $data, TRUE);		
+		$messageHTMLBody =	$this->load->view($client . VIEW_GENERIC_MAIL_HEADER, $data, TRUE);
+		$messageHTMLBody .= $this->load->view($client . VIEW_CONTENT_EVENTS_CONFIRM_SAVE_REGISTER_MAIL, $data, TRUE);
+		$messageHTMLBody .= $this->load->view($client . VIEW_GENERIC_MAIL_FOOTER, $data, TRUE);		
 		
-		$this->email->message($messageBody);
+		$messagePlainBody = $this->load->view($client . VIEW_CONTENT_EVENTS_CONFIRM_SAVE_REGISTER_MAIL_PLAIN, $data, TRUE);
+		
+		$this->email->message($messageHTMLBody);
+		$this->email->set_alt_message($messagePlainBody);
 		$this->email->send();
 	}
 
@@ -724,11 +727,14 @@ class Events extends CI_Controller {
 		$this->email->bcc('anmalningar@akademen.com');
 		$this->email->subject($messageSubject);
 		
-		$messageBody =	$this->load->view($client . VIEW_GENERIC_MAIL_HEADER, $data, TRUE);
-		$messageBody .= $this->load->view($client . VIEW_CONTENT_EVENTS_CONFIRM_CANCEL_REGISTER_MAIL, $data, TRUE);
-		$messageBody .= $this->load->view($client . VIEW_GENERIC_MAIL_FOOTER, $data, TRUE);		
+		$messageHTMLBody =	$this->load->view($client . VIEW_GENERIC_MAIL_HEADER, $data, TRUE);
+		$messageHTMLBody .= $this->load->view($client . VIEW_CONTENT_EVENTS_CONFIRM_CANCEL_REGISTER_MAIL, $data, TRUE);
+		$messageHTMLBody .= $this->load->view($client . VIEW_GENERIC_MAIL_FOOTER, $data, TRUE);
 		
-		$this->email->message($messageBody);
+		$messagePlainBody = $this->load->view($client . VIEW_CONTENT_EVENTS_CONFIRM_CANCEL_REGISTER_MAIL_PLAIN, $data, TRUE);
+		
+		$this->email->message($messageHTMLBody);
+		$this->email->set_alt_message($messagePlainBody);
 		$this->email->send();
 	}	
 	

@@ -26,14 +26,16 @@ define('VIEW_CONTENT_MYPAGE_DASHBOARD',							'/content/mypage/dashboard');
 define('VIEW_CONTENT_PERSONS_LISTALL',							'/content/persons/listpersons');
 define('VIEW_CONTENT_PERSONS_EDITSINGLE',						'/content/persons/editperson');
 
-define('VIEW_CONTENT_EVENTS_LISTALL',							'/content/events/listevents');
-define('VIEW_CONTENT_EVENTS_EDITSINGLE',						'/content/events/editevent');
-define('VIEW_CONTENT_EVENTS_LIST_PERSONAL_EVENTS',				'/content/events/listpersonalevents');
-define('VIEW_CONTENT_EVENTS_EDIT_REGISTER',						'/content/events/editregister');
-define('VIEW_CONTENT_EVENTS_CANCEL_REGISTER_DIRECTLY',			'/content/events/cancelregisterdirectly');
-define('VIEW_CONTENT_EVENTS_CONFIRM_SAVE_REGISTER_MAIL',		'/content/events/confirmsaveregistermail');
-define('VIEW_CONTENT_EVENTS_CONFIRM_CANCEL_REGISTER_MAIL',		'/content/events/confirmcancelregistermail');
-define('VIEW_CONTENT_EVENTS_LIST_SINGLE_EVENT_REGISTRATIONS',	'/content/events/listsingleeventregistrations');
+define('VIEW_CONTENT_EVENTS_LISTALL',								'/content/events/listevents');
+define('VIEW_CONTENT_EVENTS_EDITSINGLE',							'/content/events/editevent');
+define('VIEW_CONTENT_EVENTS_LIST_PERSONAL_EVENTS',					'/content/events/listpersonalevents');
+define('VIEW_CONTENT_EVENTS_EDIT_REGISTER',							'/content/events/editregister');
+define('VIEW_CONTENT_EVENTS_CANCEL_REGISTER_DIRECTLY',				'/content/events/cancelregisterdirectly');
+define('VIEW_CONTENT_EVENTS_CONFIRM_SAVE_REGISTER_MAIL',			'/content/events/confirmsaveregistermail');
+define('VIEW_CONTENT_EVENTS_CONFIRM_CANCEL_REGISTER_MAIL',			'/content/events/confirmcancelregistermail');
+define('VIEW_CONTENT_EVENTS_CONFIRM_SAVE_REGISTER_MAIL_PLAIN',		'/content/events/confirmsaveregistermailplain');
+define('VIEW_CONTENT_EVENTS_CONFIRM_CANCEL_REGISTER_MAIL_PLAIN',	'/content/events/confirmcancelregistermailplain');
+define('VIEW_CONTENT_EVENTS_LIST_SINGLE_EVENT_REGISTRATIONS',		'/content/events/listsingleeventregistrations');
 
 define('VIEW_CONTENT_EVENTS_PART_INFO_EVENT',					'/content/events/parts/info_event.php');
 define('VIEW_CONTENT_EVENTS_PART_FORM_PERSON',					'/content/events/parts/form_person.php');
