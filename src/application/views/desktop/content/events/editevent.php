@@ -136,7 +136,15 @@
 			</label>
 			<br/>
 			<?php echo form_dropdown(DB_TABLE_EVENT . "_" . DB_EVENT_AVECALLOWED, getEnum(ENUM_ENABLED), set_value(DB_TABLE_EVENT . "_" . DB_EVENT_AVECALLOWED, isset($event->{DB_EVENT_AVECALLOWED}) ? $event->{DB_EVENT_AVECALLOWED} : "" ), 'id="' . DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED . '" class="ui-corner-all"'); ?>		
-		</div>			
+		</div>
+
+		<div class="single-field">
+			<label for="<?php echo DB_TABLE_EVENT . "_" .  DB_EVENT_CANUSERSVIEWREGISTRATIONS; ?>">
+				<?php echo lang(LANG_KEY_FIELD_CAN_USERS_VIEW_REGISTRATIONS); ?>
+			</label>
+			<br/>
+			<?php echo form_dropdown(DB_TABLE_EVENT . "_" . DB_EVENT_CANUSERSVIEWREGISTRATIONS, getEnum(ENUM_ENABLED), set_value(DB_TABLE_EVENT . "_" . DB_EVENT_CANUSERSVIEWREGISTRATIONS, isset($event->{DB_EVENT_CANUSERSVIEWREGISTRATIONS}) ? $event->{DB_EVENT_CANUSERSVIEWREGISTRATIONS} : "" ), 'id="' . DB_TABLE_EVENT . '_' . DB_EVENT_CANUSERSVIEWREGISTRATIONS . '" class="ui-corner-all"'); ?>		
+		</div>
 		
 	</fieldset>
 	<fieldset class="ui-corner-all">

@@ -24,7 +24,15 @@
 			}
 			?></td>
 			<td><?php echo $event->{DB_EVENT_LOCATION}; ?></td>		
-			<td><a href="<?php echo CONTROLLER_EVENTS_LIST_ENROLLED . "/" . $event->{DB_EVENT_ID}; ?>" class="button" data-icon="ui-icon-person" data-listdialog="true"><?php echo $event->{DB_TOTALCOUNT}; ?></a></td>				
+			<td>
+				<?php
+				if ($event->{DB_EVENT_CANUSERSVIEWREGISTRATIONS} == FALSE) {
+					echo '-';
+				} else {
+					echo '<a href="' . CONTROLLER_EVENTS_LIST_ENROLLED . '/' . $event->{DB_EVENT_ID} . '" class="button" data-icon="ui-icon-person" data-listdialog="true">' .  $event->{DB_TOTALCOUNT} . '</a></td>';
+				}
+				?>
+			</td>			
 			<td>
 				<?php 
 					if (!isDateInPast($event->{DB_EVENT_REGISTRATIONDUEDATE}, TRUE)) { 
