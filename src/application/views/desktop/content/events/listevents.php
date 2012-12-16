@@ -65,9 +65,9 @@
 				if (isset($event->{DB_EVENT_ENDDATE}))	{
 					echo " - " . formatDateGerman($event->{DB_EVENT_ENDDATE});
 				}
-				?></td>
-				<td><?php echo formatDateGerman($event->{DB_EVENT_REGISTRATIONDUEDATE}); ?></td>
+				?></td>				
 				<td><?php echo formatDateGerman($event->{DB_EVENT_PAYMENTDUEDATE}); ?></td>
+				<td><?php echo formatDateGerman($event->{DB_EVENT_REGISTRATIONDUEDATE}); ?></td>
 				<td><?php echo $event->{DB_EVENT_LOCATION}; ?></td>
 				<td><a href="<?php echo site_url() . CONTROLLER_EVENTS_LIST_SINGLE_EVENT_REGISTRATIONS . '/' . $event->{DB_EVENT_ID}; ?>" class="button" data-icon="ui-icon-person" data-listdialog="true">
 					<?php echo $event->{DB_TABLE_PERSONHASEVENT . DB_TOTALCOUNT}; ?>
