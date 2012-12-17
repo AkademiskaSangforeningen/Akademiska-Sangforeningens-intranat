@@ -62,6 +62,19 @@ class Event extends CI_Model {
 		}		
 	}
 	
+	function getPersonVoiceSumsForEvent($eventId) {
+		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_VOICE);
+		$this->db->select('COUNT(*) AS ' . DB_TOTALCOUNT, FALSE);		
+		$this->db->from(DB_TABLE_PERSONHASEVENT);
+		$this->db->join(DB_TABLE_PERSON, DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_PERSONID . ' = ' . DB_TABLE_PERSON . '.' . DB_PERSON_ID, 'inner');
+		$this->db->where(DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_EVENTID, $eventId);
+		$this->db->where(DB_TABLE_PERSON . '.' . DB_PERSON_VOICE . ' IS NOT NULL', null, FALSE);
+		$this->db->group_by(DB_TABLE_PERSON . '.' . DB_PERSON_VOICE);	
+		
+		$query = $this->db->get();		
+		return $query->result();		
+	}
+	
 	function getPersonsForEvent($eventId, $limit = FALSE, $offset = FALSE) {
 		$this->db->select('(SELECT COUNT(*) FROM ' . DB_TABLE_PERSONHASEVENT . ' AS A WHERE A.' . DB_PERSONHASEVENT_EVENTID . ' = ' . DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_EVENTID . ') AS '. DB_TOTALCOUNT, FALSE);	
 		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_ID);
@@ -69,6 +82,7 @@ class Event extends CI_Model {
 		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_LASTNAME);
 		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_EMAIL);		
 		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_ALLERGIES);
+		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_VOICE);
 		$this->db->select(DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_PAYMENTTYPE);
 		$this->db->select('(SELECT SUM(IFNULL(' . DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_AMOUNT . ', 0) * IFNULL(' . DB_TABLE_EVENTITEM . '.' . DB_EVENTITEM_AMOUNT . ', 0))'
 				. ' FROM ' . DB_TABLE_PERSONHASEVENTITEM

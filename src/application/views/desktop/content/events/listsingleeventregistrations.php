@@ -19,6 +19,10 @@
 		<col /> <!-- Name and allergies -->
 		<col />
 		<col />
+		<col />
+		<col />
+		<col />
+		<col />
 		<?php foreach($eventItems as $key => $eventItem) { ?>
 			<col /> <!-- <?php echo $eventItem->{DB_EVENTITEM_CAPTION}; ?>	-->
 		<?php } ?>
@@ -34,6 +38,10 @@
 			<?php } ?>
 			<th><span class="ui-icon ui-icon-mail-closed"></span></th>		
 			<th><?php echo lang(LANG_KEY_FIELD_NAME); ?> & <?php echo lang(LANG_KEY_FIELD_ALLERGIES); ?></th>
+			<th>1T</th>
+			<th>2T</th>
+			<th>1B</th>
+			<th>2B</th>
 			<th>Totalt</th>
 			<th><?php echo lang(LANG_KEY_FIELD_PAYMENTTYPE); ?></th>
 			<?php
@@ -65,6 +73,10 @@
 	<tfoot>
 		<tr>
 			<td colspan="4">Totalt:</td>
+			<td><?php echo $voiceSums[ENUM_VOICE_1T]; ?></td>
+			<td><?php echo $voiceSums[ENUM_VOICE_2T]; ?></td>
+			<td><?php echo $voiceSums[ENUM_VOICE_1B]; ?></td>
+			<td><?php echo $voiceSums[ENUM_VOICE_2B]; ?></td>
 			<?php if ($this->userrights->hasRight(userrights::EVENTS_EDIT_REGISTRATION, $this->session->userdata(SESSION_ACCESSRIGHT))) { ?>
 				<td></td>
 			<?php } ?>
@@ -107,7 +119,11 @@
 					echo '<td><a href="' . site_url() . CONTROLLER_SAVE_CANCEL_REGISTER_DIRECTLY . '/' . $event->{DB_EVENT_ID} . '/' . $person->{DB_PERSON_ID} . '/' . md5($event->{DB_EVENT_ID} . $this->config->item('encryption_key') . $person->{DB_PERSON_ID}) .'?' . HTTP_DIALOG . '=1" class="button" data-icon="ui-icon-trash" data-text="false" data-confirmdialog="true">' . lang(LANG_KEY_BUTTON_DELETE_EVENT_REGISTRATION) . '</a></td>';
 				}
 				echo '<td><a href="mailto:' . $person->{DB_PERSON_EMAIL} . '" class="button" data-icon="ui-icon-mail-closed" data-text="false">' . $person->{DB_PERSON_EMAIL} . '</a></td>';				
-				echo '<td><span class="bold">' . $person->{DB_PERSON_FIRSTNAME} . ' ' . $person->{DB_PERSON_LASTNAME} . '</span><br/><i>' . $person->{DB_PERSON_ALLERGIES} . '</i></td>';
+				echo '<td><span class="bold" style="white-space: nowrap">' . $person->{DB_PERSON_FIRSTNAME} . ' ' . $person->{DB_PERSON_LASTNAME} . '</span><br/><i>' . $person->{DB_PERSON_ALLERGIES} . '</i></td>';
+				echo '<td>' . ($person->{DB_PERSON_VOICE} == ENUM_VOICE_1T ? '<input type="checkbox" checked="checked" disabled="disabled"/>' : '') . '</td>';
+				echo '<td>' . ($person->{DB_PERSON_VOICE} == ENUM_VOICE_2T ? '<input type="checkbox" checked="checked" disabled="disabled"/>' : '') . '</td>';
+				echo '<td>' . ($person->{DB_PERSON_VOICE} == ENUM_VOICE_1B ? '<input type="checkbox" checked="checked" disabled="disabled"/>' : '') . '</td>';
+				echo '<td>' . ($person->{DB_PERSON_VOICE} == ENUM_VOICE_2B ? '<input type="checkbox" checked="checked" disabled="disabled"/>' : '') . '</td>';
 				echo '<td class="bold">' . formatCurrency($person->{DB_TOTALSUM} + $person->{DB_CUSTOM_AVEC . DB_TOTALSUM}) . '</td>';
 				echo '<td>' . getEnumValue(ENUM_PAYMENTTYPE, $person->{DB_PERSONHASEVENT_PAYMENTTYPE}) . '</td>';
 				foreach($eventItems as $key => $eventItem) {					
@@ -146,7 +162,11 @@
 					if ($this->userrights->hasRight(userrights::EVENTS_DELETE_REGISTRATION, $this->session->userdata(SESSION_ACCESSRIGHT))) {
 						echo '<td></td>';
 					}					
-					echo '<td><span class="bold">' . $person->{DB_CUSTOM_AVEC . DB_PERSON_FIRSTNAME} . ' ' . $person->{DB_CUSTOM_AVEC . DB_PERSON_LASTNAME} . '</span><br/><i>' . $person->{DB_CUSTOM_AVEC . DB_PERSON_ALLERGIES} . '</i></td>';
+					echo '<td><span class="bold" style="white-space: nowrap">' . $person->{DB_CUSTOM_AVEC . DB_PERSON_FIRSTNAME} . ' ' . $person->{DB_CUSTOM_AVEC . DB_PERSON_LASTNAME} . '</span><br/><i>' . $person->{DB_CUSTOM_AVEC . DB_PERSON_ALLERGIES} . '</i></td>';
+					echo '<td></td>';
+					echo '<td></td>';
+					echo '<td></td>';
+					echo '<td></td>';
 					echo '<td>(' . formatCurrency($person->{DB_CUSTOM_AVEC . DB_TOTALSUM}) . ')</td>';										
 					echo '<td></td>';					
 					foreach($eventItems as $key => $eventItem) {					

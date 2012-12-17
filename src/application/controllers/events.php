@@ -70,8 +70,6 @@ class Events extends CI_Controller {
 		if ($event->{DB_EVENT_CANUSERSVIEWREGISTRATIONS} == FALSE && !$this->userrights->hasRight(userrights::EVENTS_VIEW, $this->session->userdata(SESSION_ACCESSRIGHT))) {
 			show_error(NULL, 403);
 		}
-		
-
 	
 		$client = CLIENT_DESKTOP;
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));
@@ -92,13 +90,20 @@ class Events extends CI_Controller {
 			$eventItemSums[$eventItemSum->{DB_PERSONHASEVENTITEM_EVENTITEMID}] = $eventItemSum->{DB_TOTALCOUNT};				
 		}
 		
+		$voiceSums = array(ENUM_VOICE_1T => 0, ENUM_VOICE_2T => 0, ENUM_VOICE_1B => 0, ENUM_VOICE_2B => 0);
+		foreach($this->event->getPersonVoiceSumsForEvent($eventId) as $voice) {
+			echo $voice->{DB_PERSON_VOICE};
+			$voiceSums[$voice->{DB_PERSON_VOICE}] = $voice->{DB_TOTALCOUNT};
+		}
+		
 		$data = array();
 		$data['eventId'] 				= $eventId;
 		$data['personHasEventItems']	= $personHasEventItems;		
 		$data['event'] 					= $event;
 		$data['persons']				= $this->event->getPersonsForEvent($eventId, LIST_DEF_PAGING, $offset);
 		$data['eventItems'] 			= $this->eventitem->getEventItems($eventId);
-		$data['eventItemSums']			= $eventItemSums;	
+		$data['eventItemSums']			= $eventItemSums;
+		$data['voiceSums']				= $voiceSums;
 		
 		$config['base_url'] 	= site_url() . CONTROLLER_EVENTS_LIST_SINGLE_EVENT_REGISTRATIONS . '/' . $eventId . '/';
 		$config['total_rows']	= isset($data['persons'][0]->{DB_TOTALCOUNT}) ? $data['persons'][0]->{DB_TOTALCOUNT} : 0;

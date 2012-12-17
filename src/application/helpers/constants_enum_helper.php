@@ -15,16 +15,21 @@ define('ENUM_PAYMENTTYPE_TRANSACTION', 	1);
 define('ENUM_PAYMENTTYPE_CASH', 		2);
 define('ENUM_PAYMENTTYPE_BANK_ACCOUNT',	4);
 
+define('ENUM_VOICE_1T',	'1T');
+define('ENUM_VOICE_2T',	'2T');
+define('ENUM_VOICE_1B',	'1B');
+define('ENUM_VOICE_2B',	'2B');
+define('ENUM_VOICE_DR',	'Dr');
 
 function getEnum($enum) {
 	switch($enum) {
 		case ENUM_VOICES:
 			return array(
-					'1T'  	=> 	lang(LANG_KEY_ENUM_VOICE_1_TENOR),
-					'2T'  	=> 	lang(LANG_KEY_ENUM_VOICE_2_TENOR),
-					'1B'  	=> 	lang(LANG_KEY_ENUM_VOICE_1_BASS),
-					'2B'	=>	lang(LANG_KEY_ENUM_VOICE_2_BASS),
-					'Dr'	=> 	lang(LANG_KEY_ENUM_VOICE_CONDUCTOR)
+					ENUM_VOICE_1T 	=> 	lang(LANG_KEY_ENUM_VOICE_1_TENOR),
+					ENUM_VOICE_2T  	=> 	lang(LANG_KEY_ENUM_VOICE_2_TENOR),
+					ENUM_VOICE_1B  	=> 	lang(LANG_KEY_ENUM_VOICE_1_BASS),
+					ENUM_VOICE_2B	=>	lang(LANG_KEY_ENUM_VOICE_2_BASS),
+					ENUM_VOICE_DR	=> 	lang(LANG_KEY_ENUM_VOICE_CONDUCTOR)
 				);	
 		case ENUM_COUNTRIES:
 			return array(
