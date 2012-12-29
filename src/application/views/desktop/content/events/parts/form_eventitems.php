@@ -9,7 +9,12 @@
 			}		
 ?>
 			<?php if ($eventItem->{DB_EVENTITEM_CAPTION} != $previousCaption) { ?>
-				<div style="margin-top: 1em"><label><?php echo $eventItem->{DB_EVENTITEM_CAPTION}; ?></label></div>
+				<div style="margin-top: 1em"><label>
+					<?php echo $eventItem->{DB_EVENTITEM_CAPTION}; ?>
+					<?php if (strlen($eventItem->{DB_EVENTITEM_DESCRIPTION}) > 0 && $eventItem->{DB_EVENTITEM_TYPE} == EVENT_TYPE_TEXTAREA) { ?>
+						(<i><?php echo $eventItem->{DB_EVENTITEM_DESCRIPTION}; ?></i>)
+					<?php } ?>
+				</label></div>
 			<?php } ?>
 			<div> 
 				<?php if ($eventItem->{DB_EVENTITEM_MAXPCS} == 0) { ?>
@@ -19,12 +24,14 @@
 					<?php } else if ($eventItem->{DB_EVENTITEM_TYPE} == EVENT_TYPE_CHECKBOX) { ?>
 						<!-- checkbox -->
 						<input type="checkbox" name="<?php echo $fieldPrefix . DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" <?php echo set_checkbox($fieldPrefix . DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', $eventItem->{DB_EVENTITEM_ID}, (isset($eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_EVENTITEMID}) ? $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_EVENTITEMID} = $eventItem->{DB_EVENTITEM_ID} : ($personId != NULL ? FALSE : $eventItem->{DB_EVENTITEM_PRESELECTED}))); ?> data-price="<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { echo $eventItem->{DB_EVENTITEM_AMOUNT}; } ?>" />
-					<?php } else if ($eventItem->{DB_EVENTITEM_TYPE} == EVENT_TYPE_TEXTAREA) { ?>									
+					<?php } else if ($eventItem->{DB_EVENTITEM_TYPE} == EVENT_TYPE_TEXTAREA) { ?>															
 						<textarea name="<?php echo $fieldPrefix . $eventItem->{DB_EVENTITEM_ID}; ?>_<?php echo DB_PERSONHASEVENTITEM_DESCRIPTION; ?>" class="ui-corner-all"><?php echo set_value($fieldPrefix . $eventItem->{DB_EVENTITEM_ID} . '_' . DB_PERSONHASEVENTITEM_DESCRIPTION, $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_DESCRIPTION}); ?></textarea>
 						<input type="hidden" name="<?php echo $fieldPrefix . DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" /> 
+						<br />
 					<?php } ?>																	
-					<?php if (strlen($eventItem->{DB_EVENTITEM_DESCRIPTION}) > 0 ) { ?> - <?php } ?>
-					<?php echo $eventItem->{DB_EVENTITEM_DESCRIPTION}; ?>
+					<?php if (strlen($eventItem->{DB_EVENTITEM_DESCRIPTION}) > 0 && $eventItem->{DB_EVENTITEM_TYPE} != EVENT_TYPE_TEXTAREA) { ?>
+						<?php echo ' - ' .$eventItem->{DB_EVENTITEM_DESCRIPTION}; ?>
+					<?php } ?>
 					<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { ?>
 						 - pris: <?php echo formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}); ?>						
 					<?php } ?>																															
