@@ -226,7 +226,7 @@ class Events extends CI_Controller {
 			$data_part_form_personAvec['person']				= $this->person->getPerson($personAvecId);
 			$data_part_form_personAvec['fieldPrefix']			= DB_CUSTOM_AVEC . '_';
 			$data_part_form_personAvec['showFields']			= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_ALLERGIES) 
-																		: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_EMAIL, DB_PERSON_ALLERGIES);		
+																		: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_ALLERGIES);		
 			$data['part_form_personAvec'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_personAvec, TRUE);
 
 			//Event items avec form
@@ -368,7 +368,7 @@ class Events extends CI_Controller {
 				$data_part_form_personAvec['updateRegistration']	= ($personId != NULL);
 				$data_part_form_personAvec['fieldPrefix']			= DB_CUSTOM_AVEC . '_';
 				$data_part_form_personAvec['showFields']			= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_ALLERGIES) 
-																			: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_EMAIL, DB_PERSON_ALLERGIES);		
+																			: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_ALLERGIES);		
 				$data['part_form_personAvec'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_personAvec, TRUE);
 
 				//Event items avec form
