@@ -659,9 +659,10 @@ class Events extends CI_Controller {
 		$this->lang->load(LANG_FILE, LANG_LANGUAGE_SV);			
 	
 		//Load models
-		$this->load->model(MODEL_EVENT, 	strtolower(MODEL_EVENT), 		TRUE);
-		$this->load->model(MODEL_EVENTITEM, strtolower(MODEL_EVENTITEM), 	TRUE);
-		$this->load->model(MODEL_PERSON, 	strtolower(MODEL_PERSON), 		TRUE);
+		$this->load->model(MODEL_EVENT, 		strtolower(MODEL_EVENT), 		TRUE);
+		$this->load->model(MODEL_EVENTITEM, 	strtolower(MODEL_EVENTITEM), 	TRUE);
+		$this->load->model(MODEL_PERSON, 		strtolower(MODEL_PERSON), 		TRUE);
+		$this->load->model(MODEL_TRANSACTION, 	strtolower(MODEL_TRANSACTION),	TRUE);	
 
 		//Load event and person has event bind
 		$event = $this->event->getEvent($eventId);							
