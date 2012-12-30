@@ -99,7 +99,6 @@ CREATE TABLE IF NOT EXISTS personhasevent (
   PersonId char(36) COLLATE utf8_swedish_ci NOT NULL,
   EventId char(36) COLLATE utf8_swedish_ci NOT NULL,
   `Status` tinyint(4) NOT NULL,
-  TransactionId char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
   PaymentType tinyint(4) DEFAULT NULL,
   UnRegistered tinyint(4) DEFAULT NULL,
   AvecPersonId char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
@@ -108,7 +107,6 @@ CREATE TABLE IF NOT EXISTS personhasevent (
   Modified datetime DEFAULT NULL,
   ModifiedBy char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
   PRIMARY KEY (PersonId,EventId),
-  KEY TransactionId (TransactionId),
   KEY EventId (EventId),
   KEY CreatedBy (CreatedBy),
   KEY ModifiedBy (ModifiedBy),
@@ -136,6 +134,7 @@ DROP TABLE IF EXISTS `transaction`;
 CREATE TABLE IF NOT EXISTS `transaction` (
   Id char(36) COLLATE utf8_swedish_ci NOT NULL,
   PersonId char(36) COLLATE utf8_swedish_ci NOT NULL,
+  TransactionId char(36) COLLATE utf8_swedish_ci DEFAULT NULL,  
   TransactionDate datetime NOT NULL,
   Amount decimal(10,2) NOT NULL,
   Description varchar(256) COLLATE utf8_swedish_ci NOT NULL,
@@ -145,6 +144,7 @@ CREATE TABLE IF NOT EXISTS `transaction` (
   ModifiedBy char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
   PRIMARY KEY (Id),
   KEY PersonId (PersonId),
+  KEY TransactionId (TransactionId),
   KEY CreatedBy (CreatedBy),
   KEY ModifiedBy (ModifiedBy)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
@@ -176,8 +176,7 @@ ALTER TABLE `personhasevent`
   ADD CONSTRAINT PersonHasEvent_ibfk_1 FOREIGN KEY (EventId) REFERENCES event (Id),
   ADD CONSTRAINT PersonHasEvent_ibfk_2 FOREIGN KEY (PersonId) REFERENCES person (Id),
   ADD CONSTRAINT PersonHasEvent_ibfk_3 FOREIGN KEY (CreatedBy) REFERENCES person (Id),
-  ADD CONSTRAINT PersonHasEvent_ibfk_4 FOREIGN KEY (ModifiedBy) REFERENCES person (Id),
-  ADD CONSTRAINT PersonHasEvent_ibfk_5 FOREIGN KEY (TransactionId) REFERENCES transaction (Id);
+  ADD CONSTRAINT PersonHasEvent_ibfk_4 FOREIGN KEY (ModifiedBy) REFERENCES person (Id)  
 
 ALTER TABLE `personhaseventitem`
   ADD CONSTRAINT PersonHasEventItem_ibfk_1 FOREIGN KEY (EventItemId) REFERENCES eventitem (Id),
@@ -187,5 +186,6 @@ ALTER TABLE `personhaseventitem`
 
 ALTER TABLE `transaction`
   ADD CONSTRAINT Transaction_ibfk_1 FOREIGN KEY (PersonId) REFERENCES person (Id),
-  ADD CONSTRAINT Transaction_ibfk_2 FOREIGN KEY (CreatedBy) REFERENCES person (Id),
-  ADD CONSTRAINT Transaction_ibfk_3 FOREIGN KEY (ModifiedBy) REFERENCES person (Id);
+  ADD CONSTRAINT Transaction_ibfk_2 FOREIGN KEY (TransactionId) REFERENCES transaction (Id),
+  ADD CONSTRAINT Transaction_ibfk_3 FOREIGN KEY (CreatedBy) REFERENCES person (Id),
+  ADD CONSTRAINT Transaction_ibfk_4 FOREIGN KEY (ModifiedBy) REFERENCES person (Id);

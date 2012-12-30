@@ -315,7 +315,10 @@ class Events extends CI_Controller {
 			$this->form_validation->set_rules($eventItem->{DB_EVENTITEM_ID} . '_' . DB_PERSONHASEVENTITEM_AMOUNT, 								DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', 							'trim|numeric|xss_clean');
 		}
 
+		/*
+		DISABLE TRANSACTION CHECK
 		$this->form_validation->set_rules(DB_TABLE_PERSONHASEVENT . '_' . DB_PERSONHASEVENT_PAYMENTTYPE, lang(LANG_KEY_FIELD_PAYMENTTYPE), 'callback__checkEnoughTransactionAmount[' . $eventId . ',' . $personId . ']');
+		*/
 
 		
 		
@@ -488,6 +491,14 @@ class Events extends CI_Controller {
 			);
 			$updateRegistration = $this->event->savePersonHasEvent($personHasEventData, $eventId, $personId);
 
+			// If payment type is transaction, calculate sum and write it to Transaction-table
+			$paymentType = $this->input->post(DB_TABLE_PERSONHASEVENT . '_' . DB_PERSONHASEVENT_PAYMENTTYPE);
+			if ($paymentType == ENUM_PAYMENTTYPE_TRANSACTION) {
+				$this->transaction->savePersonHasEventTransaction($eventId, $personId);
+			} 	else {
+				$this->transaction->deletePersonHasEventTransaction($eventId, $personId);
+			}
+
 			//Calculate the hash if it isn't already calculated
 			if ($hash == NULL) {
 				$hash = md5($eventId . $this->config->item('encryption_key') . $personId);
@@ -498,7 +509,7 @@ class Events extends CI_Controller {
 			
 			// Send an email to the person
 			$this->_sendSaveRegisterConfirmMail($eventId, $personId, $updateRegistration);
-
+			
 			//Everything ok, redirect the user to the confirmation page (or show message directly if dialog)
 			if ($loadAsDialog == FALSE) {
 				redirect(CONTROLLER_EVENTS_CONFIRM_SAVE_REGISTER_DIRECTLY . '/' . $eventId . '/' . $personId . '/' . $hash . '/' . $updateRegistration, 'refresh');
@@ -676,13 +687,16 @@ class Events extends CI_Controller {
 		// Delete link between person and event
 		$this->event->deletePersonHasEvent($eventId, $personId);
 		
-		// Commit the transaction
-		$this->db->trans_complete();		
+		// Delete any transactions for the person and event
+		$this->transaction->deletePersonHasEventTransaction($eventId, $personId);		
 
 		// Delete the orphan avec
 		if ($personAvecId != NULL) {
 			$this->person->deletePerson($personAvecId);
 		}
+		
+		// Commit the transaction
+		$this->db->trans_complete();		
 		
 		// Send an email to the person
 		$this->_sendCancelRegisterConfirmMail($eventId, $personId);		
