@@ -28,6 +28,9 @@ Class Transaction extends CI_Model {
 				$row = $query->row_array();
 				$totalSum = $row[DB_TOTALSUM];
 			}
+			
+			// Make the total sum negative
+			$totalSum *= -1;
 
 			// Check if an INSERT or an UPDATE should be made
 			$this->db->select(DB_TRANSACTION_ID);
@@ -128,8 +131,7 @@ Class Transaction extends CI_Model {
 		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_LASTNAME);
 		$this->db->from(DB_TABLE_TRANSACTION);
 		$this->db->join(DB_TABLE_PERSON, DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_PERSONID . '=' . DB_TABLE_PERSON . '.' . DB_PERSON_ID, 'inner');
-		$this->db->join(DB_TABLE_PERSONHASEVENT, DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_ID . '=' . DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_TRANSACTIONID, 'left');
-		$this->db->join(DB_TABLE_EVENT, DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_EVENTID . '=' . DB_TABLE_EVENT . '.' . DB_EVENT_ID, 'left');
+		$this->db->join(DB_TABLE_EVENT, DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_EVENTID . '=' . DB_TABLE_EVENT . '.' . DB_EVENT_ID, 'left');
 
 		if($personId) {
 			$this->db->where(DB_TABLE_PERSON . '.' . DB_PERSON_ID, $personId);

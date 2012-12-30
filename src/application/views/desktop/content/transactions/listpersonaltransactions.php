@@ -15,9 +15,9 @@
 	<tbody>
 	<?php foreach($transactionList as $transaction) { ?>
 		<tr>
-			<td><?php echo formatDateGerman($event->{DB_TRANSACTION_TRANSACTIONDATE}); ?></td>
+			<td><?php echo formatDateGerman($transaction->{DB_TRANSACTION_TRANSACTIONDATE}); ?></td>
 			<td><?php echo $transaction->{DB_EVENT_NAME}; ?><?php echo $transaction->{DB_TRANSACTION_DESCRIPTION}; ?></td>	
-			<td><?php echo formatCurrency($event->{DB_TRANSACTION_AMOUNT}); ?></td>
+			<td><?php echo formatCurrency($transaction->{DB_TRANSACTION_AMOUNT}); ?></td>
 		</tr>
 	<?php } ?>
 	</tbody>
