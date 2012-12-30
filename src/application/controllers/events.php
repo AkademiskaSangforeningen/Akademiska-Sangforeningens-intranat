@@ -92,7 +92,6 @@ class Events extends CI_Controller {
 		
 		$voiceSums = array(ENUM_VOICE_1T => 0, ENUM_VOICE_2T => 0, ENUM_VOICE_1B => 0, ENUM_VOICE_2B => 0);
 		foreach($this->event->getPersonVoiceSumsForEvent($eventId) as $voice) {
-			echo $voice->{DB_PERSON_VOICE};
 			$voiceSums[$voice->{DB_PERSON_VOICE}] = $voice->{DB_TOTALCOUNT};
 		}
 		
