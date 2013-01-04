@@ -400,17 +400,15 @@ class Events extends CI_Controller {
 				$personId = $this->person->getPersonIdUsingEmail($this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL));
 			}								
 			
-			if (!$internalRegistration) {
-				$personData = array();				
-				addToArrayIfNotFalse($personData, DB_PERSON_FIRSTNAME, 	$this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME));
-				addToArrayIfNotFalse($personData, DB_PERSON_LASTNAME, 	$this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME));
-				addToArrayIfNotFalse($personData, DB_PERSON_EMAIL, 		$this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL));
-				addToArrayIfNotFalse($personData, DB_PERSON_ALLERGIES, 	$this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES));
-				addToArrayIfNotFalse($personData, DB_PERSON_PHONE, 		$this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_PHONE));
+			$personData = array();				
+			addToArrayIfNotFalse($personData, DB_PERSON_FIRSTNAME, 	$this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME));
+			addToArrayIfNotFalse($personData, DB_PERSON_LASTNAME, 	$this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME));
+			addToArrayIfNotFalse($personData, DB_PERSON_EMAIL, 		$this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL));
+			addToArrayIfNotFalse($personData, DB_PERSON_ALLERGIES, 	$this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES));
+			addToArrayIfNotFalse($personData, DB_PERSON_PHONE, 		$this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_PHONE));
 
-				//Save the person, if a new person the GUID of the new person is returned
-				$personId = $this->person->savePerson($personData, $personId, $personId);
-			}
+			//Save the person, if a new person the GUID of the new person is returned
+			$personId = $this->person->savePerson($personData, $personId, $personId);
 
 			// Save all event items for the person
 			$eventItemIds = $this->input->post(DB_PERSONHASEVENTITEM_EVENTITEMID);
