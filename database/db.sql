@@ -143,8 +143,7 @@ CREATE TABLE IF NOT EXISTS `transaction` (
   Modified datetime DEFAULT NULL,
   ModifiedBy char(36) COLLATE utf8_swedish_ci DEFAULT NULL,
   PRIMARY KEY (Id),
-  KEY PersonId (PersonId),
-  KEY TransactionId (TransactionId),
+  UNIQUE KEY `PersonId_EventId` (`PersonId`,`EventId`),
   KEY CreatedBy (CreatedBy),
   KEY ModifiedBy (ModifiedBy)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
