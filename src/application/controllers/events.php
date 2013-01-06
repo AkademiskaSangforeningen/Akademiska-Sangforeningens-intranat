@@ -153,7 +153,7 @@ class Events extends CI_Controller {
 	function _buildCSVData($event, $eventItems, $persons, $personHasEventItems) {
 		$csv = array();
 		
-		$headerArray = array(lang(LANG_KEY_FIELD_NAME), lang(LANG_KEY_FIELD_ALLERGIES), 'Avec', '1T', '2T', '3T', '4T', 'Totalt', lang(LANG_KEY_FIELD_PAYMENTTYPE));
+		$headerArray = array(lang(LANG_KEY_FIELD_NAME), lang(LANG_KEY_FIELD_ALLERGIES), 'Avec', '1T', '2T', '1B', '2B', 'Totalt', lang(LANG_KEY_FIELD_PAYMENTTYPE));
 		
 		foreach($eventItems as $key => $eventItem) {
 			switch ($eventItem->{DB_EVENTITEM_TYPE}) {
