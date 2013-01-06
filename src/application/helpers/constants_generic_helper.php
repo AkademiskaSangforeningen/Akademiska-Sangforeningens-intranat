@@ -12,6 +12,7 @@ define('CLIENT_MOBILE',						'mobile');
 
 //HTTP params
 define('HTTP_DIALOG',						'dialog');
+define('HTTP_SHOWASCSV',					'showascsv');
 
 //Placeholders
 define('PLACEHOLDER_PERSON',				'[person]');

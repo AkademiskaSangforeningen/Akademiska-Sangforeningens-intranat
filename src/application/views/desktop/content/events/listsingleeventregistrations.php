@@ -3,6 +3,8 @@
 	<?php if ($this->userrights->hasRight(userrights::EVENTS_EDIT_REGISTRATION, $this->session->userdata(SESSION_ACCESSRIGHT))) { ?>
 		<a href="<?php echo site_url() . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $event->{DB_EVENT_ID} ?>?<?php echo HTTP_DIALOG; ?>=1" class="button" data-icon="ui-icon-calendar" data-formdialog="true"><?php echo lang(LANG_KEY_BUTTON_CREATE_NEW_EVENT_REGISTRATION); ?></a>
 	<?php } ?>
+	<a href="<?php echo site_url() . CONTROLLER_EVENTS_LIST_SINGLE_EVENT_REGISTRATIONS . '/' . $eventId . '/?' . HTTP_SHOWASCSV . '=true'; ?>" class="button" data-icon="ui-icon-document">Exportera som CSV-fil</a>
+	
 </div>
 <div class="pagination">
 	<?php echo $pagination; ?>

@@ -61,7 +61,12 @@ class Events extends CI_Controller {
 
 		if (!ctype_digit($offset)) {
 			$offset = 0;
-		}			
+		}
+		
+		// Don't use paging if data should be shown as CSV
+		if ($this->input->get(HTTP_SHOWASCSV) == TRUE) {
+			$offset = FALSE;
+		}
 	
 		$this->load->model(MODEL_EVENT,	strtolower(MODEL_EVENT), TRUE);
 		
@@ -117,7 +122,137 @@ class Events extends CI_Controller {
 		//Load parts
 		$data['part_eventInfo']		= $this->load->view($client . VIEW_CONTENT_EVENTS_PART_INFO_EVENT, $data, TRUE);		
 				
-		$this->load->view($client . VIEW_CONTENT_EVENTS_LIST_SINGLE_EVENT_REGISTRATIONS, $data);
+		if ($this->input->get(HTTP_SHOWASCSV) == TRUE) {				
+			// Overwrite with file download header
+			header('Content-Description: File Transfer');
+			header('Content-Type: text/csv');
+			header('Content-Disposition: attachment; filename=event_' . $eventId . '.csv');
+			header('Content-Transfer-Encoding: binary'); 
+			
+			// Open file pointer to standard output
+			$fp = fopen('php://output', 'w');
+			 
+			// Add BOM to fix UTF-8 in Excel
+			fputs($fp, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
+			if ($fp) {
+				$csv = $this->_buildCSVData($data['event'], $data['eventItems'], $data['persons'], $data['personHasEventItems']);
+				foreach($csv as $singleLine) {
+					fputcsv($fp, $singleLine, ';');
+				}
+			}
+			 
+			fclose($fp);
+		} else {
+			$this->load->view($client . VIEW_CONTENT_EVENTS_LIST_SINGLE_EVENT_REGISTRATIONS, $data);
+		}
+	}
+	
+	/**
+	*	Function generates data in arrays for CSV-export
+	*/	
+	function _buildCSVData($event, $eventItems, $persons, $personHasEventItems) {
+		$csv = array();
+		
+		$headerArray = array(lang(LANG_KEY_FIELD_NAME), lang(LANG_KEY_FIELD_ALLERGIES), 'Avec', '1T', '2T', '3T', '4T', 'Totalt', lang(LANG_KEY_FIELD_PAYMENTTYPE));
+		
+		foreach($eventItems as $key => $eventItem) {
+			switch ($eventItem->{DB_EVENTITEM_TYPE}) {
+				case EVENT_TYPE_RADIO:
+				case EVENT_TYPE_CHECKBOX:					
+					$caption = $eventItem->{DB_EVENTITEM_DESCRIPTION};
+					
+					if ($eventItem->{DB_EVENTITEM_AMOUNT} != 0) {
+						$caption .= ' (' . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}) . ')';
+					}
+					$headerArray[] = $caption;
+					break;
+				case EVENT_TYPE_TEXTAREA:					
+					if ($eventItem->{DB_EVENTITEM_DESCRIPTION} == '') {
+						$headerArray[] = $eventItem->{DB_EVENTITEM_CAPTION};
+					} else {
+						$headerArray[] = $eventItem->{DB_EVENTITEM_DESCRIPTION};
+					}
+					break;
+				default:
+					break;
+			}
+		}
+		
+		$csv[] = $headerArray;				
+
+		$previousPersonId = NULL;
+		foreach($persons as $key => $person) {
+			$singleLineArray = array();
+			$singleLineArray[] = $person->{DB_PERSON_FIRSTNAME} . ' ' . $person->{DB_PERSON_LASTNAME};
+			$singleLineArray[] = $person->{DB_PERSON_ALLERGIES};
+			$singleLineArray[] = '';	// Avec
+			$singleLineArray[] = $person->{DB_PERSON_VOICE} == ENUM_VOICE_1T ? '1' : '';
+			$singleLineArray[] = $person->{DB_PERSON_VOICE} == ENUM_VOICE_2T ? '1' : '';
+			$singleLineArray[] = $person->{DB_PERSON_VOICE} == ENUM_VOICE_1B ? '1' : '';
+			$singleLineArray[] = $person->{DB_PERSON_VOICE} == ENUM_VOICE_2B ? '1' : '';
+			$singleLineArray[] = ($person->{DB_TOTALSUM} + $person->{DB_CUSTOM_AVEC . DB_TOTALSUM});
+			$singleLineArray[] = getEnumValue(ENUM_PAYMENTTYPE, $person->{DB_PERSONHASEVENT_PAYMENTTYPE});				
+			foreach($eventItems as $key => $eventItem) {					
+				if (isset($personHasEventItems[$person->{DB_PERSON_ID}][$eventItem->{DB_EVENTITEM_ID}])) {
+					if ($eventItem->{DB_EVENTITEM_MAXPCS} == 0) {								
+						switch ($eventItem->{DB_EVENTITEM_TYPE}) {
+							case EVENT_TYPE_RADIO:
+							case EVENT_TYPE_CHECKBOX:
+								$singleLineArray[] = '1';
+								break;
+							case EVENT_TYPE_TEXTAREA:
+								$singleLineArray[] = $personHasEventItems[$person->{DB_PERSON_ID}][$eventItem->{DB_EVENTITEM_ID}][DB_PERSONHASEVENTITEM_DESCRIPTION];	
+								break;
+							default:
+								break;
+						}							
+					} else {
+						$singleLineArray[] = $personHasEventItems[$person->{DB_PERSON_ID}][$eventItem->{DB_EVENTITEM_ID}][DB_PERSONHASEVENTITEM_AMOUNT];	
+					}																												
+				} else {						
+					$singleLineArray[] = '';
+				}
+			}
+			$csv[] = $singleLineArray;
+			
+			if ($event->{DB_EVENT_AVECALLOWED} == TRUE && $person->{DB_CUSTOM_AVEC . DB_PERSON_ID} != NULL) {
+				$singleLineArray = array();
+				$singleLineArray[] = $person->{DB_CUSTOM_AVEC . DB_PERSON_FIRSTNAME};
+				$singleLineArray[] = $person->{DB_CUSTOM_AVEC . DB_PERSON_ALLERGIES};
+				$singleLineArray[] = '1'; 	// Avec
+				$singleLineArray[] = '';	// 1T
+				$singleLineArray[] = '';	// 2T
+				$singleLineArray[] = '';	// 1B
+				$singleLineArray[] = '';	// 2B
+				$singleLineArray[] = '';	// Sum
+				$singleLineArray[] = '';	// Payment type				
+			
+				foreach($eventItems as $key => $eventItem) {					
+					if (isset($personHasEventItems[$person->{DB_CUSTOM_AVEC . DB_PERSON_ID}][$eventItem->{DB_EVENTITEM_ID}])) {
+						if ($eventItem->{DB_EVENTITEM_MAXPCS} == 0) {								
+							switch ($eventItem->{DB_EVENTITEM_TYPE}) {
+								case EVENT_TYPE_RADIO:
+								case EVENT_TYPE_CHECKBOX:
+									$singleLineArray[] = '1';
+									break;
+								case EVENT_TYPE_TEXTAREA:
+									$singleLineArray[] = $personHasEventItems[$person->{DB_CUSTOM_AVEC . DB_PERSON_ID}][$eventItem->{DB_EVENTITEM_ID}][DB_PERSONHASEVENTITEM_DESCRIPTION];	
+									break;
+								default:
+									break;
+							}							
+						} else {
+							$singleLineArray[] = $personHasEventItems[$person->{DB_CUSTOM_AVEC . DB_PERSON_ID}][$eventItem->{DB_EVENTITEM_ID}][DB_PERSONHASEVENTITEM_AMOUNT];							
+						}																												
+					} else {
+						$singleLineArray[] = '';
+					}
+				}
+				$csv[] = $singleLineArray;
+			}				
+		}		
+	
+		return $csv;
 	}
 
 	/**
