@@ -73,7 +73,7 @@
 		</tr>
 		<?php if (isset($person->{DB_PERSON_ALLERGIES}) && $person->{DB_PERSON_ALLERGIES} != '') { ?>
 		<tr>
-			<td width="100">Allergier:</td>
+			<td width="100"><?php echo lang(LANG_KEY_FIELD_ALLERGIES); ?>:</td>
 			<td><b><?php echo $person->{DB_PERSON_ALLERGIES}; ?></b></td>
 		</tr>
 		<?php } ?>
@@ -120,7 +120,7 @@
 			</tr>
 			<?php if (isset($personAvec->{DB_PERSON_ALLERGIES}) && $personAvec->{DB_PERSON_ALLERGIES} != '') { ?>
 			<tr>
-				<td width="100">Allergier:</td>
+				<td width="100"><?php echo lang(LANG_KEY_FIELD_ALLERGIES); ?>:</td>
 				<td><b><?php echo $personAvec->{DB_PERSON_ALLERGIES}; ?></b></td>
 			</tr>
 			<?php } ?>
