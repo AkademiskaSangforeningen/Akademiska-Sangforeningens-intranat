@@ -615,16 +615,21 @@ class Events extends CI_Controller {
 				$this->person->deletePerson($avecId);
 				$avecId = NULL;
 			}
+						
+			// Set payment type to NULL if FALSE (otherwise it ends up as 0 in database)
+			$paymentType = $this->input->post(DB_TABLE_PERSONHASEVENT . '_' . DB_PERSONHASEVENT_PAYMENTTYPE);
+			if ($paymentType === FALSE) {
+				$paymentType = NULL;
+			}			
 
 			// Save the person has event-link including the avec (if given)
 			$personHasEventData = array(
 				DB_PERSONHASEVENT_AVECPERSONID	=> $avecId,
-				DB_PERSONHASEVENT_PAYMENTTYPE 	=> $this->input->post(DB_TABLE_PERSONHASEVENT . '_' . DB_PERSONHASEVENT_PAYMENTTYPE)
+				DB_PERSONHASEVENT_PAYMENTTYPE 	=> $paymentType
 			);
 			$updateRegistration = $this->event->savePersonHasEvent($personHasEventData, $eventId, $personId);
 
 			// If payment type is transaction, calculate sum and write it to Transaction-table
-			$paymentType = $this->input->post(DB_TABLE_PERSONHASEVENT . '_' . DB_PERSONHASEVENT_PAYMENTTYPE);
 			if ($paymentType == ENUM_PAYMENTTYPE_TRANSACTION) {
 				$this->transaction->savePersonHasEventTransaction($eventId, $personId);
 			} 	else {
