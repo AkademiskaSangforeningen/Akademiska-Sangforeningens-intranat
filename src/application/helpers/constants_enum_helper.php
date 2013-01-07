@@ -55,5 +55,5 @@ function getEnum($enum) {
 
 function getEnumValue($enum, $value) {
 	$array = getEnum($enum);
-	return (in_array($value, $array) ? $array[$value] : NULL);
+	return (array_key_exists($value, $array) ? $array[$value] : NULL);
 }
