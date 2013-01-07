@@ -1199,7 +1199,7 @@ class Events extends CI_Controller {
 		$rowNumbers = array();
 		$keys = array_keys($this->input->post());
 		foreach($keys as $key) {
-			if (preg_match('/(EventItem_Id)(\d)/i', $key, $matches)) {
+			if (preg_match('/(EventItem_Id)(\d{1,})/i', $key, $matches)) {
 				$rowNumbers[] = $matches[2];
 			}
 		}
