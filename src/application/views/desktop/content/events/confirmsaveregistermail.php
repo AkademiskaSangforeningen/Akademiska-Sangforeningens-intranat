@@ -71,7 +71,7 @@
 			<td width="100">Telefon:</td>
 			<td><b><?php echo $person->{DB_PERSON_PHONE}; ?></b></td>
 		</tr>
-		<?php if (isset($person->{DB_PERSON_ALLERGIES}) && $person->{DB_PERSON_ALLERGIES} != '') { ?>
+		<?php if ($event->{DB_EVENT_CANUSERSSETALLERGIES} == TRUE && isset($person->{DB_PERSON_ALLERGIES}) && $person->{DB_PERSON_ALLERGIES} != '') { ?>
 		<tr>
 			<td width="100"><?php echo lang(LANG_KEY_FIELD_ALLERGIES); ?>:</td>
 			<td><b><?php echo $person->{DB_PERSON_ALLERGIES}; ?></b></td>
@@ -118,7 +118,7 @@
 				<td width="100">Namn:</td>
 				<td><b><?php echo $personAvec->{DB_PERSON_FIRSTNAME} . ' ' . $personAvec->{DB_PERSON_LASTNAME}; ?></b></td>
 			</tr>
-			<?php if (isset($personAvec->{DB_PERSON_ALLERGIES}) && $personAvec->{DB_PERSON_ALLERGIES} != '') { ?>
+			<?php if ($event->{DB_EVENT_CANUSERSSETALLERGIES} == TRUE && isset($personAvec->{DB_PERSON_ALLERGIES}) && $personAvec->{DB_PERSON_ALLERGIES} != '') { ?>
 			<tr>
 				<td width="100"><?php echo lang(LANG_KEY_FIELD_ALLERGIES); ?>:</td>
 				<td><b><?php echo $personAvec->{DB_PERSON_ALLERGIES}; ?></b></td>

@@ -80,6 +80,8 @@ define('LANG_KEY_FIELD_PARTICIPANT',					'field_participant');
 define('LANG_KEY_FIELD_AVEC',							'field_avec');
 define('LANG_KEY_FIELD_PAYMENT_INFO',					'field_payment_info');
 define('LANG_KEY_FIELD_CAN_USERS_VIEW_REGISTRATIONS',	'field_can_users_view_registrations');
+define('LANG_KEY_FIELD_CAN_USERS_SET_ALLERGIES',		'field_can_users_set_allergies');
+define('LANG_KEY_FIELD_IS_MAP_SHOWN',					'field_is_map_shown');
 
 //Enumerations
 define('LANG_KEY_ENUM_VOICE_1_TENOR',				'enum_voice_1st_tenor');

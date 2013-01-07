@@ -30,6 +30,8 @@ define('DB_EVENT_PARTICIPANT',					'Participant');
 define('DB_EVENT_AVECALLOWED',					'AvecAllowed');
 define('DB_EVENT_PAYMENTINFO',					'PaymentInfo');
 define('DB_EVENT_CANUSERSVIEWREGISTRATIONS',	'CanUsersViewRegistrations');
+define('DB_EVENT_CANUSERSSETALLERGIES',			'CanUsersSetAllergies');
+define('DB_EVENT_ISMAPSHOWN',					'IsMapShown');
 
 //Table EventItem
 define('DB_TABLE_EVENTITEM',				'eventitem');

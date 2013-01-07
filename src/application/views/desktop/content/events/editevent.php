@@ -146,12 +146,28 @@
 			<?php echo form_dropdown(DB_TABLE_EVENT . "_" . DB_EVENT_CANUSERSVIEWREGISTRATIONS, getEnum(ENUM_ENABLED), set_value(DB_TABLE_EVENT . "_" . DB_EVENT_CANUSERSVIEWREGISTRATIONS, isset($event->{DB_EVENT_CANUSERSVIEWREGISTRATIONS}) ? $event->{DB_EVENT_CANUSERSVIEWREGISTRATIONS} : "" ), 'id="' . DB_TABLE_EVENT . '_' . DB_EVENT_CANUSERSVIEWREGISTRATIONS . '" class="ui-corner-all"'); ?>		
 		</div>
 		
+		<div class="single-field">
+			<label for="<?php echo DB_TABLE_EVENT . "_" .  DB_EVENT_CANUSERSSETALLERGIES; ?>">
+				<?php echo lang(LANG_KEY_FIELD_CAN_USERS_SET_ALLERGIES); ?>
+			</label>
+			<br/>
+			<?php echo form_dropdown(DB_TABLE_EVENT . "_" . DB_EVENT_CANUSERSSETALLERGIES, getEnum(ENUM_ENABLED), set_value(DB_TABLE_EVENT . "_" . DB_EVENT_CANUSERSSETALLERGIES, isset($event->{DB_EVENT_CANUSERSSETALLERGIES}) ? $event->{DB_EVENT_CANUSERSSETALLERGIES} : "" ), 'id="' . DB_TABLE_EVENT . '_' . DB_EVENT_CANUSERSSETALLERGIES . '" class="ui-corner-all"'); ?>		
+		</div>
+
+		<div class="single-field">
+			<label for="<?php echo DB_TABLE_EVENT . "_" .  DB_EVENT_ISMAPSHOWN; ?>">
+				<?php echo lang(LANG_KEY_FIELD_IS_MAP_SHOWN); ?>
+			</label>
+			<br/>
+			<?php echo form_dropdown(DB_TABLE_EVENT . "_" . DB_EVENT_ISMAPSHOWN, getEnum(ENUM_ENABLED), set_value(DB_TABLE_EVENT . "_" . DB_EVENT_ISMAPSHOWN, isset($event->{DB_EVENT_ISMAPSHOWN}) ? $event->{DB_EVENT_ISMAPSHOWN} : "" ), 'id="' . DB_TABLE_EVENT . '_' . DB_EVENT_ISMAPSHOWN . '" class="ui-corner-all"'); ?>		
+		</div>		
+		
 	</fieldset>
 	<fieldset class="ui-corner-all">
 		<legend>Radinformation</legend>
 		
 		<div style="clear: both; width: 100%">
-			<label><i>Förklarning hur det fungerar</i></label>
+			<label><i><!--Förklarning hur det fungerar--></i></label>
 			<div style="width: 100%; clear: both;" class="multirow">
 				<div>
 					<div style="float: left">

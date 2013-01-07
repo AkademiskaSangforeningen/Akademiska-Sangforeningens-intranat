@@ -153,7 +153,20 @@ class Events extends CI_Controller {
 	function _buildCSVData($event, $eventItems, $persons, $personHasEventItems) {
 		$csv = array();
 		
-		$headerArray = array(lang(LANG_KEY_FIELD_NAME), lang(LANG_KEY_FIELD_ALLERGIES), 'Avec', '1T', '2T', '1B', '2B', 'Totalt', lang(LANG_KEY_FIELD_PAYMENTTYPE));
+		$headerArray = array();
+		$headerArray[] = lang(LANG_KEY_FIELD_NAME);
+		if ($event->{DB_EVENT_CANUSERSSETALLERGIES} == TRUE) {
+			$headerArray[] = lang(LANG_KEY_FIELD_ALLERGIES);
+		}
+		if ($event->{DB_EVENT_AVECALLOWED} == TRUE) {
+			$headerArray[] = 'Avec';
+		}
+		$headerArray[] = '1T';
+		$headerArray[] = '2T';
+		$headerArray[] = '1B';
+		$headerArray[] = '2B';
+		$headerArray[] = 'Totalt';
+		$headerArray[] = lang(LANG_KEY_FIELD_PAYMENTTYPE);
 		
 		foreach($eventItems as $key => $eventItem) {
 			switch ($eventItem->{DB_EVENTITEM_TYPE}) {
@@ -184,8 +197,12 @@ class Events extends CI_Controller {
 		foreach($persons as $key => $person) {
 			$singleLineArray = array();
 			$singleLineArray[] = $person->{DB_PERSON_FIRSTNAME} . ' ' . $person->{DB_PERSON_LASTNAME};
-			$singleLineArray[] = $person->{DB_PERSON_ALLERGIES};
-			$singleLineArray[] = '';	// Avec
+			if ($event->{DB_EVENT_CANUSERSSETALLERGIES} == TRUE) {
+				$singleLineArray[] = $person->{DB_PERSON_ALLERGIES};
+			}
+			if ($event->{DB_EVENT_AVECALLOWED} == TRUE) {
+				$singleLineArray[] = '';	// Avec
+			}
 			$singleLineArray[] = $person->{DB_PERSON_VOICE} == ENUM_VOICE_1T ? '1' : '';
 			$singleLineArray[] = $person->{DB_PERSON_VOICE} == ENUM_VOICE_2T ? '1' : '';
 			$singleLineArray[] = $person->{DB_PERSON_VOICE} == ENUM_VOICE_1B ? '1' : '';
@@ -218,7 +235,9 @@ class Events extends CI_Controller {
 			if ($event->{DB_EVENT_AVECALLOWED} == TRUE && $person->{DB_CUSTOM_AVEC . DB_PERSON_ID} != NULL) {
 				$singleLineArray = array();
 				$singleLineArray[] = $person->{DB_CUSTOM_AVEC . DB_PERSON_FIRSTNAME} . ' ' . $person->{DB_CUSTOM_AVEC . DB_PERSON_LASTNAME};
-				$singleLineArray[] = $person->{DB_CUSTOM_AVEC . DB_PERSON_ALLERGIES};
+				if ($event->{DB_EVENT_CANUSERSSETALLERGIES} == TRUE) {
+					$singleLineArray[] = $person->{DB_CUSTOM_AVEC . DB_PERSON_ALLERGIES};
+				}
 				$singleLineArray[] = '1'; 	// Avec
 				$singleLineArray[] = '';	// 1T
 				$singleLineArray[] = '';	// 2T
@@ -996,6 +1015,8 @@ class Events extends CI_Controller {
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED, 						lang(LANG_KEY_FIELD_PARTICIPANT),					'trim|xss_clean|numeric');
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTINFO, 						lang(LANG_KEY_FIELD_PAYMENT_INFO),					'trim|xss_clean');
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_CANUSERSVIEWREGISTRATIONS,		lang(LANG_KEY_FIELD_CAN_USERS_VIEW_REGISTRATIONS),	'trim|xss_clean|numeric');
+		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_CANUSERSSETALLERGIES,				lang(LANG_KEY_FIELD_CAN_USERS_SET_ALLERGIES),		'trim|xss_clean|numeric');
+		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_ISMAPSHOWN,						lang(LANG_KEY_FIELD_IS_MAP_SHOWN),					'trim|xss_clean|numeric');
 
 		foreach ($itemRows as $rowNumber) {
 			$this->form_validation->set_rules(DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_CAPTION . $rowNumber, lang(LANG_KEY_FIELD_DESCRIPTION),			'trim|xss_clean');
@@ -1031,7 +1052,9 @@ class Events extends CI_Controller {
 				DB_EVENT_PARTICIPANT				=> array_sum($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PARTICIPANT) ? $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PARTICIPANT) : array()),
 				DB_EVENT_AVECALLOWED				=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED),
 				DB_EVENT_PAYMENTINFO 				=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_PAYMENTINFO),
-				DB_EVENT_CANUSERSVIEWREGISTRATIONS	=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_CANUSERSVIEWREGISTRATIONS)
+				DB_EVENT_CANUSERSVIEWREGISTRATIONS	=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_CANUSERSVIEWREGISTRATIONS),
+				DB_EVENT_CANUSERSSETALLERGIES		=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_CANUSERSSETALLERGIES),
+				DB_EVENT_ISMAPSHOWN					=> $this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_ISMAPSHOWN)
 			);
 
 			// Start a database transaction

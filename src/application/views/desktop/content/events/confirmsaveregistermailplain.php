@@ -58,7 +58,7 @@ echo 'E-post: ' . $person->{DB_PERSON_EMAIL};
 echo "\r\n";
 echo 'Telefon: ' . $person->{DB_PERSON_PHONE};
 echo "\r\n";
-if (isset($person->{DB_PERSON_ALLERGIES}) && $person->{DB_PERSON_ALLERGIES} != '') {
+if ($event->{DB_EVENT_CANUSERSSETALLERGIES} == TRUE && isset($person->{DB_PERSON_ALLERGIES}) && $person->{DB_PERSON_ALLERGIES} != '') {
 	echo lang(LANG_KEY_FIELD_ALLERGIES) . ': ' . $person->{DB_PERSON_ALLERGIES};
 	echo "\r\n";
 }
@@ -97,7 +97,7 @@ if ($personHasEvent->{DB_PERSONHASEVENT_AVECPERSONID} != NULL) {
 	echo "\r\n";
 	echo 'Namn: ' . $personAvec->{DB_PERSON_FIRSTNAME} . ' ' . $personAvec->{DB_PERSON_LASTNAME};
 	echo "\r\n";
-	if (isset($personAvec->{DB_PERSON_ALLERGIES}) && $personAvec->{DB_PERSON_ALLERGIES} != '') {
+	if ($event->{DB_EVENT_CANUSERSSETALLERGIES} == TRUE && isset($personAvec->{DB_PERSON_ALLERGIES}) && $personAvec->{DB_PERSON_ALLERGIES} != '') {
 		echo lang(LANG_KEY_FIELD_ALLERGIES) . ': ' . $personAvec->{DB_PERSON_ALLERGIES};
 		echo "\r\n";
 	}
