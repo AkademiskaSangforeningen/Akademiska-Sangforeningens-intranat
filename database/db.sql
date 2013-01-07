@@ -36,6 +36,8 @@ CREATE TABLE IF NOT EXISTS `event` (
   AvecAllowed tinyint(4) DEFAULT NULL,
   PaymentInfo text COLLATE utf8_swedish_ci,
   CanUsersViewRegistrations tinyint(4) DEFAULT NULL,
+  CanUsersSetAllergies tinyint(4) DEFAULT NULL,
+  IsMapShown tinyint(4) DEFAULT NULL,
   PRIMARY KEY (Id),
   KEY ModifiedBy (ModifiedBy),
   KEY CreatedBy (CreatedBy),
