@@ -22,6 +22,9 @@ define('ENUM_VOICE_1B',	'1B');
 define('ENUM_VOICE_2B',	'2B');
 define('ENUM_VOICE_DR',	'Dr');
 
+define('ENUM_SHOW_FOR_AVECS_ONLY',					2);
+define('ENUM_SHOW_FOR_AVECS_NO_BUT_INCLUDE_PRICE',	3);
+
 function getEnum($enum) {
 	switch($enum) {
 		case ENUM_VOICES:
@@ -51,9 +54,11 @@ function getEnum($enum) {
 				);
 		case ENUM_SHOW_FOR_AVEC:
 			return array(
-					0		=> lang(LANG_KEY_ENUM_ENABLED_NO),
-					1		=> lang(LANG_KEY_ENUM_ENABLED_YES),
-					2		=> lang(LANG_KEY_ENUM_SHOW_FOR_AVECS_ONLY)
+					0											=> lang(LANG_KEY_ENUM_ENABLED_NO),
+					ENUM_SHOW_FOR_AVECS_NO_BUT_INCLUDE_PRICE 	=> lang(LANG_KEY_ENUM_SHOW_FOR_AVECS_NO_BUT_INCLUDE_PRICE),
+					1											=> lang(LANG_KEY_ENUM_ENABLED_YES),
+					ENUM_SHOW_FOR_AVECS_ONLY					=> lang(LANG_KEY_ENUM_SHOW_FOR_AVECS_ONLY)
+					
 			);
 		default:
 			return;

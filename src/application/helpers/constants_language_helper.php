@@ -84,17 +84,18 @@ define('LANG_KEY_FIELD_CAN_USERS_SET_ALLERGIES',		'field_can_users_set_allergies
 define('LANG_KEY_FIELD_IS_MAP_SHOWN',					'field_is_map_shown');
 
 //Enumerations
-define('LANG_KEY_ENUM_VOICE_1_TENOR',				'enum_voice_1st_tenor');
-define('LANG_KEY_ENUM_VOICE_2_TENOR',				'enum_voice_2nd_tenor');
-define('LANG_KEY_ENUM_VOICE_1_BASS',				'enum_voice_1st_bass');
-define('LANG_KEY_ENUM_VOICE_2_BASS',				'enum_voice_2nd_bass');
-define('LANG_KEY_ENUM_VOICE_CONDUCTOR',				'enum_voice_conductor');
-define('LANG_KEY_ENUM_COUNTRY_FINLAND',				'enum_country_finland');
-define('LANG_KEY_ENUM_COUNTRY_SWEDEN',				'enum_country_sweden');
-define('LANG_KEY_ENUM_COUNTRY_OTHER',				'enum_country_other');
-define('LANG_KEY_ENUM_ENABLED_NO',					'enum_enabled_no');
-define('LANG_KEY_ENUM_ENABLED_YES',					'enum_enabled_yes');
-define('LANG_KEY_ENUM_SHOW_FOR_AVECS_ONLY',			'enum_show_for_avecs_only');
+define('LANG_KEY_ENUM_VOICE_1_TENOR',						'enum_voice_1st_tenor');
+define('LANG_KEY_ENUM_VOICE_2_TENOR',						'enum_voice_2nd_tenor');
+define('LANG_KEY_ENUM_VOICE_1_BASS',						'enum_voice_1st_bass');
+define('LANG_KEY_ENUM_VOICE_2_BASS',						'enum_voice_2nd_bass');
+define('LANG_KEY_ENUM_VOICE_CONDUCTOR',						'enum_voice_conductor');
+define('LANG_KEY_ENUM_COUNTRY_FINLAND',						'enum_country_finland');
+define('LANG_KEY_ENUM_COUNTRY_SWEDEN',						'enum_country_sweden');
+define('LANG_KEY_ENUM_COUNTRY_OTHER',						'enum_country_other');
+define('LANG_KEY_ENUM_ENABLED_NO',							'enum_enabled_no');
+define('LANG_KEY_ENUM_ENABLED_YES',							'enum_enabled_yes');
+define('LANG_KEY_ENUM_SHOW_FOR_AVECS_ONLY',					'enum_show_for_avecs_only');
+define('LANG_KEY_ENUM_SHOW_FOR_AVECS_NO_BUT_INCLUDE_PRICE',	'enum_show_for_avecs_no_but_include_price');
 
 //Error texts
 define('LANG_KEY_ERROR_WRONG_CREDENTIALS',			'error_wrong_credentials');
