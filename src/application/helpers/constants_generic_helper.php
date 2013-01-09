@@ -33,4 +33,4 @@ define('EVENT_TYPE_CHECKBOX',				2);
 define('EVENT_TYPE_TEXTAREA',				3);
 
 //List views
-define('LIST_DEF_PAGING',					10);
+define('LIST_DEF_PAGING',					100);
