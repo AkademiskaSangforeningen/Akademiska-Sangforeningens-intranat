@@ -58,12 +58,8 @@
 								}
 								break;
 							case EVENT_TYPE_TEXTAREA:
-								if ($eventItem->{DB_EVENTITEM_DESCRIPTION} == '') {
-									echo $eventItem->{DB_EVENTITEM_CAPTION};
-								} else {
-									echo $eventItem->{DB_EVENTITEM_DESCRIPTION};
-								}
-								break;
+								echo $eventItem->{DB_EVENTITEM_CAPTION};
+									break;
 							default:
 								break;
 					}

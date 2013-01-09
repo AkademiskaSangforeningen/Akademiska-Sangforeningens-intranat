@@ -180,11 +180,7 @@ class Events extends CI_Controller {
 					$headerArray[] = $caption;
 					break;
 				case EVENT_TYPE_TEXTAREA:					
-					if ($eventItem->{DB_EVENTITEM_DESCRIPTION} == '') {
-						$headerArray[] = $eventItem->{DB_EVENTITEM_CAPTION};
-					} else {
-						$headerArray[] = $eventItem->{DB_EVENTITEM_DESCRIPTION};
-					}
+					$headerArray[] = $eventItem->{DB_EVENTITEM_CAPTION};
 					break;
 				default:
 					break;
