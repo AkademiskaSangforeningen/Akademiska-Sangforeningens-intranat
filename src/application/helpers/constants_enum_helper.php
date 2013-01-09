@@ -6,10 +6,11 @@
  *
 */
 
-define('ENUM_VOICES',		'enum_voices');
-define('ENUM_COUNTRIES',	'enum_countries');
-define('ENUM_ENABLED',		'enum_enabled');
-define('ENUM_PAYMENTTYPE',	'enum_paymenttype');
+define('ENUM_VOICES',			'enum_voices');
+define('ENUM_COUNTRIES',		'enum_countries');
+define('ENUM_ENABLED',			'enum_enabled');
+define('ENUM_PAYMENTTYPE',		'enum_paymenttype');
+define('ENUM_SHOW_FOR_AVEC',	'enum_show_for_avec');
 
 define('ENUM_PAYMENTTYPE_TRANSACTION', 	1);
 define('ENUM_PAYMENTTYPE_CASH', 		2);
@@ -41,13 +42,19 @@ function getEnum($enum) {
 			return array(
 					0		=> lang(LANG_KEY_ENUM_ENABLED_NO),
 					1		=> lang(LANG_KEY_ENUM_ENABLED_YES)
-				);
+				);			
 		case ENUM_PAYMENTTYPE:
 			return array(
 					ENUM_PAYMENTTYPE_TRANSACTION	=> "Kvartettkonto",
 					ENUM_PAYMENTTYPE_CASH			=> "Kontant vid evenemanget",
 					ENUM_PAYMENTTYPE_BANK_ACCOUNT	=> "Kontobetalning"
-				);		
+				);
+		case ENUM_SHOW_FOR_AVEC:
+			return array(
+					0		=> lang(LANG_KEY_ENUM_ENABLED_NO),
+					1		=> lang(LANG_KEY_ENUM_ENABLED_YES),
+					2		=> lang(LANG_KEY_ENUM_SHOW_FOR_AVECS_ONLY)
+			);
 		default:
 			return;
 	}

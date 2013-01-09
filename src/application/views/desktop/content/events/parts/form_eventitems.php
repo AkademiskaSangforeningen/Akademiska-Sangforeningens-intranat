@@ -6,7 +6,9 @@
 
 			if ($currentIsAvec === TRUE && $eventItem->{DB_EVENTITEM_SHOWFORAVEC} == FALSE) {
 				continue;
-			}		
+			} else if ($currentIsAvec === FALSE && $eventItem->{DB_EVENTITEM_SHOWFORAVEC} == 2) {
+				continue;
+			}
 ?>
 			<?php if ($eventItem->{DB_EVENTITEM_CAPTION} != $previousCaption) { ?>
 				<div style="margin-top: 1em"><label>

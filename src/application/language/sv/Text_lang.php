@@ -86,6 +86,7 @@ $lang[LANG_KEY_ENUM_COUNTRY_SWEDEN]				= "Sverige";
 $lang[LANG_KEY_ENUM_COUNTRY_OTHER]				= "Annat land (ange landet i stad-fältet)";
 $lang[LANG_KEY_ENUM_ENABLED_NO]					= "Nej";
 $lang[LANG_KEY_ENUM_ENABLED_YES]				= "Ja";
+$lang[LANG_KEY_ENUM_SHOW_FOR_AVECS_ONLY]		= "Endast";
 
 $lang[LANG_KEY_ERROR_WRONG_CREDENTIALS]			= "Fel användarnamn eller lösenord";
 $lang[LANG_KEY_ERROR_INVALID_DATE]				= "Felaktigt datum: ";

@@ -223,7 +223,7 @@
 						<div class="multirow-header">Visa för avec</div>
 						<div class="multirow-field">
 							<select name="<?php echo DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_SHOWFORAVEC ?>" disabled="disabled" class="short">
-								<?php foreach (getEnum(ENUM_ENABLED) as $key => $val) { ?>
+								<?php foreach (getEnum(ENUM_SHOW_FOR_AVEC) as $key => $val) { ?>
 									<option value="<?php echo $key; ?>" <?php echo set_select(DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_SHOWFORAVEC, $key); ?>><?php echo $val; ?></option>
 								<?php } ?>							
 							</select>
@@ -298,7 +298,7 @@
 						<div style="float: left">
 							<div class="multirow-field">
 								<select name="<?php echo DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_SHOWFORAVEC  . $multirowCounter; ?>" class="short">
-									<?php foreach (getEnum(ENUM_ENABLED) as $key => $val) { ?>
+									<?php foreach (getEnum(ENUM_SHOW_FOR_AVEC) as $key => $val) { ?>
 										<option value="<?php echo $key; ?>" <?php if ($key == set_value(DB_TABLE_EVENTITEM . "_" . DB_EVENTITEM_SHOWFORAVEC . $multirowCounter, isset($eventItem->{DB_EVENTITEM_SHOWFORAVEC}) ? $eventItem->{DB_EVENTITEM_SHOWFORAVEC} : 0 )) { echo "selected=\"selected\""; } ?>><?php echo $val ?></option>
 									<?php } ?>							
 								</select>

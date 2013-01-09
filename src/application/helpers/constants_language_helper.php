@@ -94,6 +94,7 @@ define('LANG_KEY_ENUM_COUNTRY_SWEDEN',				'enum_country_sweden');
 define('LANG_KEY_ENUM_COUNTRY_OTHER',				'enum_country_other');
 define('LANG_KEY_ENUM_ENABLED_NO',					'enum_enabled_no');
 define('LANG_KEY_ENUM_ENABLED_YES',					'enum_enabled_yes');
+define('LANG_KEY_ENUM_SHOW_FOR_AVECS_ONLY',			'enum_show_for_avecs_only');
 
 //Error texts
 define('LANG_KEY_ERROR_WRONG_CREDENTIALS',			'error_wrong_credentials');
