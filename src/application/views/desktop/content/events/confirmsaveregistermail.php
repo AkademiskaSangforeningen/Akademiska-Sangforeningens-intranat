@@ -83,15 +83,20 @@
 		if (isset($eventItems)) {		
 			foreach($eventItems as $key => $eventItem) {					
 				if ($eventItem->{DB_EVENTITEM_CAPTION} != $previousCaption) {
-					echo "<br/>" . $eventItem->{DB_EVENTITEM_CAPTION} . ":";
+					echo "<br/>" . $eventItem->{DB_EVENTITEM_CAPTION};
+					if ($eventItem->{DB_EVENTITEM_TYPE} == EVENT_TYPE_TEXTAREA && $eventItem->{DB_EVENTITEM_DESCRIPTION} != '') {
+						echo " (<i>" . $eventItem->{DB_EVENTITEM_DESCRIPTION} . "</i>)";
+					}
+					echo ":";
 					echo "<br/>";
 				}
 				if ($eventItem->{DB_EVENTITEM_MAXPCS} == 0) {
 					echo "<b>";
 					if ($eventItem->{DB_EVENTITEM_TYPE} == EVENT_TYPE_TEXTAREA) {
 						echo $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_DESCRIPTION};
-					}								
-					echo $eventItem->{DB_EVENTITEM_DESCRIPTION};
+					} else {
+						echo $eventItem->{DB_EVENTITEM_DESCRIPTION};					
+					}
 					if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) {
 						 echo " - pris: " . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT});
 					}
@@ -130,15 +135,20 @@
 		if (isset($avecEventItems)) {		
 			foreach($avecEventItems as $key => $eventItem) {					
 				if ($eventItem->{DB_EVENTITEM_CAPTION} != $previousCaption) {
-					echo "<br/>" . $eventItem->{DB_EVENTITEM_CAPTION} . ":";
+					echo "<br/>" . $eventItem->{DB_EVENTITEM_CAPTION};
+					if ($eventItem->{DB_EVENTITEM_TYPE} == EVENT_TYPE_TEXTAREA && $eventItem->{DB_EVENTITEM_DESCRIPTION} != '') {
+						echo " (<i>" . $eventItem->{DB_EVENTITEM_DESCRIPTION} . "</i>)";
+					}
+					echo ":";
 					echo "<br/>";
 				}
 				if ($eventItem->{DB_EVENTITEM_MAXPCS} == 0) {
 					echo "<b>";
 					if ($eventItem->{DB_EVENTITEM_TYPE} == EVENT_TYPE_TEXTAREA) {
 						echo $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_DESCRIPTION};
-					}								
-					echo $eventItem->{DB_EVENTITEM_DESCRIPTION};
+					} else {							
+						echo $eventItem->{DB_EVENTITEM_DESCRIPTION};
+					}
 					if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) {
 						 echo " - pris: " . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT});
 					}
