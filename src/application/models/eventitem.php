@@ -97,6 +97,23 @@ class EventItem extends CI_Model {
 	}
 
 	function deleteEventItems($eventId, $eventItemIdsNotToDelete = array()) {
+
+		// Get a list of event items to delete
+		$this->db->select(DB_EVENTITEM_ID);
+		$this->db->from(DB_TABLE_EVENTITEM);
+		$this->db->where(DB_TABLE_EVENTITEM . "." . DB_EVENTITEM_EVENTID, $eventId);
+		if (count($eventItemIdsNotToDelete) > 0) {
+			$this->db->where_not_in(DB_TABLE_EVENTITEM . "." . DB_EVENTITEM_ID, $eventItemIdsNotToDelete);
+		}			
+		$query = $this->db->get();
+
+		if ($query->num_rows() > 0) {
+			foreach($query->result_array() as $row){
+				$this->db->where(DB_PERSONHASEVENTITEM_EVENTITEMID, $row[DB_EVENTITEM_ID]);
+				$this->db->delete(DB_TABLE_PERSONHASEVENTITEM);
+			}				
+		}		
+	
 		$this->db->where(DB_EVENTITEM_EVENTID, $eventId);
 		if (count($eventItemIdsNotToDelete) > 0) {
 			$this->db->where_not_in(DB_EVENTITEM_ID, $eventItemIdsNotToDelete);
