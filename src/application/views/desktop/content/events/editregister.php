@@ -46,9 +46,29 @@
 </div>
 	
 <script>
-	var executeOnStart = function ($) {		
+	var executeOnStart = function ($) {
+	
 		AKADEMEN.initializeButtons();		
 		AKADEMEN.initializeFormValidation(<?php if ($dialog == FALSE) { ?>true<?php } ?>);
+
+		// Toggle the duplicate hidden avec field on change
+		$('input[type="radio"], input[type="checkbox"]')
+			.filter('[data-trigger-avec]')
+				.on('change.toggleAvecPrice', function() {
+					var id = $(this)[0].id;				
+					$('#hidden_Avec_' + id).attr('checked', $(this).is(':checked'));
+				})			
+			.trigger('change.toggleAvecPrice');
+		
+		// Toggle the value to the duplicate hidden avec field on change		
+		$('select, textarea')
+			.filter('[data-trigger-avec]')
+				.on('change.toggleAvecPrice', function() {
+					var id = $(this)[0].id;				
+					$('#hidden_Avec_' + id).val($(this).val());
+					console.log($('#hidden_Avec_' + id));
+				})			
+			.trigger('change.toggleAvecPrice');			
 		
 		$('#<?php echo DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED; ?>').on('change.toggleRegisterAvec', function() {
 			var val = $(this).val(),
@@ -79,14 +99,14 @@
 				$('#registerperson input[data-price]:checked').each(function() {
 					totalPrice += parseFloat($(this).data('price'));
 				});
-				$('#registerperson select[data-price]:visible').each(function() {
+				$('#registerperson select[data-price]').each(function() {
 					totalPrice += (parseFloat($(this).data('price')) * $(this).val());
 				});				
 				if ($('#<?php echo DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED; ?>').val() === "1") {
 					$('#registeravec input[data-price]:checked').each(function() {
 						totalPrice += parseFloat($(this).data('price'));
 					});				
-					$('#registeravec select[data-price]:visible').each(function() {
+					$('#registeravec select[data-price]').each(function() {
 						totalPrice += (parseFloat($(this).data('price')) * $(this).val());
 					});					
 				}
