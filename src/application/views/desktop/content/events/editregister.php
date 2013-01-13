@@ -11,7 +11,7 @@
 	
 	<?php echo form_open(CONTROLLER_EVENTS_SAVE_REGISTER_DIRECTLY . (isset($eventId) ? "/" . $eventId : "") . (isset($personId) ? "/" . $personId : "") . (isset($hash) ? "/" . $hash : "") . (isset($internalRegistration) ? "/" . $internalRegistration : ""), array('id' => 'form_editobject')); ?>	
 		<fieldset class="ui-corner-all" id="registerperson">
-			<legend>Mina anmälningsuppgifter</legend>
+			<legend>Dina anmälningsuppgifter</legend>
 			
 			<?php if (isset($part_form_person)) { echo $part_form_person; } ?>				
 			
@@ -24,7 +24,7 @@
 		</fieldset>
 		<?php if ($event->{DB_EVENT_AVECALLOWED} == 1) { ?>
 			<fieldset style="<?php if (isset($personhasevent->{DB_PERSONHASEVENT_AVECPERSONID}) && !is_null($personhasevent->{DB_PERSONHASEVENT_AVECPERSONID})) { echo ""; } ?>" id="registeravec">							
-				<legend>Min avecs anmälningsuppgifter</legend>						
+				<legend>Din avecs anmälningsuppgifter</legend>						
 			
 				<?php if (isset($part_form_personAvec)) { echo $part_form_personAvec; } ?>								
 				
@@ -38,7 +38,7 @@
 		</div>
 		
 		<?php if ($dialog == FALSE) { ?>
-			<button type="submit" class="button">Anmäl mig</button>
+			<button type="submit" class="button">Anmäl dig</button>
 		<?php } ?>
 		
 		<input type="hidden" name="<?php echo HTTP_DIALOG; ?>" value="<?php echo set_value(HTTP_DIALOG, (isset($dialog) ? $dialog : '')); ?>" />
@@ -79,7 +79,7 @@
 					})
 					.find('#<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSON_FIRSTNAME ?>, #<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSON_LASTNAME ?>')
 						.removeClass("required");
-				$('button[type="submit"] span').text('Anmäl mig');
+				$('button[type="submit"] span').text('Anmäl dig');
 			} else {
 				$registerAvec
 					.slideDown("fast", function() {
@@ -87,7 +87,7 @@
 					})
 					.find('#<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSON_FIRSTNAME ?>, #<?php echo DB_CUSTOM_AVEC . "_" . DB_PERSON_LASTNAME ?>')
 						.addClass("required");					
-				$('button[type="submit"] span').text('Anmäl oss');
+				$('button[type="submit"] span').text('Anmäl er');
 			}						
 		}).trigger('change.toggleRegisterAvec');
 		

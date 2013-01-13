@@ -38,11 +38,11 @@
 					if (!isDateInPast($event->{DB_EVENT_REGISTRATIONDUEDATE}, TRUE)) { 
 						if (isset($event->{DB_PERSONHASEVENT_PERSONID}) && $event->{DB_PERSONHASEVENT_PERSONID} != NULL) {
 				?>
-						<a href="<?php echo site_url() . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $event->{DB_EVENT_ID} . '/' . $event->{DB_PERSONHASEVENT_PERSONID} . '/' . md5($event->{DB_EVENT_ID} . $this->config->item('encryption_key') . $event->{DB_PERSONHASEVENT_PERSONID} . 1); ?>/1?<?php echo HTTP_DIALOG; ?>=1" class="button" data-formdialog="true">Uppdatera min anmälan</a>
+						<a href="<?php echo site_url() . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $event->{DB_EVENT_ID} . '/' . $event->{DB_PERSONHASEVENT_PERSONID} . '/' . md5($event->{DB_EVENT_ID} . $this->config->item('encryption_key') . $event->{DB_PERSONHASEVENT_PERSONID} . 1); ?>/1?<?php echo HTTP_DIALOG; ?>=1" class="button" data-formdialog="true">Uppdatera din anmälan</a>
 				<?php
 						} else {
 				?>
-						<a href="<?php echo site_url() . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $event->{DB_EVENT_ID} . '/' . $personId . '/' . md5($event->{DB_EVENT_ID} . $this->config->item('encryption_key') . $personId . 1); ?>/1?<?php echo HTTP_DIALOG; ?>=1" class="button" data-formdialog="true">Anmäl mig</a>
+						<a href="<?php echo site_url() . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' . $event->{DB_EVENT_ID} . '/' . $personId . '/' . md5($event->{DB_EVENT_ID} . $this->config->item('encryption_key') . $personId . 1); ?>/1?<?php echo HTTP_DIALOG; ?>=1" class="button" data-formdialog="true">Anmäl dig</a>
 				<?php
 						}
 					} else {

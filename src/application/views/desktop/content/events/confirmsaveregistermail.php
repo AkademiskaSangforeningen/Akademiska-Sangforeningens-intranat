@@ -57,7 +57,7 @@
 <?php } ?>
 <hr/>
 <p>
-	<h3>Mina anmälningsuppgifter</h3>				
+	<h3>Dina anmälningsuppgifter</h3>				
 	<table cellpadding="0" cellspacing="0" border="0">
 		<tr>
 			<td width="100">Namn:</td>
@@ -117,7 +117,7 @@
 		}
 	?>													
 	<?php if ($personHasEvent->{DB_PERSONHASEVENT_AVECPERSONID} != NULL) { ?>
-		<h3>Min avecs anmälningsuppgifter</h3>
+		<h3>Din avecs anmälningsuppgifter</h3>
 		<table cellpadding="0" cellspacing="0" border="0">
 			<tr>
 				<td width="100">Namn:</td>

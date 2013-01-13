@@ -50,7 +50,7 @@ if (isset($event->{DB_EVENT_REGISTRATIONDUEDATE})) {
 }
 echo "\r\n";
 echo "\r\n";
-echo 'Mina anmälningsuppgifter';
+echo 'Dina anmälningsuppgifter';
 echo "\r\n";
 echo 'Namn: ' . $person->{DB_PERSON_FIRSTNAME} . ' ' . $person->{DB_PERSON_LASTNAME};
 echo "\r\n";
@@ -98,7 +98,7 @@ if (isset($eventItems)) {
 
 if ($personHasEvent->{DB_PERSONHASEVENT_AVECPERSONID} != NULL) {
 	echo "\r\n";
-	echo 'Min avecs anmälningsuppgifter';
+	echo 'Din avecs anmälningsuppgifter';
 	echo "\r\n";
 	echo 'Namn: ' . $personAvec->{DB_PERSON_FIRSTNAME} . ' ' . $personAvec->{DB_PERSON_LASTNAME};
 	echo "\r\n";

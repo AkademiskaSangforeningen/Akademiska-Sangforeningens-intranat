@@ -29,7 +29,7 @@
 		</label>
 	</div>
 	<?php echo form_open(CONTROLLER_SAVE_CANCEL_REGISTER_DIRECTLY . (isset($eventId) ? "/" . $eventId : "") . (isset($personId) ? "/" . $personId : "") . (isset($hash) ? "/" . $hash : ""), array('id' => 'form_editobject')); ?>		
-		<button type="submit" class="button">Annullera min anmälan</button>
+		<button type="submit" class="button">Annullera din anmälan</button>
 	</form>
 </div>
 	
