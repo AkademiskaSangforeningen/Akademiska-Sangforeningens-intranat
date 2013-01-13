@@ -5,7 +5,7 @@
 		</label>
 		<span class="requiredsymbol">*</span>
 		<br/>
-		<input type="text" name="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_FIRSTNAME ?>" id="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_FIRSTNAME ?>" value="<?php echo set_value($fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_FIRSTNAME, isset($person->{DB_PERSON_FIRSTNAME}) ? $person->{DB_PERSON_FIRSTNAME} : "" ); ?>" maxlength="50" class="required ui-corner-all" />	
+		<input type="text" <?php if ($disableFields == TRUE) { echo 'disabled="disabled"'; } ?> name="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_FIRSTNAME ?>" id="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_FIRSTNAME ?>" value="<?php echo set_value($fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_FIRSTNAME, isset($person->{DB_PERSON_FIRSTNAME}) ? $person->{DB_PERSON_FIRSTNAME} : "" ); ?>" maxlength="50" class="required ui-corner-all" />	
 	</div>
 <?php } ?>
 
@@ -16,7 +16,7 @@
 	</label>
 	<span class="requiredsymbol">*</span>
 	<br/>
-	<input type="text" name="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_LASTNAME ?>" id="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_LASTNAME ?>" value="<?php echo set_value($fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_LASTNAME, isset($person->{DB_PERSON_LASTNAME}) ? $person->{DB_PERSON_LASTNAME} : "" ); ?>" maxlength="50" class="required ui-corner-all" />	
+	<input type="text" <?php if ($disableFields == TRUE) { echo 'disabled="disabled"'; } ?> name="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_LASTNAME ?>" id="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_LASTNAME ?>" value="<?php echo set_value($fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_LASTNAME, isset($person->{DB_PERSON_LASTNAME}) ? $person->{DB_PERSON_LASTNAME} : "" ); ?>" maxlength="50" class="required ui-corner-all" />	
 </div>
 <?php } ?>
 
@@ -27,7 +27,7 @@
 		</label>
 		<span class="requiredsymbol">*</span>
 		<br/>
-		<input type="email" name="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL ?>" id="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL ?>" value="<?php echo set_value($fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL, isset($person->{DB_PERSON_EMAIL}) ? $person->{DB_PERSON_EMAIL} : "" ); ?>" maxlength="50" class="required email ui-corner-all" />	
+		<input type="email" <?php if ($disableFields == TRUE) { echo 'disabled="disabled"'; } ?> name="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL ?>" id="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL ?>" value="<?php echo set_value($fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL, isset($person->{DB_PERSON_EMAIL}) ? $person->{DB_PERSON_EMAIL} : "" ); ?>" maxlength="50" class="required email ui-corner-all" />	
 	</div>
 <?php } ?>
 
@@ -38,7 +38,7 @@
 		</label>
 		<span class="requiredsymbol">*</span>
 		<br/>
-		<input type="text" name="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_PHONE ?>" id="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_PHONE ?>" value="<?php echo set_value($fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_PHONE, isset($person->{DB_PERSON_PHONE}) ? $person->{DB_PERSON_PHONE} : "" ); ?>" maxlength="50" class="required phone ui-corner-all" />
+		<input type="text" <?php if ($disableFields == TRUE) { echo 'disabled="disabled"'; } ?> name="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_PHONE ?>" id="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_PHONE ?>" value="<?php echo set_value($fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_PHONE, isset($person->{DB_PERSON_PHONE}) ? $person->{DB_PERSON_PHONE} : "" ); ?>" maxlength="50" class="required phone ui-corner-all" />
 	</div>
 <?php } ?>
 
@@ -48,6 +48,6 @@
 			<?php echo lang(LANG_KEY_FIELD_ALLERGIES); ?>
 		</label>
 		<br/>
-		<input type="text" name="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_ALLERGIES ?>" id="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_ALLERGIES ?>" value="<?php echo set_value($fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_ALLERGIES, isset($person->{DB_PERSON_ALLERGIES}) ? $person->{DB_PERSON_ALLERGIES} : "" ); ?>" maxlength="255" class="ui-corner-all" />	
+		<input type="text" <?php if ($disableFields == TRUE) { echo 'disabled="disabled"'; } ?> name="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_ALLERGIES ?>" id="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_ALLERGIES ?>" value="<?php echo set_value($fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_ALLERGIES, isset($person->{DB_PERSON_ALLERGIES}) ? $person->{DB_PERSON_ALLERGIES} : "" ); ?>" maxlength="255" class="ui-corner-all" />	
 	</div>
 <?php } ?>

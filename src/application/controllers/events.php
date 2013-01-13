@@ -345,6 +345,7 @@ class Events extends CI_Controller {
 		$data_part_form_person = array();
 		$data_part_form_person['person']		= $this->person->getPerson($personId);
 		$data_part_form_person['fieldPrefix']	= '';
+		$data_part_form_person['disableFields'] = $internalRegistration;
 		$data_part_form_person['showFields']	= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_PHONE, DB_PERSON_ALLERGIES) 
 														: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_EMAIL, DB_PERSON_PHONE, DB_PERSON_ALLERGIES);
 		$data['part_form_person'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_person, TRUE);
@@ -374,6 +375,7 @@ class Events extends CI_Controller {
 			$data_part_form_personAvec['updateRegistration']	= ($personId != NULL);
 			$data_part_form_personAvec['person']				= $this->person->getPerson($personAvecId);
 			$data_part_form_personAvec['fieldPrefix']			= DB_CUSTOM_AVEC . '_';
+			$data_part_form_personAvec['disableFields']			= FALSE;
 			$data_part_form_personAvec['showFields']			= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_ALLERGIES) 
 																		: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_ALLERGIES);		
 			$data['part_form_personAvec'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_personAvec, TRUE);
@@ -428,11 +430,13 @@ class Events extends CI_Controller {
 		$this->load->library('form_validation');
 
 		//Validate the form
-		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME,	lang(LANG_KEY_FIELD_FIRSTNAME),				'trim|max_length[50]|required|xss_clean');
-		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME, 	lang(LANG_KEY_FIELD_LASTNAME), 				'trim|max_length[50]|required|xss_clean');
-		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES, 	lang(LANG_KEY_FIELD_ALLERGIES), 			'trim|max_length[50]|xss_clean');
-		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PHONE, 		lang(LANG_KEY_FIELD_PHONE), 				'trim|max_length[50]|xss_clean');
-
+		if (!$internalRegistration) {
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME,	lang(LANG_KEY_FIELD_FIRSTNAME),				'trim|max_length[50]|required|xss_clean');
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME, 	lang(LANG_KEY_FIELD_LASTNAME), 				'trim|max_length[50]|required|xss_clean');
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES, 	lang(LANG_KEY_FIELD_ALLERGIES), 			'trim|max_length[50]|xss_clean');
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PHONE, 		lang(LANG_KEY_FIELD_PHONE), 				'trim|max_length[50]|xss_clean');
+		}
+			
 		$this->form_validation->set_rules(DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', 	DB_PERSONHASEVENTITEM_EVENTITEMID . '[]',	'trim|callback__checkGuidValid');
 		$this->form_validation->set_rules(DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED, 	lang(LANG_KEY_FIELD_AVEC),					'trim|max_length[1]|xss_clean|numeric');
 		
@@ -492,6 +496,10 @@ class Events extends CI_Controller {
 			//Person form
 			$data_part_form_person = array();
 			$data_part_form_person['fieldPrefix']	= '';
+			if ($internalRegistration) {
+				$data_part_form_person['person']		= $this->person->getPerson($personId);							
+			}
+			$data_part_form_person['disableFields'] = $internalRegistration;
 			$data_part_form_person['showFields']	= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_PHONE, DB_PERSON_ALLERGIES) 
 															: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_EMAIL, DB_PERSON_PHONE, DB_PERSON_ALLERGIES);
 			$data['part_form_person'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_person, TRUE);
@@ -519,6 +527,8 @@ class Events extends CI_Controller {
 				$data_part_form_personAvec = array();
 				$data_part_form_personAvec['updateRegistration']	= ($personId != NULL);
 				$data_part_form_personAvec['fieldPrefix']			= DB_CUSTOM_AVEC . '_';
+				$data_part_form_personAvec['person']				= NULL;
+				$data_part_form_personAvec['disableFields']			= FALSE;				
 				$data_part_form_personAvec['showFields']			= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_ALLERGIES) 
 																			: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_ALLERGIES);		
 				$data['part_form_personAvec'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_personAvec, TRUE);
