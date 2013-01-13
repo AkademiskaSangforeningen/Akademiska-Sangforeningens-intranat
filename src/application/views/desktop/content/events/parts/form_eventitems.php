@@ -56,11 +56,16 @@
 							<br />
 						<?php } ?>																	
 						<?php if (strlen($eventItem->{DB_EVENTITEM_DESCRIPTION}) > 0 && $eventItem->{DB_EVENTITEM_TYPE} != EVENT_TYPE_TEXTAREA) { ?>
-							<?php echo ' - ' .$eventItem->{DB_EVENTITEM_DESCRIPTION}; ?>
+							<?php echo $eventItem->{DB_EVENTITEM_DESCRIPTION}; ?>
 						<?php } ?>
-						<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { ?>
-							 - pris: <?php echo formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}); ?>						
-						<?php } ?>																															
+						<?php
+							if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) {
+								if ($eventItem->{DB_EVENTITEM_AMOUNT} < 0) {
+									echo '<span style="color: red">' . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}) . '</span>';
+								} else {
+									echo formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT});
+								}
+							} ?>																															
 					<?php } else { ?>
 						<select id="<?php echo $fieldPrefix . $eventItem->{DB_EVENTITEM_ID}; ?>_<?php echo DB_PERSONHASEVENTITEM_AMOUNT; ?>" name="<?php echo $fieldPrefix . $eventItem->{DB_EVENTITEM_ID}; ?>_<?php echo DB_PERSONHASEVENTITEM_AMOUNT; ?>" class="short" <?php echo (!is_null($eventItem->{DB_EVENTITEM_AMOUNT}) ? 'data-price="' . $eventItem->{DB_EVENTITEM_AMOUNT} . '"' : ''); ?> <?php if ($eventItem->{DB_EVENTITEM_SHOWFORAVEC} == ENUM_SHOW_FOR_AVECS_NO_BUT_INCLUDE_PRICE) { echo 'data-trigger-avec="true"'; } ?>>
 							<?php for($i = 0; $i <= ($eventItem->{DB_EVENTITEM_MAXPCS}); $i++) { ?>
@@ -70,7 +75,7 @@
 						<input type="hidden" id="<?php echo $fieldPrefix . $eventItem->{DB_EVENTITEM_ID}; ?>" name="<?php echo $fieldPrefix . DB_PERSONHASEVENTITEM_EVENTITEMID; ?>[]" value="<?php echo $eventItem->{DB_EVENTITEM_ID}; ?>" <?php if ($eventItem->{DB_EVENTITEM_SHOWFORAVEC} == ENUM_SHOW_FOR_AVECS_NO_BUT_INCLUDE_PRICE) { echo 'data-trigger-avec="true"'; } ?> /> 
 						<?php echo $eventItem->{DB_EVENTITEM_DESCRIPTION}; ?>
 						<?php if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) { ?>
-							 - pris: <?php echo formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}); ?> per styck
+							 <?php echo formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}); ?> per styck
 						<?php } ?>
 					<?php } ?>
 					</div>										
