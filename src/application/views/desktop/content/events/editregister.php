@@ -92,7 +92,7 @@
 		}).trigger('change.toggleRegisterAvec');
 		
 		// Calculate the total sum
-		var $priceFields = $('input[data-price], select[data-price]');		
+		var $priceFields = $('input, select');		
 		$priceFields.on('change.calculateTotalPrice', function () {
 				var totalPrice = 0;
 				$('#registerperson input[data-price]:checked').each(function() {
@@ -114,7 +114,7 @@
 			})
 			
 			// Remove the total text if no price fields are found
-			if ($priceFields.length === 0) {
+			if ($priceFields.filter('[data-price]').length === 0) {
 				$('#totalprice').parent().remove();
 			} else {
 				$priceFields.eq(0).trigger('change.calculateTotalPrice');
