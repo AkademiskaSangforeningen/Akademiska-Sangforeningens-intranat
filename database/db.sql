@@ -72,6 +72,7 @@ CREATE TABLE IF NOT EXISTS person (
   FirstName varchar(64) COLLATE utf8_swedish_ci NOT NULL,
   LastName varchar(64) COLLATE utf8_swedish_ci NOT NULL,
   Voice char(2) COLLATE utf8_swedish_ci DEFAULT NULL,
+  Joined varchar(5) COLLATE utf8_swedish_ci DEFAULT NULL,
   Address varchar(128) COLLATE utf8_swedish_ci DEFAULT NULL,
   PostalCode varchar(64) COLLATE utf8_swedish_ci DEFAULT NULL,
   City varchar(64) COLLATE utf8_swedish_ci DEFAULT NULL,
