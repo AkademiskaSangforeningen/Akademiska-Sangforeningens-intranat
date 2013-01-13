@@ -81,14 +81,14 @@ if (isset($eventItems)) {
 				echo $eventItem->{DB_EVENTITEM_DESCRIPTION};
 			}
 			if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) {
-				 echo " - pris: " . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT});
+				 echo " " . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT});
 			}
 			echo "\r\n";
 		} else {
 			echo $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_AMOUNT} . " st. ";
 			echo $eventItem->{DB_EVENTITEM_DESCRIPTION};
 			if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) {
-				 echo " - pris: " . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}) . " per styck";
+				 echo " " . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}) . " per styck";
 			}
 			echo "\r\n";
 		}
@@ -125,14 +125,14 @@ if ($personHasEvent->{DB_PERSONHASEVENT_AVECPERSONID} != NULL) {
 					echo $eventItem->{DB_EVENTITEM_DESCRIPTION};
 				}
 				if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) {
-					 echo " - pris: " . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT});
+					 echo " " . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT});
 				}
 				echo "\r\n";
 			} else {
 				echo $eventItem->{DB_TABLE_PERSONHASEVENTITEM . DB_PERSONHASEVENTITEM_AMOUNT} . " st. ";
 				echo $eventItem->{DB_EVENTITEM_DESCRIPTION};
 				if (!is_null($eventItem->{DB_EVENTITEM_AMOUNT})) {
-					 echo " - pris: " . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}) . " per styck";
+					 echo " " . formatCurrency($eventItem->{DB_EVENTITEM_AMOUNT}) . " per styck";
 				}
 				echo "\r\n";
 			}
