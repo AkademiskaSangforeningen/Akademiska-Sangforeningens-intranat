@@ -66,7 +66,6 @@
 				.on('change.toggleAvecPrice', function() {
 					var id = $(this)[0].id;				
 					$('#hidden_Avec_' + id).val($(this).val());
-					console.log($('#hidden_Avec_' + id));
 				})			
 			.trigger('change.toggleAvecPrice');			
 		
@@ -120,6 +119,8 @@
 			} else {
 				$priceFields.eq(0).trigger('change.calculateTotalPrice');
 			}
+				
+		$('#dialog_form').scrollTop(0);
 				
 		$('input:first').focus();
 	};
