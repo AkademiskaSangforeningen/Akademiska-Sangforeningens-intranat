@@ -177,7 +177,8 @@ class Persons extends CI_Controller {
 				DB_PERSON_ADDRESS 		=> $this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_ADDRESS),
 				DB_PERSON_POSTALCODE	=> $this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_POSTALCODE),
 				DB_PERSON_CITY 			=> $this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_CITY),
-				DB_PERSON_COUNTRYID		=> $this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_COUNTRYID)				
+				DB_PERSON_COUNTRYID		=> $this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_COUNTRYID),
+				DB_PERSON_STATUS		=> PERSON_STATUS_INTERNAL
 			);
 			
 			if ($this->userrights->hasRight(userrights::USERS_EDIT_ACCESS_RIGHTS, $this->session->userdata(SESSION_ACCESSRIGHT))) {

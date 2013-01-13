@@ -32,5 +32,9 @@ define('EVENT_TYPE_RADIO',					1);
 define('EVENT_TYPE_CHECKBOX',				2);
 define('EVENT_TYPE_TEXTAREA',				3);
 
+//Person statuses
+define('PERSON_STATUS_EXTERNAL',			0);
+define('PERSON_STATUS_INTERNAL',			10);
+
 //List views
 define('LIST_DEF_PAGING',					100);

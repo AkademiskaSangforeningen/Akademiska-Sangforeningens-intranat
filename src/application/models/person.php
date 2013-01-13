@@ -23,6 +23,7 @@ Class Person extends CI_Model {
 		$this->db->from(DB_TABLE_PERSON);
 		$this->db->where(DB_PERSON_EMAIL, 		$email);
 		$this->db->where(DB_PERSON_PASSWORD, 	$password);
+		$this->db->where(DB_PERSON_STATUS, 		PERSON_STATUS_INTERNAL);
 
 		$query = $this->db->get();
 
@@ -52,7 +53,7 @@ Class Person extends CI_Model {
 			}
 		}	
 		$this->db->from(DB_TABLE_PERSON);
-		$this->db->where(DB_PERSON_ID,	$personId);
+		$this->db->where(DB_PERSON_ID,		$personId);
 
 		$query = $this->db->get();
 
@@ -94,6 +95,7 @@ Class Person extends CI_Model {
 		$this->db->select('*');
 		$this->db->select('(SELECT COUNT(*) FROM ' . DB_TABLE_PERSON . ') AS ' . DB_TOTALCOUNT, FALSE);
 		$this->db->from(DB_TABLE_PERSON);
+		$this->db->where(DB_PERSON_STATUS, PERSON_STATUS_INTERNAL);
 		$this->db->order_by(DB_PERSON_LASTNAME, "asc"); 
 		$this->db->order_by(DB_PERSON_FIRSTNAME, "asc"); 
 		if ($limit !== FALSE && $offset !== FALSE) {
