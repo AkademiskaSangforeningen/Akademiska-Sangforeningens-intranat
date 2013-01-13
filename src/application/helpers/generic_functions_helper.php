@@ -106,7 +106,7 @@
 		$timeStamp = strtotime($date);
 		$parsedDate = getdate($timeStamp);
 		if ($includeTime && ($parsedDate["hours"] != 0 || $parsedDate["minutes"] != 0)) {
-			return date('d.m.Y H:i', $timeStamp);
+			return date('d.m.Y', $timeStamp) . mb_convert_encoding(chr(160), 'UTF-8', 'HTML-ENTITIES') . 'kl.' . mb_convert_encoding(chr(160), 'UTF-8', 'HTML-ENTITIES') . date('H:i', $timeStamp);
 		} else {
 			return date('d.m.Y', $timeStamp);
 		}			
@@ -127,7 +127,7 @@
 	}	
 	
 	function formatCurrency($value) {
-		return '€' . number_format($value, 2, ",", "");
+		return number_format($value, 2, ",", "") . mb_convert_encoding(chr(160), 'UTF-8', 'HTML-ENTITIES') . '€';
 	}
 	
 	function parseAmount($value) {
