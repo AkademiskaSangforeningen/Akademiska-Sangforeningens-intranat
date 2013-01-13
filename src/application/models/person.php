@@ -23,7 +23,7 @@ Class Person extends CI_Model {
 		$this->db->from(DB_TABLE_PERSON);
 		$this->db->where(DB_PERSON_EMAIL, 		$email);
 		$this->db->where(DB_PERSON_PASSWORD, 	$password);
-		$this->db->where(DB_PERSON_STATUS, 		PERSON_STATUS_INTERNAL);
+		$this->db->where('(' . DB_PERSON_STATUS . ' = ' . PERSON_STATUS_INTERNAL . ' OR ' . DB_PERSON_USERRIGHTS . ' = 1)', NULL, FALSE);
 
 		$query = $this->db->get();
 
@@ -93,7 +93,7 @@ Class Person extends CI_Model {
 	*/		
 	function getPersonList($limit = FALSE, $offset = FALSE) {		
 		$this->db->select('*');
-		$this->db->select('(SELECT COUNT(*) FROM ' . DB_TABLE_PERSON . ') AS ' . DB_TOTALCOUNT, FALSE);
+		$this->db->select('(SELECT COUNT(*) FROM ' . DB_TABLE_PERSON . ' WHERE ' . DB_PERSON_STATUS . ' = ' . PERSON_STATUS_INTERNAL . ') AS ' . DB_TOTALCOUNT, FALSE);
 		$this->db->from(DB_TABLE_PERSON);
 		$this->db->where(DB_PERSON_STATUS, PERSON_STATUS_INTERNAL);
 		$this->db->order_by(DB_PERSON_LASTNAME, "asc"); 
