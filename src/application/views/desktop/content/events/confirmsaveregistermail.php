@@ -51,9 +51,9 @@
 	<p><?php echo $event->{DB_EVENT_PAYMENTINFO}; ?></p>
 <?php } ?>
 <p><a href="<?php echo site_url() . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY; ?>/<?php echo $eventId; ?>/<?php echo $personId; ?>/<?php echo $hash; ?>"><b>Klicka här</b></a> för att ändra din anmälan.</p>
-<p><a href="<?php echo site_url() . CONTROLLER_EVENTS_CANCEL_REGISTER_DIRECTLY; ?>/<?php echo $eventId; ?>/<?php echo $personId; ?>/<?php echo $hash; ?>"><b>Klicka här</b></a> för att annulera din anmälan.</p>
+<p><a href="<?php echo site_url() . CONTROLLER_EVENTS_CANCEL_REGISTER_DIRECTLY; ?>/<?php echo $eventId; ?>/<?php echo $personId; ?>/<?php echo $hash; ?>"><b>Klicka här</b></a> för att annullera din anmälan.</p>
 <?php if (isset($event->{DB_EVENT_REGISTRATIONDUEDATE})) { ?>
-	<p>Det är möjligt att ändra eller annulera anmälningen fram till den <b><?php echo formatDateGerman($event->{DB_EVENT_REGISTRATIONDUEDATE}); ?></b>.</p>
+	<p>Det är möjligt att ändra eller annullera anmälningen fram till den <b><?php echo formatDateGerman($event->{DB_EVENT_REGISTRATIONDUEDATE}); ?></b>.</p>
 <?php } ?>
 <hr/>
 <p>

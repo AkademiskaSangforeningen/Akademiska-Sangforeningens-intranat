@@ -39,13 +39,13 @@ echo "\r\n";
 echo '{unwrap}' . site_url() . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY . '/' .  $eventId . '/' . $personId . '/' . $hash . '{/unwrap}';
 echo "\r\n";
 echo "\r\n";
-echo 'Klicka på länken nedan för att annulera din amälan:';
+echo 'Klicka på länken nedan för att annullera din amälan:';
 echo "\r\n";
 echo '{unwrap}' . site_url() . CONTROLLER_EVENTS_CANCEL_REGISTER_DIRECTLY . '/' .  $eventId . '/' . $personId . '/' . $hash . '{/unwrap}';
 echo "\r\n";
 echo "\r\n";
 if (isset($event->{DB_EVENT_REGISTRATIONDUEDATE})) {
-	echo 'Det är möjligt att ändra eller annulera anmälningen fram till den ' . formatDateGerman($event->{DB_EVENT_REGISTRATIONDUEDATE});
+	echo 'Det är möjligt att ändra eller annullera anmälningen fram till den ' . formatDateGerman($event->{DB_EVENT_REGISTRATIONDUEDATE});
 	echo "\r\n";
 }
 echo "\r\n";

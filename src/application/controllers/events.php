@@ -877,10 +877,10 @@ class Events extends CI_Controller {
 				$person = $this->person->getPerson($personId, array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME));
 				$personName = $person->{DB_PERSON_FIRSTNAME} . ' ' . $person->{DB_PERSON_LASTNAME};
 				
-				$dataSucceeded['header'] 	= $personName . 's anmälan till ' . $eventName . ' är nu annulerad';
+				$dataSucceeded['header'] 	= $personName . 's anmälan till ' . $eventName . ' är nu annullerad';
 				$dataSucceeded['body'] 		= str_replace(PLACEHOLDER_PERSON, $personName, lang(LANG_KEY_BODY_EVENT_YOU_CAN_REREGISTER_ADMIN));
 			} else {
-				$dataSucceeded['header'] 	= 'Din anmälan till ' . $eventName . ' är nu annulerad.';
+				$dataSucceeded['header'] 	= 'Din anmälan till ' . $eventName . ' är nu annullerad.';
 				$dataSucceeded['body'] 		= lang(LANG_KEY_BODY_EVENT_YOU_CAN_REREGISTER);
 			}
 			
@@ -905,7 +905,7 @@ class Events extends CI_Controller {
 		$data['event'] 		= $this->event->getEvent($eventId);
 		$data['person']		= $this->person->getPerson($personId);
 		
-		$messageSubject = 'Din anmälan till ' . $data['event']->{DB_EVENT_NAME} . ' är nu annulerad';
+		$messageSubject = 'Din anmälan till ' . $data['event']->{DB_EVENT_NAME} . ' är nu annullerad';
 		$data['header'] = $messageSubject;
 
 		$this->load->library('email');

@@ -8,7 +8,7 @@
 
 $lang[LANG_KEY_HEADER_LOGIN]								= "Akademiska Sångföreningens intranät";
 $lang[LANG_KEY_HEADER_EVENT_REGISTRATION_SUCCEEDED]			= "Anmälningen lyckades";
-$lang[LANG_KEY_HEADER_EVENT_REGISTRATION_CANCELLED] 		= "Din anmälan är nu annulerad";
+$lang[LANG_KEY_HEADER_EVENT_REGISTRATION_CANCELLED] 		= "Din anmälan är nu annullerad";
 $lang[LANG_KEY_HEADER_EVENT_NOT_FOUND]						= "Evenemanget kunde inte hittas";
 $lang[LANG_KEY_HEADER_EVENT_REGISTRATION_NOT_FOUND]			= "Din anmälan till evenemanget kunde inte hittas";
 $lang[LANG_KEY_HEADER_EVENT_REGISTRATION_DUE_DATE_PASSED]	= "Anmälningsdeadlinen har gått";
@@ -102,8 +102,8 @@ $lang['kk_header']								= "Kvartettkonto";
 $lang['button_transaction_admin_controls'] 		= "Administrera KK";
 
 //Event registration
-$lang[LANG_KEY_BODY_EVENT_REGISTRATION_SUCCEEDED]		= "Du är nu anmäld, ett e-postmeddelande har sänts till din angivna e-postadress.<br/>Meddelandet innehåller information hur du ändrar på din anmälan eller annulerar den.";
-$lang[LANG_KEY_BODY_EVENT_REGISTRATION_SUCCEEDED_ADMIN]	= "[person] är nu anmäld, ett e-postmeddelande har sänts till [person]s angivna e-postadress.<br/>Meddelandet innehåller information hur [person] ändrar på sin anmälan eller annulerar den.";
+$lang[LANG_KEY_BODY_EVENT_REGISTRATION_SUCCEEDED]		= "Du är nu anmäld, ett e-postmeddelande har sänts till din angivna e-postadress.<br/>Meddelandet innehåller information hur du ändrar på din anmälan eller annullerar den.";
+$lang[LANG_KEY_BODY_EVENT_REGISTRATION_SUCCEEDED_ADMIN]	= "[person] är nu anmäld, ett e-postmeddelande har sänts till [person]s angivna e-postadress.<br/>Meddelandet innehåller information hur [person] ändrar på sin anmälan eller annullerar den.";
 $lang[LANG_KEY_BODY_EVENT_YOU_CAN_REREGISTER]			= "En konfirmation på din annulering har sänts till din angivna e-postadress. Du kan anmäla dig på nytt genom att klicka på länken nedan.";
 $lang[LANG_KEY_BODY_EVENT_YOU_CAN_REREGISTER_ADMIN]		= "En konfirmation på annuleringen har sänts till [person]s angivna e-postadress.";
 $lang[LANG_KEY_BODY_EVENT_CHECK_CORRECT_ADDRESS]		= "Kontrollera att du har angett en korrekt address.";
