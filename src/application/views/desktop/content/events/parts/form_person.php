@@ -48,6 +48,6 @@
 			<?php echo lang(LANG_KEY_FIELD_ALLERGIES); ?>
 		</label>
 		<br/>
-		<input type="text" <?php if ($disableFields == TRUE) { echo 'disabled="disabled"'; } ?> name="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_ALLERGIES ?>" id="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_ALLERGIES ?>" value="<?php echo set_value($fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_ALLERGIES, isset($person->{DB_PERSON_ALLERGIES}) ? $person->{DB_PERSON_ALLERGIES} : "" ); ?>" maxlength="255" class="ui-corner-all" />	
+		<input type="text" style="width: 520px" <?php if ($disableFields == TRUE) { echo 'disabled="disabled"'; } ?> name="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_ALLERGIES ?>" id="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_ALLERGIES ?>" value="<?php echo set_value($fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_ALLERGIES, isset($person->{DB_PERSON_ALLERGIES}) ? $person->{DB_PERSON_ALLERGIES} : "" ); ?>" maxlength="255" class="ui-corner-all" />	
 	</div>
 <?php } ?>

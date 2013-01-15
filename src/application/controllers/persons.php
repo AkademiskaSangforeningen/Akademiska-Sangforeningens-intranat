@@ -148,7 +148,7 @@ class Persons extends CI_Controller {
 			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PASSWORD,	lang(LANG_KEY_FIELD_PASSWORD), 		'trim|max_length[50]|xss_clean|callback__checkPassword');
 		}		
 		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_VOICE, 			lang(LANG_KEY_FIELD_VOICE), 		'trim|exact_length[2]|required|xss_clean|callback__checkVoiceInEnumList');
-		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES, 		lang(LANG_KEY_FIELD_ALLERGIES), 	'trim|max_length[50]|xss_clean');
+		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES, 		lang(LANG_KEY_FIELD_ALLERGIES), 	'trim|max_length[255]|xss_clean');
 		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PHONE, 			lang(LANG_KEY_FIELD_PHONE), 		'trim|max_length[50]|xss_clean');
 		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_ADDRESS, 		lang(LANG_KEY_FIELD_ADDRESS), 		'trim|max_length[50]|xss_clean');
 		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_POSTALCODE, 	lang(LANG_KEY_FIELD_POSTALCODE), 	'trim|max_length[50]|xss_clean');
