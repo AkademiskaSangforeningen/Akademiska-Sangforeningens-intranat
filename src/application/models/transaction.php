@@ -106,9 +106,7 @@ Class Transaction extends CI_Model {
 		$this->db->from(DB_TABLE_TRANSACTION);
 		$this->db->where(DB_TRANSACTION_PERSONID, $personId);
 		if ($eventId !== FALSE) {
-			$this->db->where('NOT EXISTS (SELECT 1 FROM ' . DB_TABLE_PERSONHASEVENT . ' WHERE ' . DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_TRANSACTIONID . ' = ' . DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_ID
-				. ' AND ' . DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_EVENTID . ' = \'' . $eventId . '\''
-				. ' AND ' . DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_PERSONID . ' = \'' . $personId . '\')', NULL, FALSE);
+			$this->db->where_not_in(DB_TRANSACTION_EVENTID, array($eventId));
 		}
 
 		$query = $this->db->get();

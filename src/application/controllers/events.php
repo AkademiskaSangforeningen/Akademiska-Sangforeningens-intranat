@@ -468,12 +468,13 @@ class Events extends CI_Controller {
 			$this->form_validation->set_rules($eventItem->{DB_EVENTITEM_ID} . '_' . DB_PERSONHASEVENTITEM_AMOUNT, 								DB_PERSONHASEVENTITEM_EVENTITEMID . '[]', 							'trim|numeric|xss_clean');
 		}
 
-		/*
-		DISABLE TRANSACTION CHECK
-		$this->form_validation->set_rules(DB_TABLE_PERSONHASEVENT . '_' . DB_PERSONHASEVENT_PAYMENTTYPE, lang(LANG_KEY_FIELD_PAYMENTTYPE), 'callback__checkEnoughTransactionAmount[' . $eventId . ',' . $personId . ']');
-		*/
-
-		
+		//Check KK-sum for KK-payment for internal users
+		if ($internalRegistration && $personId != NULL) {
+			$personStatus = $this->person->getPerson($personId, array(DB_PERSON_STATUS));
+			if ($personStatus->{DB_PERSON_STATUS} == PERSON_STATUS_INTERNAL) {					
+				$this->form_validation->set_rules(DB_TABLE_PERSONHASEVENT . '_' . DB_PERSONHASEVENT_PAYMENTTYPE, lang(LANG_KEY_FIELD_PAYMENTTYPE), 'callback__checkEnoughTransactionAmount[' . $eventId . ',' . $personId . ']');
+			}
+		}
 		
 		//If errors found, redraw the login form to the user
 		if($this->form_validation->run() === FALSE) {
@@ -1194,11 +1195,32 @@ class Events extends CI_Controller {
 					}
 				}
 			}
+			if ($this->input->post(DB_TABLE_EVENT . '_' . DB_EVENT_AVECALLOWED) == TRUE) {
+				$avecEventItemIds = $this->input->post(DB_CUSTOM_AVEC . '_' . DB_PERSONHASEVENTITEM_EVENTITEMID);
+				if ($avecEventItemIds !== FALSE) {
+					foreach ($avecEventItemIds as $eventItemId) {
+						$eventItemAmount = $this->input->post(DB_CUSTOM_AVEC . '_' . $eventItemId . '_' . DB_PERSONHASEVENTITEM_AMOUNT, TRUE);
+						if ($eventItemAmount === FALSE) {
+							$eventItemAmount = 1;
+						}
+
+						//Don't save not-selected event items or event items with empty (but not NULL) descriptions
+						if ($eventItemAmount == 0) {
+							continue;
+						}
+						
+						$eventItem = $this->eventitem->getEventItem($eventItemId);
+						if ($eventItem !== FALSE) {
+							$eventItemsAmountTotal += ($eventItemAmount * $eventItem->{DB_EVENTITEM_AMOUNT});
+						}
+					}
+				}			
+			}
 			
 			$currentBalance = $this->transaction->getPersonCurrentBalance($personId, $eventId); 
 		
 			if ($eventItemsAmountTotal > $currentBalance) {		
-				$this->form_validation->set_message('_checkEnoughTransactionAmount', 'Du har endast ' . formatCurrency($currentBalance) . ' på ditt kvartettkonto');
+				$this->form_validation->set_message('_checkEnoughTransactionAmount', 'Du har endast ' . formatCurrency($currentBalance) . ' på ditt kvartettkonto, behövs ' . formatCurrency($eventItemsAmountTotal));
 				return FALSE;		
 			} else {
 				return TRUE;
