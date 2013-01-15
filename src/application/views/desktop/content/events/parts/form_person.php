@@ -43,7 +43,7 @@
 <?php } ?>
 
 <?php if (in_array(DB_PERSON_ALLERGIES, $showFields) && $event->{DB_EVENT_CANUSERSSETALLERGIES} == TRUE) { ?>
-	<div class="single-field">
+	<div class="single-field" style="clear: both">
 		<label for="<?php echo $fieldPrefix . DB_TABLE_PERSON . "_" . DB_PERSON_ALLERGIES; ?>">
 			<?php echo lang(LANG_KEY_FIELD_ALLERGIES); ?>
 		</label>
