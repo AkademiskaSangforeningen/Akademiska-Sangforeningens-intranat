@@ -440,7 +440,11 @@
 			theme_advanced_buttons2 : "cut,copy,paste,pastetext,separator,undo,redo,separator,tablecontrols,separator,image,code,fullscreen",
 			theme_advanced_buttons3 : "",
 			theme_advanced_path: false,			
-			plugins: "table,paste"
+			plugins: "table,paste",
+			height: 300,
+			theme_advanced_resizing : true,
+			theme_advanced_resizing_max_width: 710,
+			theme_advanced_resizing_min_width: 710
 		});
 	AKADEMEN.initializeFormValidation();
 </script>
