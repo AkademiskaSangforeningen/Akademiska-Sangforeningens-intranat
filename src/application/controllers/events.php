@@ -588,8 +588,8 @@ class Events extends CI_Controller {
 						$eventItemDescription = NULL;
 					}
 
-					//Don't save not-selected event items or event items with empty (but not NULL) descriptions
-					if ($eventItemAmount == 0 || $eventItemDescription === '') {
+					//Don't save event items with empty (but not NULL) descriptions
+					if ($eventItemDescription === '') {
 						continue;
 					}
 
