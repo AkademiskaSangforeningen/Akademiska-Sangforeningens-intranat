@@ -479,7 +479,7 @@ class Events extends CI_Controller {
 		}
 		
 		//If errors found, redraw the login form to the user
-		if($this->form_validation->run() === FALSE || 1 == 1) {
+		if($this->form_validation->run() === FALSE) {
 			$client = CLIENT_DESKTOP;
 			
 			$data = array();
