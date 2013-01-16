@@ -362,6 +362,7 @@ class Events extends CI_Controller {
 		$part_form_eventItems['fieldPrefix']			= '';
 		$part_form_eventItems['personId']				= $personId;
 		$part_form_eventItems['internalRegistration']	= $internalRegistration;
+		$part_form_eventItems['personHasEvent']			= $personHasEvent;
 		$data['part_form_eventitems'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_EVENTITEMS,	$part_form_eventItems, TRUE);		
 		
 		if ($event->{DB_EVENT_AVECALLOWED} == 1) {
@@ -377,15 +378,16 @@ class Events extends CI_Controller {
 			$data_part_form_personAvec['fieldPrefix']			= DB_CUSTOM_AVEC . '_';
 			$data_part_form_personAvec['disableFields']			= FALSE;
 			$data_part_form_personAvec['showFields']			= ($personId != NULL) ? array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_ALLERGIES) 
-																		: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_ALLERGIES);		
+																		: array(DB_PERSON_FIRSTNAME, DB_PERSON_LASTNAME, DB_PERSON_ALLERGIES);			
 			$data['part_form_personAvec'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_PERSON, $data_part_form_personAvec, TRUE);
 
 			//Event items avec form
 			$data_part_form_eventItemsAvec = array();
-			$data_part_form_eventItemsAvec['eventItems'] 	= $this->eventitem->getEventItems($eventId, $personAvecId);
-			$data_part_form_eventItemsAvec['currentIsAvec']	= TRUE;
-			$data_part_form_eventItemsAvec['fieldPrefix']	= DB_CUSTOM_AVEC . '_';
-			$data_part_form_eventItemsAvec['personId']		= $personId;
+			$data_part_form_eventItemsAvec['eventItems'] 		= $this->eventitem->getEventItems($eventId, $personAvecId);
+			$data_part_form_eventItemsAvec['currentIsAvec']		= TRUE;
+			$data_part_form_eventItemsAvec['fieldPrefix']		= DB_CUSTOM_AVEC . '_';
+			$data_part_form_eventItemsAvec['personId']			= $personId;
+			$data_part_form_eventItemsAvec['personHasEvent']	= $personHasEvent;																					
 			$data['part_form_eventitemsAvec'] = $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_EVENTITEMS,	$data_part_form_eventItemsAvec, TRUE);		
 		}					
 
@@ -477,7 +479,7 @@ class Events extends CI_Controller {
 		}
 		
 		//If errors found, redraw the login form to the user
-		if($this->form_validation->run() === FALSE) {
+		if($this->form_validation->run() === FALSE || 1 == 1) {
 			$client = CLIENT_DESKTOP;
 			
 			$data = array();
@@ -511,11 +513,12 @@ class Events extends CI_Controller {
 			
 			//Event items form
 			$part_form_eventItems = array();
-			$part_form_eventItems['eventItems']		= $eventItems;
-			$part_form_eventItems['currentIsAvec']	= FALSE;
-			$part_form_eventItems['fieldPrefix']	= '';
-			$part_form_eventItems['personId']		= $personId;
+			$part_form_eventItems['eventItems']				= $eventItems;
+			$part_form_eventItems['currentIsAvec']			= FALSE;
+			$part_form_eventItems['fieldPrefix']			= '';
+			$part_form_eventItems['personId']				= $personId;
 			$part_form_eventItems['internalRegistration']	= $internalRegistration;
+			$part_form_eventItems['personHasEvent']			= TRUE;
 			$data['part_form_eventitems']	= $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_EVENTITEMS,	$part_form_eventItems, TRUE);		
 			
 			if ($event->{DB_EVENT_AVECALLOWED} == 1) {
@@ -536,10 +539,11 @@ class Events extends CI_Controller {
 
 				//Event items avec form
 				$data_part_form_eventItemsAvec = array();
-				$data_part_form_eventItemsAvec['eventItems'] 	= $eventItems;
-				$data_part_form_eventItemsAvec['currentIsAvec']	= TRUE;
-				$data_part_form_eventItemsAvec['fieldPrefix']	= DB_CUSTOM_AVEC . '_';
-				$data_part_form_eventItemsAvec['personId']		= $personId;
+				$data_part_form_eventItemsAvec['eventItems'] 		= $eventItems;
+				$data_part_form_eventItemsAvec['currentIsAvec']		= TRUE;
+				$data_part_form_eventItemsAvec['fieldPrefix']		= DB_CUSTOM_AVEC . '_';
+				$data_part_form_eventItemsAvec['personId']			= $personId;
+				$data_part_form_eventItemsAvec['personHasEvent']	= TRUE;
 				$data['part_form_eventitemsAvec']	= $this->load->view($client . VIEW_CONTENT_EVENTS_PART_FORM_EVENTITEMS,	$data_part_form_eventItemsAvec, TRUE);		
 			}			
 			
