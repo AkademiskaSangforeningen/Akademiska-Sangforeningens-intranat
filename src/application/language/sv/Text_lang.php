@@ -37,6 +37,7 @@ $lang[LANG_KEY_BUTTON_CREATE_NEW_EVENT_REGISTRATION]	= "Skapa ny anmälan";
 
 $lang[LANG_KEY_FIELD_EMAIL]						= "E-postadress";
 $lang[LANG_KEY_FIELD_PASSWORD]					= "Lösenord";
+$lang[LANG_KEY_FIELD_CHANGE_YOUR_PASSWORD]		= "Ändra ditt lösenord";
 
 $lang[LANG_KEY_FIELD_NAME]							= "Namn";
 $lang[LANG_KEY_FIELD_PASSWORD_AGAIN] 				= "Repetera det nya lösenordet";

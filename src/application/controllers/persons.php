@@ -219,7 +219,7 @@ class Persons extends CI_Controller {
 	function _checkPassword($password) {
 		$passwordRepeated = $this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_PASSWORD . '_repeat');
 		if (($password != "" || $passwordRepeated != "") && $password != $passwordRepeated) {
-			$this->form_validation->set_message('_checkPassword', $password);
+			$this->form_validation->set_message('_checkPassword', lang(LANG_KEY_FIELD_PASSWORD_AGAIN));
 			return false;
 		}
 	}

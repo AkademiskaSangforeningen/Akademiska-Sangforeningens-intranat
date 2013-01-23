@@ -46,6 +46,7 @@ define('LANG_KEY_BUTTON_CREATE_NEW_EVENT_REGISTRATION',	'button_create_new_event
 //Fields
 define('LANG_KEY_FIELD_EMAIL',							'field_email');
 define('LANG_KEY_FIELD_PASSWORD',						'field_password');
+define('LANG_KEY_FIELD_CHANGE_YOUR_PASSWORD',			'field_change_your_password');
 define('LANG_KEY_FIELD_PASSWORD_AGAIN',					'field_password_again');
 define('LANG_KEY_FIELD_NAME',							'field_name');
 define('LANG_KEY_FIELD_ACCESSRIGHTS',					'field_accessRights');

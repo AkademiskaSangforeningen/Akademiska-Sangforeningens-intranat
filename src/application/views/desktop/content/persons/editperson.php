@@ -37,10 +37,18 @@
 
 		<div class="single-field">
 			<label for="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_PASSWORD; ?>">
-				<?php echo lang(LANG_KEY_FIELD_PASSWORD); ?>
+				<?php echo lang(LANG_KEY_FIELD_CHANGE_YOUR_PASSWORD); ?>
 			</label>
 			<br/>
 			<input type="password" name="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_PASSWORD ?>" id="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_PASSWORD ?>" maxlength="50" class="ui-corner-all" />	
+		</div>
+
+		<div class="single-field">
+			<label for="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_VOICE; ?>">
+				<?php echo lang(LANG_KEY_FIELD_VOICE); ?>
+			</label>
+			<br/>
+			<?php echo form_dropdown(DB_TABLE_PERSON . "_" . DB_PERSON_VOICE, getEnum(ENUM_VOICES), set_value(DB_TABLE_PERSON . "_" . DB_PERSON_VOICE, isset($person->{DB_PERSON_VOICE}) ? $person->{DB_PERSON_VOICE} : "" ), 'id="' . DB_TABLE_PERSON . '_' . DB_PERSON_VOICE . '" class="ui-corner-all"'); ?>		
 		</div>
 		
 		<div class="single-field">
@@ -50,14 +58,6 @@
 			<br/>
 			<input type="password" name="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_PASSWORD ?>_repeat" id="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_PASSWORD ?>_repeat" maxlength="50" class="ui-corner-all" />	
 		</div>	
-		
-		<div class="single-field">
-			<label for="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_VOICE; ?>">
-				<?php echo lang(LANG_KEY_FIELD_VOICE); ?>
-			</label>
-			<br/>
-			<?php echo form_dropdown(DB_TABLE_PERSON . "_" . DB_PERSON_VOICE, getEnum(ENUM_VOICES), set_value(DB_TABLE_PERSON . "_" . DB_PERSON_VOICE, isset($person->{DB_PERSON_VOICE}) ? $person->{DB_PERSON_VOICE} : "" ), 'id="' . DB_TABLE_PERSON . '_' . DB_PERSON_VOICE . '" class="ui-corner-all"'); ?>		
-		</div>
 		
 		<div class="single-field">
 			<label for="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_ALLERGIES; ?>">

@@ -229,6 +229,11 @@ var AKADEMEN = (function(){
 			$('#form_editobject')
 				.validate({
 					onkeyup: false,
+					rules: {
+						"person_Password_repeat": {
+							  equalTo: "#person_Password"
+							}					
+					},
 					submitHandler: function(form) {
 						if (defaultPost) {
 							form.submit();
