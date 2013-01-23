@@ -444,7 +444,9 @@
 			height: 300,
 			theme_advanced_resizing : true,
 			theme_advanced_resizing_max_width: 710,
-			theme_advanced_resizing_min_width: 710
+			theme_advanced_resizing_min_width: 710,
+			relative_urls : false,
+			remove_script_host : false			
 		});
 	AKADEMEN.initializeFormValidation();
 </script>
