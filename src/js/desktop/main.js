@@ -228,6 +228,7 @@ var AKADEMEN = (function(){
 		initializeFormValidation: function(defaultPost) {
 			$('#form_editobject')
 				.validate({
+					onkeyup: false,
 					submitHandler: function(form) {
 						if (defaultPost) {
 							form.submit();

@@ -22,6 +22,7 @@
 		var executeOnStart = function ($) {			
 			//Validate the form already on client side
 			$("#form_login").validate({
+				onkeyup: false,
 				submitHandler: function(form) {
 					$("#form_login_submit_button")
 						.button({ disabled: true })
