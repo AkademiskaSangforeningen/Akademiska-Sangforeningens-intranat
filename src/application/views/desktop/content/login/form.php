@@ -7,7 +7,7 @@
 			<?php echo lang(LANG_KEY_FIELD_EMAIL); ?>
 		</label>
 		<br/>
-		<input type="email" size="20" id="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL; ?>" name="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL; ?>" class="email required ui-corner-all" />
+		<input type="email" size="20" id="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL; ?>" name="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_EMAIL; ?>" class="email required ui-corner-all" autofocus="true" />
 		<br/>
 		<label for="<?php echo DB_TABLE_PERSON . "_" . DB_PERSON_PASSWORD; ?>">
 			<?php echo lang(LANG_KEY_FIELD_PASSWORD); ?>
