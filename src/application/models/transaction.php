@@ -119,7 +119,7 @@ Class Transaction extends CI_Model {
 		}
 	}
 
-	function getTransactionList($personId = NULL) {
+	function getTransactionList($personId = NULL, $limit = FALSE, $offset = FALSE) {
 		$this->db->select(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_ID);
 		$this->db->select(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_TRANSACTIONDATE);
 		$this->db->select(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_AMOUNT);
@@ -127,16 +127,26 @@ Class Transaction extends CI_Model {
 		$this->db->select(DB_TABLE_EVENT . '.' . DB_EVENT_NAME);
 		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_FIRSTNAME);
 		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_LASTNAME);
+		if ($personId) {
+			$this->db->select('(SELECT COUNT(*) FROM ' . DB_TABLE_TRANSACTION . ' AS A WHERE A .' . DB_TRANSACTION_PERSONID . ' = ' . DB_TABLE_PERSON . '.' . DB_PERSON_ID . ') AS ' . DB_TOTALCOUNT, FALSE);
+		} else {
+			$this->db->select('(SELECT COUNT(*) FROM ' . DB_TABLE_TRANSACTION . ' AS A) AS ' . DB_TOTALCOUNT, FALSE);
+		}
 		$this->db->from(DB_TABLE_TRANSACTION);
 		$this->db->join(DB_TABLE_PERSON, DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_PERSONID . '=' . DB_TABLE_PERSON . '.' . DB_PERSON_ID, 'inner');
 		$this->db->join(DB_TABLE_EVENT, DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_EVENTID . '=' . DB_TABLE_EVENT . '.' . DB_EVENT_ID, 'left');
 
 		if($personId) {
 			$this->db->where(DB_TABLE_PERSON . '.' . DB_PERSON_ID, $personId);
-		}
-
+		}		
+		
 		$this->db->order_by(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_TRANSACTIONDATE, "desc");
+		$this->db->order_by(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_DESCRIPTION, "asc");
 
+		if ($limit !== FALSE && $offset !== FALSE) {
+			$this->db->limit($limit, $offset);
+		}		
+		
 		$query = $this->db->get();
 		return $query->result();
 	}

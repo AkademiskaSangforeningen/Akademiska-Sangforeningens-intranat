@@ -38,3 +38,4 @@ define('PERSON_STATUS_INTERNAL',			10);
 
 //List views
 define('LIST_DEF_PAGING',					100);
+define('LIST_DEF_PAGING_MINI_LIST',			10);

@@ -1,3 +1,6 @@
+<div class="pagination">
+	<?php echo $pagination; ?>
+</div>
 <table>
 	<thead>
 		<tr>
@@ -22,3 +25,11 @@
 	<?php } ?>
 	</tbody>
 </table>
+<script>
+	$('#mytransactions-body .pagination a').bind('click', function (e) {
+		e.preventDefault();
+		$('#mytransactions-body').load($(this).attr("href"), function() {
+			AKADEMEN.initializeButtons();
+		});		
+	});
+</script>		

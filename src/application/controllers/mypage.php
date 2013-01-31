@@ -88,10 +88,14 @@ class MyPage extends CI_Controller {
 		$this->load->view($client . VIEW_CONTENT_EVENTS_LIST_PERSONAL_EVENTS, $data);		
 	}
 	
-	function listTransactions() {
+	function listTransactions($offset = 0) {
 		if ($this->session->userdata(SESSION_LOGGEDIN) == false) {
 			return;
 		}
+		
+		if (!ctype_digit($offset)) {
+			$offset = 0;
+		}		
 
 		//Here we could define a different client type based on user agent-headers
 		$client = CLIENT_DESKTOP;
@@ -99,13 +103,27 @@ class MyPage extends CI_Controller {
 		//Load languages. As we don't yet know the user's language, we default to swedish
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));			
 		// Load event model
-		$this->load->model(MODEL_TRANSACTION, strtolower(MODEL_TRANSACTION), TRUE);		
+		$this->load->model(MODEL_TRANSACTION, strtolower(MODEL_TRANSACTION), TRUE);	
+
+		$this->load->library('pagination');
+		
 		$personId = $this->session->userdata(SESSION_PERSONID);
+
+		$transactionList = $this->transaction->getTransactionList($personId, LIST_DEF_PAGING_MINI_LIST, $offset);
+
+		$config['base_url'] 	= site_url() . CONTROLLER_MY_PAGE_LIST_TRANSACTIONS . '/';
+		$config['total_rows']	= $transactionList[0]->{DB_TOTALCOUNT};
+		$config['first_link'] 	= lang(LANG_KEY_BUTTON_PAGING_FIRST);
+		$config['last_link'] 	= lang(LANG_KEY_BUTTON_PAGING_LAST);
+		$config['anchor_class']	= 'class="button" ';
+		$config['per_page'] 	= LIST_DEF_PAGING_MINI_LIST; 
+		$this->pagination->initialize($config);	
 		
 		$data = array();
-		$data['transactionList'] 	= $this->transaction->getTransactionList($personId);
+		$data['transactionList'] 	= $transactionList;
 		$data['transactionSum']		= $this->transaction->getTransactionSum($personId);
-		$data['personId']			= $this->session->userdata(SESSION_PERSONID);
+		$data['personId']			= $personId;
+		$data['pagination']	= $this->pagination->create_links();
 		
 		//Load default event listing view	
 		$this->load->view($client . VIEW_CONTENT_TRANSACTIONS_LIST_PERSONAL_TRANSACTIONS, $data);				
