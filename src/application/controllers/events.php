@@ -154,13 +154,15 @@ class Events extends CI_Controller {
 		$csv = array();
 		
 		$headerArray = array();
-		$headerArray[] = lang(LANG_KEY_FIELD_NAME);
+		$headerArray[] = 'Efternamn';
+		$headerArray[] = 'Förnamn';
 		if ($event->{DB_EVENT_CANUSERSSETALLERGIES} == TRUE) {
 			$headerArray[] = lang(LANG_KEY_FIELD_ALLERGIES);
 		}
 		if ($event->{DB_EVENT_AVECALLOWED} == TRUE) {
 			$headerArray[] = 'Avec';
 		}
+		$headerArray[] = 'Anmäld';
 		$headerArray[] = '1T';
 		$headerArray[] = '2T';
 		$headerArray[] = '1B';
@@ -192,13 +194,15 @@ class Events extends CI_Controller {
 		$previousPersonId = NULL;
 		foreach($persons as $key => $person) {
 			$singleLineArray = array();
-			$singleLineArray[] = $person->{DB_PERSON_FIRSTNAME} . ' ' . $person->{DB_PERSON_LASTNAME};
+			$singleLineArray[] = $person->{DB_PERSON_LASTNAME};
+			$singleLineArray[] = $person->{DB_PERSON_FIRSTNAME};
 			if ($event->{DB_EVENT_CANUSERSSETALLERGIES} == TRUE) {
 				$singleLineArray[] = $person->{DB_PERSON_ALLERGIES};
 			}
 			if ($event->{DB_EVENT_AVECALLOWED} == TRUE) {
 				$singleLineArray[] = '';	// Avec
 			}
+			$singleLineArray[] = $person->{DB_PERSONHASEVENT_CREATED};
 			$singleLineArray[] = $person->{DB_PERSON_VOICE} == ENUM_VOICE_1T ? '1' : '';
 			$singleLineArray[] = $person->{DB_PERSON_VOICE} == ENUM_VOICE_2T ? '1' : '';
 			$singleLineArray[] = $person->{DB_PERSON_VOICE} == ENUM_VOICE_1B ? '1' : '';
@@ -230,11 +234,13 @@ class Events extends CI_Controller {
 			
 			if ($event->{DB_EVENT_AVECALLOWED} == TRUE && $person->{DB_CUSTOM_AVEC . DB_PERSON_ID} != NULL) {
 				$singleLineArray = array();
-				$singleLineArray[] = $person->{DB_CUSTOM_AVEC . DB_PERSON_FIRSTNAME} . ' ' . $person->{DB_CUSTOM_AVEC . DB_PERSON_LASTNAME};
+				$singleLineArray[] = $person->{DB_CUSTOM_AVEC . DB_PERSON_LASTNAME};
+				$singleLineArray[] = $person->{DB_CUSTOM_AVEC . DB_PERSON_FIRSTNAME};
 				if ($event->{DB_EVENT_CANUSERSSETALLERGIES} == TRUE) {
 					$singleLineArray[] = $person->{DB_CUSTOM_AVEC . DB_PERSON_ALLERGIES};
 				}
 				$singleLineArray[] = '1'; 	// Avec
+				$singleLineArray[] = '';	// Anmäld
 				$singleLineArray[] = '';	// 1T
 				$singleLineArray[] = '';	// 2T
 				$singleLineArray[] = '';	// 1B

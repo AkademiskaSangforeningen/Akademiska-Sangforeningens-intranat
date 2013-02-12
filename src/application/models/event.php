@@ -82,8 +82,9 @@ class Event extends CI_Model {
 		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_LASTNAME);
 		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_EMAIL);		
 		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_ALLERGIES);
-		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_VOICE);
+		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_VOICE);		
 		$this->db->select(DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_PAYMENTTYPE);
+		$this->db->select(DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_CREATED);
 		$this->db->select('(SELECT SUM(IFNULL(' . DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_AMOUNT . ', 0) * IFNULL(' . DB_TABLE_EVENTITEM . '.' . DB_EVENTITEM_AMOUNT . ', 0))'
 				. ' FROM ' . DB_TABLE_PERSONHASEVENTITEM
 				. ' INNER JOIN ' . DB_TABLE_EVENTITEM . ' ON ' . DB_TABLE_PERSONHASEVENTITEM . '.' . DB_PERSONHASEVENTITEM_EVENTITEMID . ' = ' . DB_TABLE_EVENTITEM . '.' . DB_EVENTITEM_ID
@@ -108,8 +109,8 @@ class Event extends CI_Model {
 		$this->db->join(DB_TABLE_PERSON, DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_PERSONID . ' = ' . DB_TABLE_PERSON . '.' . DB_PERSON_ID, 'inner');
 		$this->db->join(DB_TABLE_PERSON . ' AS ' . DB_CUSTOM_AVEC . DB_TABLE_PERSON, DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_AVECPERSONID . ' = ' . DB_CUSTOM_AVEC . DB_TABLE_PERSON . '.' . DB_PERSON_ID, 'left');
 		$this->db->where(DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_EVENTID, $eventId);
-		$this->db->order_by(DB_TABLE_PERSON . '.' . DB_PERSON_FIRSTNAME);
 		$this->db->order_by(DB_TABLE_PERSON . '.' . DB_PERSON_LASTNAME);
+		$this->db->order_by(DB_TABLE_PERSON . '.' . DB_PERSON_FIRSTNAME);		
 		if ($limit !== FALSE && $offset !== FALSE) {
 			$this->db->limit($limit, $offset);
 		}
