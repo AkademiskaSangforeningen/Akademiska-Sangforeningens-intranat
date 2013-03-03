@@ -13,6 +13,7 @@ define('CLIENT_MOBILE',						'mobile');
 //HTTP params
 define('HTTP_DIALOG',						'dialog');
 define('HTTP_SHOWASCSV',					'showascsv');
+define('HTTP_WILDCARDSEARCH', 				'wildcardsearch');
 
 //Placeholders
 define('PLACEHOLDER_PERSON',				'[person]');

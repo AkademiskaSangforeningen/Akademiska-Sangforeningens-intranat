@@ -25,6 +25,7 @@ $lang[LANG_KEY_BUTTON_OK]								= "Ok";
 $lang[LANG_KEY_BUTTON_CANCEL]							= "Ångra";
 $lang[LANG_KEY_BUTTON_CREATE_NEW_TRANSACTION]			= "Skapa ny transaktion";
 $lang[LANG_KEY_BUTTON_EDIT_TRANSACTION]					= "Redigera transaktion";
+$lang[LANG_KEY_BUTTON_DELETE_TRANSACTION]				= "Radera transaktion";
 $lang[LANG_KEY_BUTTON_CREATE_NEW_EVENT]					= "Skapa nytt evenemang";
 $lang[LANG_KEY_BUTTON_EDIT_EVENT]						= "Redigera evenemang";
 $lang[LANG_KEY_BUTTON_DELETE_EVENT]						= "Radera evenemang";
@@ -76,6 +77,7 @@ $lang[LANG_KEY_FIELD_PAYMENT_INFO]					= "Betalningsinfo (syns endast i e-post d
 $lang[LANG_KEY_FIELD_CAN_USERS_VIEW_REGISTRATIONS]	= "Kan användare se vem som registrerat sig?";
 $lang[LANG_KEY_FIELD_CAN_USERS_SET_ALLERGIES]		= "Kan användare ange specialdieter?";
 $lang[LANG_KEY_FIELD_IS_MAP_SHOWN]					= "Visa platskarta för användare?";
+$lang[LANG_KEY_FIELD_SEARCH]						= "Sök";
 
 $lang[LANG_KEY_ENUM_VOICE_1_TENOR]							= "1:a tenor";
 $lang[LANG_KEY_ENUM_VOICE_2_TENOR]							= "2:a tenor";

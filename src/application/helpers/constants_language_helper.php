@@ -33,6 +33,7 @@ define('LANG_KEY_BUTTON_OK',							'button_ok');
 define('LANG_KEY_BUTTON_CANCEL',						'button_cancel');
 define('LANG_KEY_BUTTON_CREATE_NEW_TRANSACTION',		'button_create_new_transaction');
 define('LANG_KEY_BUTTON_EDIT_TRANSACTION',				'button_edit_transaction');
+define('LANG_KEY_BUTTON_DELETE_TRANSACTION',			'button_delete_transaction');
 define('LANG_KEY_BUTTON_CREATE_NEW_EVENT',				'button_create_new_event');
 define('LANG_KEY_BUTTON_EDIT_EVENT',					'button_edit_event');
 define('LANG_KEY_BUTTON_DELETE_EVENT',					'button_delete_event');
@@ -83,6 +84,7 @@ define('LANG_KEY_FIELD_PAYMENT_INFO',					'field_payment_info');
 define('LANG_KEY_FIELD_CAN_USERS_VIEW_REGISTRATIONS',	'field_can_users_view_registrations');
 define('LANG_KEY_FIELD_CAN_USERS_SET_ALLERGIES',		'field_can_users_set_allergies');
 define('LANG_KEY_FIELD_IS_MAP_SHOWN',					'field_is_map_shown');
+define('LANG_KEY_FIELD_SEARCH',							'field_search');
 
 //Enumerations
 define('LANG_KEY_ENUM_VOICE_1_TENOR',						'enum_voice_1st_tenor');

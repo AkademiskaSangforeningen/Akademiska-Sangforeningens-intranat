@@ -115,6 +115,8 @@ class Persons extends CI_Controller {
 		//Load languages
 		$this->lang->load(LANG_FILE, $this->session->userdata(SESSION_LANG));				
 		
+		$data = array();
+		
 		if (!is_null($personId)) {
 			$this->load->model(MODEL_PERSON, strtolower(MODEL_PERSON), TRUE);
 			$data['person'] = $this->person->getPerson($personId);

@@ -109,7 +109,7 @@ class MyPage extends CI_Controller {
 		
 		$personId = $this->session->userdata(SESSION_PERSONID);
 
-		$transactionList = $this->transaction->getTransactionList($personId, LIST_DEF_PAGING_MINI_LIST, $offset);
+		$transactionList = $this->transaction->getTransactionList($personId, NULL, LIST_DEF_PAGING_MINI_LIST, $offset);
 
 		$config['base_url'] 	= site_url() . CONTROLLER_MY_PAGE_LIST_TRANSACTIONS . '/';
 		$config['total_rows']	= $transactionList[0]->{DB_TOTALCOUNT};

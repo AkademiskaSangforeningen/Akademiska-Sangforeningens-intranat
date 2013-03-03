@@ -119,11 +119,12 @@ Class Transaction extends CI_Model {
 		}
 	}
 
-	function getTransactionList($personId = NULL, $limit = FALSE, $offset = FALSE) {
+	function getTransactionList($personId = NULL, $wildCardSearch = NULL, $limit = FALSE, $offset = FALSE) {
 		$this->db->select(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_ID);
 		$this->db->select(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_TRANSACTIONDATE);
 		$this->db->select(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_AMOUNT);
 		$this->db->select(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_DESCRIPTION);
+		$this->db->select(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_EVENTID);
 		$this->db->select(DB_TABLE_EVENT . '.' . DB_EVENT_NAME);
 		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_FIRSTNAME);
 		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_LASTNAME);
@@ -136,9 +137,16 @@ Class Transaction extends CI_Model {
 		$this->db->join(DB_TABLE_PERSON, DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_PERSONID . '=' . DB_TABLE_PERSON . '.' . DB_PERSON_ID, 'inner');
 		$this->db->join(DB_TABLE_EVENT, DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_EVENTID . '=' . DB_TABLE_EVENT . '.' . DB_EVENT_ID, 'left');
 
-		if($personId) {
+		if ($personId) {
 			$this->db->where(DB_TABLE_PERSON . '.' . DB_PERSON_ID, $personId);
-		}		
+		}
+		
+		if ($wildCardSearch) {
+			$this->db->like(DB_TABLE_PERSON . '.' . DB_PERSON_FIRSTNAME, $wildCardSearch);
+			$this->db->or_like(DB_TABLE_PERSON . '.' . DB_PERSON_LASTNAME, $wildCardSearch); 		
+			$this->db->or_like(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_DESCRIPTION, $wildCardSearch); 		
+			$this->db->or_like(DB_TABLE_EVENT . '.' . DB_EVENT_NAME, $wildCardSearch); 					
+		}
 		
 		$this->db->order_by(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_TRANSACTIONDATE, "desc");
 		$this->db->order_by(DB_TABLE_TRANSACTION . '.' . DB_TRANSACTION_DESCRIPTION, "asc");
@@ -173,17 +181,30 @@ Class Transaction extends CI_Model {
 	*
 	* @param string $transactionId GUID of the transaction, if NULL an INSERT is made, otherwise UPDATE
 	*/
-	function saveTransaction($data, $transactionId = NULL) {
+	function saveTransaction($data, $transactionId = NULL, $modifierId) {
 		if (!is_null($transactionId)) {
 			$this->db->where(DB_TRANSACTION_ID, $transactionId);
 			$this->db->set(DB_TRANSACTION_MODIFIED, 'NOW()', FALSE);
-			$this->db->set(DB_TRANSACTION_MODIFIEDBY, $this->session->userdata(SESSION_PERSONID));
+			$this->db->set(DB_TRANSACTION_MODIFIEDBY, $modifierId);
 			$this->db->update(DB_TABLE_TRANSACTION, $data);
 		} else {
 			$data[DB_TRANSACTION_ID] = substr(generateGuid(), 1, 36);
 			$this->db->set(DB_TRANSACTION_CREATED, 'NOW()', FALSE);
-			$this->db->set(DB_TRANSACTION_CREATEDBY, $this->session->userdata(SESSION_PERSONID));
+			$this->db->set(DB_TRANSACTION_CREATEDBY, $modifierId);
 			$this->db->insert(DB_TABLE_TRANSACTION, $data);
 		}
-	}
+	}	
+	
+	/**
+	* Function used for delete a single manually created transaction
+	*
+	* @param string $transactionId GUID of the transaction
+	*/
+	function deleteManualTransaction($transactionId = NULL) {
+		if (!is_null($transactionId)) {
+			$this->db->where(DB_TRANSACTION_ID,			$transactionId);
+			$this->db->where(DB_TRANSACTION_EVENTID, 	NULL);
+			$this->db->delete(DB_TABLE_TRANSACTION);
+		}
+	}	
 }

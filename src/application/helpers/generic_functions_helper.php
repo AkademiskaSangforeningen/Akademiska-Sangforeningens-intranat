@@ -68,7 +68,7 @@
 	*	@return 	true or false
 	*/
 	function isGuidValid($value) {		
-		return preg_match('/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/', $value);
+		return preg_match('/^[A-Za-z0-9]{8}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{12}$/', $value);
 	}
 	
 	function extractHoursFromDate($date) {

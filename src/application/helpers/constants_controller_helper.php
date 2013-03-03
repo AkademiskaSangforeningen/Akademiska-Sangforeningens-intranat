@@ -35,11 +35,9 @@ define('CONTROLLER_MY_PAGE_LIST_TRANSACTIONS',		'mypage/listtransactions');
 //Transactions
 define('CONTROLLER_TRANSACTIONS', 					'transactions');
 define('CONTROLLER_TRANSACTIONS_LISTALL', 			'transactions/listall');
-
-define('CONTROLLER_TRANSACTIONS_ADMIN', 		'admin/transactions');
-define('CONTROLLER_TRANSACTIONS_ADMIN_LISTALL', CONTROLLER_TRANSACTIONS_ADMIN . '/listall');
-define('CONTROLLER_TRANSACTIONS_ADMIN_EDITSINGLE', CONTROLLER_TRANSACTIONS_ADMIN . '/editsingle');
-define('CONTROLLER_TRANSACTIONS_ADMIN_SAVESINGLE', CONTROLLER_TRANSACTIONS_ADMIN . '/savesingle');
+define('CONTROLLER_TRANSACTIONS_EDITSINGLE',		'transactions/editsingle');
+define('CONTROLLER_TRANSACTIONS_SAVESINGLE',		'transactions/savesingle');
+define('CONTROLLER_TRANSACTIONS_DELETESINGLE',		'transactions/deletesingle');
 
 //Events
 define('CONTROLLER_EVENTS',										'events');

@@ -106,6 +106,10 @@ select.short {
 	width: auto;
 }
 
+select.long {
+	width: 600px;
+}
+
 input:hover {
 	background: #f5f5f5;
 }
@@ -116,6 +120,10 @@ input.error {
 
 input.short {
 	width: 85px;
+}
+
+input.long {
+	width: 600px;
 }
 
 input.middle {
