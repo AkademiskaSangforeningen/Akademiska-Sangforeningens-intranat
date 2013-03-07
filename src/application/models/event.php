@@ -80,7 +80,8 @@ class Event extends CI_Model {
 		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_ID);
 		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_FIRSTNAME);
 		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_LASTNAME);
-		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_EMAIL);		
+		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_EMAIL);
+		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_PHONE);
 		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_ALLERGIES);
 		$this->db->select(DB_TABLE_PERSON . '.' . DB_PERSON_VOICE);		
 		$this->db->select(DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_PAYMENTTYPE);
@@ -105,6 +106,8 @@ class Event extends CI_Model {
 		$this->db->select(DB_CUSTOM_AVEC . DB_TABLE_PERSON . '.' . DB_PERSON_FIRSTNAME . ' AS ' . DB_CUSTOM_AVEC . DB_PERSON_FIRSTNAME, FALSE);
 		$this->db->select(DB_CUSTOM_AVEC . DB_TABLE_PERSON . '.' . DB_PERSON_LASTNAME . ' AS ' . DB_CUSTOM_AVEC . DB_PERSON_LASTNAME, 	FALSE);
 		$this->db->select(DB_CUSTOM_AVEC . DB_TABLE_PERSON . '.' . DB_PERSON_ALLERGIES . ' AS ' . DB_CUSTOM_AVEC . DB_PERSON_ALLERGIES, FALSE);		
+		$this->db->select(DB_CUSTOM_AVEC . DB_TABLE_PERSON . '.' . DB_PERSON_EMAIL . ' AS ' . DB_CUSTOM_AVEC . DB_PERSON_EMAIL, 	FALSE);
+		$this->db->select(DB_CUSTOM_AVEC . DB_TABLE_PERSON . '.' . DB_PERSON_PHONE . ' AS ' . DB_CUSTOM_AVEC . DB_PERSON_PHONE, 	FALSE);
 		$this->db->from(DB_TABLE_PERSONHASEVENT);
 		$this->db->join(DB_TABLE_PERSON, DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_PERSONID . ' = ' . DB_TABLE_PERSON . '.' . DB_PERSON_ID, 'inner');
 		$this->db->join(DB_TABLE_PERSON . ' AS ' . DB_CUSTOM_AVEC . DB_TABLE_PERSON, DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_AVECPERSONID . ' = ' . DB_CUSTOM_AVEC . DB_TABLE_PERSON . '.' . DB_PERSON_ID, 'left');

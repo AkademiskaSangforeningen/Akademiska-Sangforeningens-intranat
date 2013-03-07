@@ -156,6 +156,8 @@ class Events extends CI_Controller {
 		$headerArray = array();
 		$headerArray[] = 'Efternamn';
 		$headerArray[] = 'Förnamn';
+		$headerArray[] = 'E-post';
+		$headerArray[] = 'Telefonnummer';
 		if ($event->{DB_EVENT_CANUSERSSETALLERGIES} == TRUE) {
 			$headerArray[] = lang(LANG_KEY_FIELD_ALLERGIES);
 		}
@@ -196,6 +198,8 @@ class Events extends CI_Controller {
 			$singleLineArray = array();
 			$singleLineArray[] = $person->{DB_PERSON_LASTNAME};
 			$singleLineArray[] = $person->{DB_PERSON_FIRSTNAME};
+			$singleLineArray[] = $person->{DB_PERSON_EMAIL};
+			$singleLineArray[] = $person->{DB_PERSON_PHONE};
 			if ($event->{DB_EVENT_CANUSERSSETALLERGIES} == TRUE) {
 				$singleLineArray[] = $person->{DB_PERSON_ALLERGIES};
 			}
@@ -236,6 +240,8 @@ class Events extends CI_Controller {
 				$singleLineArray = array();
 				$singleLineArray[] = $person->{DB_CUSTOM_AVEC . DB_PERSON_LASTNAME};
 				$singleLineArray[] = $person->{DB_CUSTOM_AVEC . DB_PERSON_FIRSTNAME};
+				$singleLineArray[] = $person->{DB_CUSTOM_AVEC . DB_PERSON_EMAIL};
+				$singleLineArray[] = $person->{DB_CUSTOM_AVEC . DB_PERSON_PHONE};				
 				if ($event->{DB_EVENT_CANUSERSSETALLERGIES} == TRUE) {
 					$singleLineArray[] = $person->{DB_CUSTOM_AVEC . DB_PERSON_ALLERGIES};
 				}
