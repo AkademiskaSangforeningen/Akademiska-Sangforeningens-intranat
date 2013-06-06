@@ -8,7 +8,7 @@
 	</div>
 
 	<div class="ui-widget-content ui-corner-all" style="width: 98%; float: left; margin-bottom: 20px">								
-		<div class="ui-widget-header" style="padding: 5px">Evenemang du anmält dig till</div>
+		<div class="ui-widget-header" style="padding: 5px">Kommande evenemang du anmält dig till</div>
 		<div style="padding: 5px" id="mypreviousevents-body" class="overflowscroll">
 
 		</div>			

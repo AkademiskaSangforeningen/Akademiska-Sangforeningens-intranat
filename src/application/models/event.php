@@ -244,6 +244,7 @@ class Event extends CI_Model {
 		$this->db->from(DB_TABLE_EVENT);		
 		$this->db->where('NOT EXISTS (SELECT 1 FROM ' . DB_TABLE_PERSONHASEVENT . ' WHERE ' . DB_TABLE_EVENT . '.' . DB_EVENT_ID . ' = ' . DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_EVENTID . ' AND ' .  DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_PERSONID . ' = \'' . $personId . '\')', NULL, FALSE);
 		$this->db->where(DB_EVENT_PARTICIPANT . ' & 1', NULL, FALSE); // Only list events that "active singers" are set as participiants
+		$this->db->where('IFNULL(' . DB_EVENT_REGISTRATIONDUEDATE . ', ' . DB_EVENT_STARTDATE . ') > NOW()');
 		$this->db->order_by(DB_EVENT_STARTDATE);
 		$this->db->order_by(DB_EVENT_ENDDATE);
 		$this->db->order_by(DB_EVENT_NAME);			
@@ -264,6 +265,7 @@ class Event extends CI_Model {
 		$this->db->select(DB_PERSONHASEVENT_PERSONID);
 		$this->db->from(DB_TABLE_EVENT);
 		$this->db->join(DB_TABLE_PERSONHASEVENT, DB_TABLE_EVENT . '.' . DB_EVENT_ID . ' = ' . DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_EVENTID . ' AND ' .  DB_TABLE_PERSONHASEVENT . '.' . DB_PERSONHASEVENT_PERSONID . ' = \'' . $personId . '\'', 'inner');
+		$this->db->where('IFNULL(' . DB_EVENT_ENDDATE . ', ' . DB_EVENT_STARTDATE . ') > NOW()');
 		$this->db->order_by(DB_EVENT_STARTDATE);
 		$this->db->order_by(DB_EVENT_ENDDATE);
 		$this->db->order_by(DB_EVENT_NAME);			
