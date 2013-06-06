@@ -24,6 +24,7 @@
 			<col />
 			<col />
 			<col />
+			<col />
 		</colgroup>	
 		<thead>
 			<tr>
@@ -36,11 +37,12 @@
 				<th><?php echo lang(LANG_KEY_FIELD_DATE); ?></th>
 				<th><?php echo lang(LANG_KEY_FIELD_PERSON); ?></th>
 				<th><?php echo lang(LANG_KEY_FIELD_DESCRIPTION); ?></th>
+				<th><?php echo lang(LANG_KEY_FIELD_CREATEDBY); ?> / <?php echo lang(LANG_KEY_FIELD_MODIFIEDBY); ?></th>
 				<th class="alignright"><?php echo lang(LANG_KEY_FIELD_AMOUNT); ?></th>			
 			</tr>
 		</thead>
 		<tfoot>
-			<td colspan="5" class="currency">Totalt:</td>
+			<td colspan="6" class="currency">Totalt:</td>
 			<td class="alignright"><?php echo formatCurrency(($transactionSum->{DB_TOTALSUM} == NULL) ? 0 : $transactionSum->{DB_TOTALSUM}); ?></td>
 		</tfoot>
 		<tbody>
@@ -63,6 +65,15 @@
 				<td><?php echo formatDateGerman($transaction->{DB_TRANSACTION_TRANSACTIONDATE}) ?></td>
 				<td><?php echo $transaction->{DB_PERSON_LASTNAME} . ", " . $transaction->{DB_PERSON_FIRSTNAME}; ?></td>			
 				<td><i><?php echo $transaction->{DB_EVENT_NAME}; ?></i><?php echo $transaction->{DB_TRANSACTION_DESCRIPTION}; ?></td>
+				<td>
+				<?php
+					if ($transaction->{DB_PERSON_MODIFIEDBY . DB_PERSON_LASTNAME} != NULL) {
+						echo $transaction->{DB_PERSON_MODIFIEDBY . DB_PERSON_LASTNAME} . ", " . $transaction->{DB_PERSON_MODIFIEDBY . DB_PERSON_FIRSTNAME};
+					} else {
+						echo $transaction->{DB_PERSON_CREATEDBY . DB_PERSON_LASTNAME} . ", " . $transaction->{DB_PERSON_CREATEDBY . DB_PERSON_FIRSTNAME};
+					}
+				?>
+				</td>
 				<td class="alignright"><?php echo formatCurrency($transaction->{DB_TRANSACTION_AMOUNT}) ?></td>			
 			</tr>
 		<?php endforeach; ?>		
