@@ -112,7 +112,7 @@ class MyPage extends CI_Controller {
 		$transactionList = $this->transaction->getTransactionList($personId, NULL, LIST_DEF_PAGING_MINI_LIST, $offset);
 
 		$config['base_url'] 	= site_url() . CONTROLLER_MY_PAGE_LIST_TRANSACTIONS . '/';
-		$config['total_rows']	= $transactionList[0]->{DB_TOTALCOUNT};
+		$config['total_rows']	= sizeof($transactionList) ? $transactionList[0]->{DB_TOTALCOUNT} : 0;
 		$config['first_link'] 	= lang(LANG_KEY_BUTTON_PAGING_FIRST);
 		$config['last_link'] 	= lang(LANG_KEY_BUTTON_PAGING_LAST);
 		$config['anchor_class']	= 'class="button" ';
