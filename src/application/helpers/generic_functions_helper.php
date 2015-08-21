@@ -20,7 +20,7 @@
 		// Return the hash
 		// 2a is the bcrypt algorithm selector, see http://php.net/crypt
 		// 10 is the workload factor (around 300ms on a Core i5 machine)
-		return crypt($stringToHash, '$2a$10$' . $salt);				
+		return crypt($stringToHash, '$26$A9$' . $salt);				
 	}
 	
 
