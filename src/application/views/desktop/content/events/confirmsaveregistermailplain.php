@@ -28,7 +28,7 @@ if ($totalSum > 0) {
 	echo 'Totalt: ' . formatCurrency($totalSum);
 	echo "\r\n";
 }
-if ($personHasEvent->{DB_PERSONHASEVENT_PAYMENTTYPE} == ENUM_PAYMENTTYPE_BANK_ACCOUNT && $totalSum > 0) {
+if (($personHasEvent->{DB_PERSONHASEVENT_PAYMENTTYPE} == ENUM_PAYMENTTYPE_BANK_ACCOUNT || $personHasEvent->{DB_PERSONHASEVENT_PAYMENTTYPE} == ENUM_PAYMENTTYPE_E_INVOICE) && $totalSum > 0) {
 	echo "\r\n";
 	echo strip_tags($event->{DB_EVENT_PAYMENTINFO});
 	echo "\r\n";

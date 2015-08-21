@@ -26,6 +26,10 @@
 		<col />
 		<col />
 		<col />
+		<col />
+		<col />
+		<col />
+		<col />
 		<?php foreach($eventItems as $key => $eventItem) { ?>
 			<col /> <!-- <?php echo $eventItem->{DB_EVENTITEM_CAPTION}; ?>	-->
 		<?php } ?>
@@ -46,6 +50,10 @@
 			<th>2T</th>
 			<th>1B</th>
 			<th>2B</th>
+			<th>1S</th>
+			<th>2S</th>
+			<th>1A</th>
+			<th>2A</th>
 			<th>Totalt</th>
 			<th><?php echo lang(LANG_KEY_FIELD_PAYMENTTYPE); ?></th>
 			<?php
@@ -77,6 +85,10 @@
 			<td><?php echo $voiceSums[ENUM_VOICE_2T]; ?></td>
 			<td><?php echo $voiceSums[ENUM_VOICE_1B]; ?></td>
 			<td><?php echo $voiceSums[ENUM_VOICE_2B]; ?></td>
+			<td><?php echo $voiceSums[ENUM_VOICE_1S]; ?></td>
+			<td><?php echo $voiceSums[ENUM_VOICE_2S]; ?></td>
+			<td><?php echo $voiceSums[ENUM_VOICE_1A]; ?></td>
+			<td><?php echo $voiceSums[ENUM_VOICE_2A]; ?></td>
 			<?php if ($this->userrights->hasRight(userrights::EVENTS_EDIT_REGISTRATION, $this->session->userdata(SESSION_ACCESSRIGHT))) { ?>
 				<td></td>
 			<?php } ?>
@@ -129,6 +141,10 @@
 				echo '<td>' . ($person->{DB_PERSON_VOICE} == ENUM_VOICE_2T ? '<input type="checkbox" checked="checked" disabled="disabled"/>' : '') . '</td>';
 				echo '<td>' . ($person->{DB_PERSON_VOICE} == ENUM_VOICE_1B ? '<input type="checkbox" checked="checked" disabled="disabled"/>' : '') . '</td>';
 				echo '<td>' . ($person->{DB_PERSON_VOICE} == ENUM_VOICE_2B ? '<input type="checkbox" checked="checked" disabled="disabled"/>' : '') . '</td>';
+				echo '<td>' . ($person->{DB_PERSON_VOICE} == ENUM_VOICE_1S ? '<input type="checkbox" checked="checked" disabled="disabled"/>' : '') . '</td>';
+				echo '<td>' . ($person->{DB_PERSON_VOICE} == ENUM_VOICE_2S ? '<input type="checkbox" checked="checked" disabled="disabled"/>' : '') . '</td>';
+				echo '<td>' . ($person->{DB_PERSON_VOICE} == ENUM_VOICE_1A ? '<input type="checkbox" checked="checked" disabled="disabled"/>' : '') . '</td>';
+				echo '<td>' . ($person->{DB_PERSON_VOICE} == ENUM_VOICE_2A ? '<input type="checkbox" checked="checked" disabled="disabled"/>' : '') . '</td>';
 				echo '<td class="bold">' . formatCurrency($person->{DB_TOTALSUM} + $person->{DB_CUSTOM_AVEC . DB_TOTALSUM}) . '</td>';
 				echo '<td>' . getEnumValue(ENUM_PAYMENTTYPE, $person->{DB_PERSONHASEVENT_PAYMENTTYPE}) . '</td>';
 				foreach($eventItems as $key => $eventItem) {					
@@ -172,6 +188,10 @@
 						echo '<br/><i>' . $person->{DB_CUSTOM_AVEC . DB_PERSON_ALLERGIES} . '</i>';
 					}
 					echo '</td>';
+					echo '<td></td>';
+					echo '<td></td>';
+					echo '<td></td>';
+					echo '<td></td>';
 					echo '<td></td>';
 					echo '<td></td>';
 					echo '<td></td>';

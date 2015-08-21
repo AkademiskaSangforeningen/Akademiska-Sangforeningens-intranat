@@ -83,6 +83,12 @@ $lang[LANG_KEY_ENUM_VOICE_1_TENOR]							= "1:a tenor";
 $lang[LANG_KEY_ENUM_VOICE_2_TENOR]							= "2:a tenor";
 $lang[LANG_KEY_ENUM_VOICE_1_BASS]							= "1:a bas";
 $lang[LANG_KEY_ENUM_VOICE_2_BASS]							= "2:a bas";
+
+$lang[LANG_KEY_ENUM_VOICE_1_SOPRANO]						= "1:a sopran";
+$lang[LANG_KEY_ENUM_VOICE_2_SOPRANO]						= "2:a sopran";
+$lang[LANG_KEY_ENUM_VOICE_1_ALTO]							= "1:a alt";
+$lang[LANG_KEY_ENUM_VOICE_2_ALTO]							= "2:a alt";
+
 $lang[LANG_KEY_ENUM_VOICE_CONDUCTOR]						= "Dirigent";
 $lang[LANG_KEY_ENUM_COUNTRY_FINLAND]						= "Finland";
 $lang[LANG_KEY_ENUM_COUNTRY_SWEDEN]							= "Sverige";

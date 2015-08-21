@@ -47,7 +47,7 @@
 	</tr>
 <?php } ?>
 </table>
-<?php if ($personHasEvent->{DB_PERSONHASEVENT_PAYMENTTYPE} == ENUM_PAYMENTTYPE_BANK_ACCOUNT && $totalSum > 0) { ?>
+<?php if (($personHasEvent->{DB_PERSONHASEVENT_PAYMENTTYPE} == ENUM_PAYMENTTYPE_BANK_ACCOUNT || $personHasEvent->{DB_PERSONHASEVENT_PAYMENTTYPE} == ENUM_PAYMENTTYPE_E_INVOICE) && $totalSum > 0) { ?>
 	<p><?php echo $event->{DB_EVENT_PAYMENTINFO}; ?></p>
 <?php } ?>
 <p><a href="<?php echo site_url() . CONTROLLER_EVENTS_EDIT_REGISTER_DIRECTLY; ?>/<?php echo $eventId; ?>/<?php echo $personId; ?>/<?php echo $hash; ?>"><b>Klicka här</b></a> för att ändra din anmälan.</p>

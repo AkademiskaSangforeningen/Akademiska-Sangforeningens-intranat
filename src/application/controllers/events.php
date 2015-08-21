@@ -95,7 +95,7 @@ class Events extends CI_Controller {
 			$eventItemSums[$eventItemSum->{DB_PERSONHASEVENTITEM_EVENTITEMID}] = $eventItemSum->{DB_TOTALCOUNT};				
 		}
 		
-		$voiceSums = array(ENUM_VOICE_1T => 0, ENUM_VOICE_2T => 0, ENUM_VOICE_1B => 0, ENUM_VOICE_2B => 0);
+		$voiceSums = array(ENUM_VOICE_1T => 0, ENUM_VOICE_2T => 0, ENUM_VOICE_1B => 0, ENUM_VOICE_2B => 0, ENUM_VOICE_1S => 0, ENUM_VOICE_2S => 0, ENUM_VOICE_1A => 0, ENUM_VOICE_2A => 0);
 		foreach($this->event->getPersonVoiceSumsForEvent($eventId) as $voice) {
 			$voiceSums[$voice->{DB_PERSON_VOICE}] = $voice->{DB_TOTALCOUNT};
 		}
@@ -169,6 +169,10 @@ class Events extends CI_Controller {
 		$headerArray[] = '2T';
 		$headerArray[] = '1B';
 		$headerArray[] = '2B';
+		$headerArray[] = '1S';
+		$headerArray[] = '2S';
+		$headerArray[] = '1A';
+		$headerArray[] = '2A';
 		$headerArray[] = 'Totalt';
 		$headerArray[] = lang(LANG_KEY_FIELD_PAYMENTTYPE);
 		
@@ -210,7 +214,11 @@ class Events extends CI_Controller {
 			$singleLineArray[] = $person->{DB_PERSON_VOICE} == ENUM_VOICE_1T ? '1' : '';
 			$singleLineArray[] = $person->{DB_PERSON_VOICE} == ENUM_VOICE_2T ? '1' : '';
 			$singleLineArray[] = $person->{DB_PERSON_VOICE} == ENUM_VOICE_1B ? '1' : '';
-			$singleLineArray[] = $person->{DB_PERSON_VOICE} == ENUM_VOICE_2B ? '1' : '';
+			$singleLineArray[] = $person->{DB_PERSON_VOICE} == ENUM_VOICE_2B ? '1' : '';			
+			$singleLineArray[] = $person->{DB_PERSON_VOICE} == ENUM_VOICE_1S ? '1' : '';
+			$singleLineArray[] = $person->{DB_PERSON_VOICE} == ENUM_VOICE_2S ? '1' : '';
+			$singleLineArray[] = $person->{DB_PERSON_VOICE} == ENUM_VOICE_1A ? '1' : '';
+			$singleLineArray[] = $person->{DB_PERSON_VOICE} == ENUM_VOICE_2A ? '1' : '';			
 			$singleLineArray[] = ($person->{DB_TOTALSUM} + $person->{DB_CUSTOM_AVEC . DB_TOTALSUM});
 			$singleLineArray[] = getEnumValue(ENUM_PAYMENTTYPE, $person->{DB_PERSONHASEVENT_PAYMENTTYPE});				
 			foreach($eventItems as $key => $eventItem) {					
@@ -251,6 +259,10 @@ class Events extends CI_Controller {
 				$singleLineArray[] = '';	// 2T
 				$singleLineArray[] = '';	// 1B
 				$singleLineArray[] = '';	// 2B
+				$singleLineArray[] = '';	// 1S
+				$singleLineArray[] = '';	// 2S
+				$singleLineArray[] = '';	// 1A
+				$singleLineArray[] = '';	// 2A
 				$singleLineArray[] = '';	// Sum
 				$singleLineArray[] = '';	// Payment type				
 			
