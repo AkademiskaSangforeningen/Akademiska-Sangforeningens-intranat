@@ -6,7 +6,7 @@
  *
 */
 
-$lang[LANG_KEY_HEADER_LOGIN]								= "Akademiska Sångföreningens intranät";
+$lang[LANG_KEY_HEADER_LOGIN]								= "Vårt intranät";
 $lang[LANG_KEY_HEADER_EVENT_REGISTRATION_SUCCEEDED]			= "Anmälningen lyckades";
 $lang[LANG_KEY_HEADER_EVENT_REGISTRATION_CANCELLED] 		= "Din anmälan är nu annullerad";
 $lang[LANG_KEY_HEADER_EVENT_NOT_FOUND]						= "Evenemanget kunde inte hittas";
