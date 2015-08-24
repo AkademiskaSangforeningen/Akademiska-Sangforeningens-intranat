@@ -15,7 +15,7 @@ define('ENUM_SHOW_FOR_AVEC',	'enum_show_for_avec');
 define('ENUM_PAYMENTTYPE_TRANSACTION', 	1);
 define('ENUM_PAYMENTTYPE_CASH', 		2);
 define('ENUM_PAYMENTTYPE_BANK_ACCOUNT',	4);
-define('ENUM_PAYMENTTYPE_E_INVOICE',	5);
+define('ENUM_PAYMENTTYPE_E_INVOICE',	8);
 
 define('ENUM_VOICE_1T',	'1T');
 define('ENUM_VOICE_2T',	'2T');
