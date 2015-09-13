@@ -68,13 +68,17 @@ Class Person extends CI_Model {
 	* Function used for loading a single person's id using the email address
 	*
 	* @param string $personId GUID of the user
+	* @param int $notStatus filter out this status (optional)
 	* @return false if check fails, otherwise returns database result
 	*/	
-	function getPersonIdUsingEmail($email) {
+	function getPersonIdUsingEmail($email, $status = NULL) {
 		$this->db->limit(1);
 		$this->db->select(DB_PERSON_ID);
 		$this->db->from(DB_TABLE_PERSON);
 		$this->db->where(DB_PERSON_EMAIL, $email);
+		if (!is_null($status)) {
+			$this->db->where(DB_PERSON_STATUS, $status);
+		}
 
 		$query = $this->db->get();		
 		if ($query->num_rows() == 1) {

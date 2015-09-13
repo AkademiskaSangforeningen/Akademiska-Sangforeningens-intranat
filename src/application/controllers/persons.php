@@ -143,11 +143,13 @@ class Persons extends CI_Controller {
 		//Validate the fields
 		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_FIRSTNAME,		lang(LANG_KEY_FIELD_FIRSTNAME),		'trim|max_length[50]|required|xss_clean');
 		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_LASTNAME, 		lang(LANG_KEY_FIELD_LASTNAME), 		'trim|max_length[50]|required|xss_clean');
-		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL, 			lang(LANG_KEY_FIELD_EMAIL), 		'trim|max_length[50]|required|valid_email|xss_clean|callback_checkEmailNotDuplicate');
+		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL, 			lang(LANG_KEY_FIELD_EMAIL), 		'trim|max_length[50]|required|valid_email|xss_clean|callback__checkEmailNotDuplicate');
 		if (is_null($personId)) {
 			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PASSWORD,	lang(LANG_KEY_FIELD_PASSWORD), 		'trim|required|max_length[50]|xss_clean|callback__checkPassword');
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL, 		lang(LANG_KEY_FIELD_EMAIL), 		'trim|max_length[50]|required|valid_email|xss_clean|callback__checkEmailNotDuplicate');
 		} else {
 			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_PASSWORD,	lang(LANG_KEY_FIELD_PASSWORD), 		'trim|max_length[50]|xss_clean|callback__checkPassword');
+			$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_EMAIL, 		lang(LANG_KEY_FIELD_EMAIL), 		'trim|max_length[50]|required|valid_email|xss_clean');
 		}		
 		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_VOICE, 			lang(LANG_KEY_FIELD_VOICE), 		'trim|exact_length[2]|required|xss_clean|callback__checkVoiceInEnumList');
 		$this->form_validation->set_rules(DB_TABLE_PERSON . '_' . DB_PERSON_ALLERGIES, 		lang(LANG_KEY_FIELD_ALLERGIES), 	'trim|max_length[255]|xss_clean');
@@ -199,7 +201,7 @@ class Persons extends CI_Controller {
 			//Some new users are already found in the database as external users.
 			//Load their id from the person-table so that we make an update instead
 			if (is_null($personId)) {
-				$personId = $this->person->getPersonIdUsingEmail($data[DB_PERSON_EMAIL]);
+				$personId = $this->person->getPersonIdUsingEmail($data[DB_PERSON_EMAIL], PERSON_STATUS_EXTERNAL);
 			}			
 			
 			//save the person via the model
@@ -229,6 +231,17 @@ class Persons extends CI_Controller {
 		$passwordRepeated = $this->input->post(DB_TABLE_PERSON . '_' . DB_PERSON_PASSWORD . '_repeat');
 		if (($password != "" || $passwordRepeated != "") && $password != $passwordRepeated) {
 			$this->form_validation->set_message('_checkPassword', lang(LANG_KEY_FIELD_PASSWORD_AGAIN));
+			return false;
+		}
+	}
+	
+	function _checkEmailNotDuplicate($email) {
+		//Load the person-model
+		$this->load->model(MODEL_PERSON, strtolower(MODEL_PERSON), TRUE);
+								
+		$personId = $this->person->getPersonIdUsingEmail($email, PERSON_STATUS_INTERNAL);			
+		if (!is_null($personId)) {
+			$this->form_validation->set_message('_checkEmailNotDuplicate', "Internal user with the given email address already found");
 			return false;
 		}
 	}
