@@ -195,6 +195,13 @@ class Persons extends CI_Controller {
 			
 			//Load the person-model
 			$this->load->model(MODEL_PERSON, strtolower(MODEL_PERSON), TRUE);
+			
+			//Some new users are already found in the database as external users.
+			//Load their id from the person-table so that we make an update instead
+			if (is_null($personId)) {
+				$personId = $this->person->getPersonIdUsingEmail($data[DB_PERSON_EMAIL]);
+			}			
+			
 			//save the person via the model
 			$this->person->savePerson($data, $personId, $this->session->userdata(SESSION_PERSONID));
 		
