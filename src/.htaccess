@@ -1,3 +1,7 @@
 RewriteEngine on
-RewriteCond $1 !^(index\.php|images|css|js|favicon.ico|robots\.txt)
+
+RewriteCond %{SERVER_PORT} 80 
+RewriteRule ^(.*)$ https://intra.akademiskasangforeningen.fi/$1 [R,L]
+
+RewriteCond $1 !^(index\.php|images|wiki|css|js|favicon.ico|robots\.txt)
 RewriteRule ^(.*)$ index.php?/$1 [L]
