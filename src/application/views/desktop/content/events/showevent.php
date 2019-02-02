@@ -1,4 +1,4 @@
-﻿<h1><?php echo $event->Name?></h1>
+<h1><?php echo $event->Name?></h1>
 <h2>När: <?php echo $event->StartDate?></h2>
 <h2>Pris: <?php echo $event->Price?> €</h2>
 <h2>Beskrivning:</h2>
