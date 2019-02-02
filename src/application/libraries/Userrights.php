@@ -16,7 +16,9 @@ class UserRights {
 	const EVENTS_EDIT					= 512;
 	const EVENTS_DELETE					= 1024;
 	const EVENTS_EDIT_REGISTRATION		= 2048;
-	const EVENTS_DELETE_REGISTRATION	= 4096;			
+	const EVENTS_DELETE_REGISTRATION	= 4096;	
+
+	const WIKI_VIEW						= 8192;
 	
 	function hasRight($right, $userRight) {
 		return (($right & $userRight) == $right) || ((self::FULL_ACCESS_RIGHTS & $userRight) == self::FULL_ACCESS_RIGHTS);

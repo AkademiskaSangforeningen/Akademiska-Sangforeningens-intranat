@@ -219,6 +219,7 @@ var AKADEMEN = (function(){
 					}
 				})
 				.show();
+				$('#header_navitabs a[target=_blank]').unbind('click');
 		},
 
 		/**

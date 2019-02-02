@@ -23,6 +23,7 @@ define('SESSION_LOGGEDIN',					'LoggedIn');
 define('SESSION_PERSONID',					'PersonId');
 define('SESSION_LANG',						'Lang');
 define('SESSION_NAME',						'Name');
+define('SESSION_EMAIL',						'Email');
 define('SESSION_ACCESSRIGHT',				'AccessRight');
 
 define('PREFIX_HH',							'_hh');

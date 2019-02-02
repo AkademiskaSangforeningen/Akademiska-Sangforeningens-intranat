@@ -245,7 +245,7 @@ $config['encryption_key'] = 'R?+gR$A6.r3[Xw|!g8_l,<J(#T#!NW22';
 |
 */
 $config['sess_cookie_name']		= 'ci_session';
-$config['sess_expiration']		= 7200;
+$config['sess_expiration']		= 14400;
 $config['sess_expire_on_close']	= FALSE;
 $config['sess_encrypt_cookie']	= TRUE;
 $config['sess_use_database']	= TRUE;
@@ -268,7 +268,7 @@ $config['sess_time_to_update']	= 300;
 $config['cookie_prefix']	= "";
 $config['cookie_domain']	= "";
 $config['cookie_path']		= "/";
-$config['cookie_secure']	= FALSE;
+$config['cookie_secure']	= TRUE;
 
 /*
 |--------------------------------------------------------------------------
